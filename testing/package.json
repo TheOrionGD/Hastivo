@@ -1,0 +1,15 @@
+{
+  "name": "signora-testing-framework",
+  "version": "1.0.0",
+  "description": "Signora End-to-End System Testing & Verification Framework",
+  "type": "module",
+  "scripts": {
+    "test": "node run_all_tests.js",
+    "test:system": "node verify_system.js",
+    "test:backend": "node test_backend_suite.js",
+    "test:e2e": "node test_integration_e2e.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

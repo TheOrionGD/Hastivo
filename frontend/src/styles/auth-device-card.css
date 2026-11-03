@@ -1,0 +1,569 @@
+/* ==========================================================================
+   SIGNORA AUTH PORTAL — HARDWARE DEVICE CARD & SLIDING SPLIT SCREEN
+   Inspired by Apple/Dribbble B2B SaaS Auth Experiences
+   ========================================================================== */
+
+/* Outer Ambient Stage: Floats above background video & particle canvas */
+.auth-ambient-stage {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 4vw, 56px) clamp(16px, 3vw, 40px);
+  position: relative;
+  z-index: 10;
+  background: transparent !important;
+  box-sizing: border-box;
+}
+
+/* ── Hardware Tablet / Device Chassis ─────────────────────────────────── */
+.auth-device-chassis {
+  position: relative;
+  width: 100%;
+  max-width: 1140px;
+  min-height: 690px;
+  background: #0f131d;
+  border-radius: 36px;
+  padding: 16px;
+  box-sizing: border-box;
+  /* Dual hardware bezel edge with specular highlight */
+  border: 1.5px solid rgba(255, 255, 255, 0.13);
+  box-shadow:
+    0 40px 100px -20px rgba(0, 0, 0, 0.95),
+    0 0 70px -10px rgba(111, 163, 239, 0.22),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.28),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.8);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Top Hardware Camera Dot */
+.auth-device-camera {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #05070a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 4px rgba(111, 163, 239, 0.4);
+  z-index: 5;
+}
+
+/* Inner Display Screen with Bezel Clipping */
+.auth-device-screen {
+  position: relative;
+  width: 100%;
+  min-height: 658px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0a0d14;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+  display: flex;
+}
+
+/* ── Sliding Split-Screen Stage ────────────────────────────────────────── */
+.auth-split-stage {
+  position: relative;
+  width: 100%;
+  min-height: 658px;
+  overflow: hidden;
+}
+
+/* Desktop sliding columns (Form and Visual) */
+@media (min-width: 881px) {
+  .auth-pane {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    width: 50% !important;
+    height: 100%;
+    transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+
+  /* SIGN-IN MODE: Form on Left (0%), Visual on Right (50%) */
+  .auth-split-stage.mode-signin .auth-pane-form {
+    left: 0%;
+  }
+  .auth-split-stage.mode-signin .auth-pane-visual {
+    left: 50%;
+  }
+
+  /* REGISTER MODE: Visual on Left (0%), Form on Right (50%) */
+  .auth-split-stage.mode-register .auth-pane-form {
+    left: 50%;
+  }
+  .auth-split-stage.mode-register .auth-pane-visual {
+    left: 0%;
+  }
+}
+
+/* Mobile Stacking (< 880px) */
+@media (max-width: 880px) {
+  .auth-device-chassis {
+    padding: 10px;
+    border-radius: 24px;
+    min-height: auto;
+  }
+  .auth-device-screen {
+    border-radius: 18px;
+    min-height: auto;
+  }
+  .auth-split-stage {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+  }
+  .auth-pane-visual {
+    order: 1;
+    min-height: 280px;
+    width: 100%;
+  }
+  .auth-pane-form {
+    order: 2;
+    width: 100%;
+  }
+}
+
+/* ── Form Pane Styling ─────────────────────────────────────────────────── */
+.auth-pane-form {
+  background: #0e121a;
+  padding: clamp(32px, 5vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.auth-form-inner {
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Brand Header in Form */
+.auth-form-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+
+.auth-form-brand img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 0 16px rgba(111, 163, 239, 0.4);
+}
+
+.auth-form-brand-text {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+/* Dynamic Heading with Slide Entry */
+.auth-form-heading {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+  animation: auth-text-glide 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-form-subtitle {
+  font-size: 0.92rem;
+  color: #94a3b8;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+  animation: auth-text-glide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Quick SSO Provider Options ────────────────────────────────────────── */
+.auth-sso-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.auth-sso-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.auth-sso-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(111, 163, 239, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Divider with "OR" text */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 18px 0 22px 0;
+  gap: 14px;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider-text {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+/* ── Form Inputs with Modern Icons ─────────────────────────────────────── */
+.auth-field-group {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.auth-field-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 6px;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.auth-input-core {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  background: rgba(20, 26, 38, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.94rem;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.auth-input-core:focus {
+  outline: none;
+  border-color: #6fa3ef;
+  background: rgba(26, 34, 50, 0.95);
+  box-shadow: 0 0 0 3px rgba(111, 163, 239, 0.2);
+}
+
+.auth-input-core:focus + .auth-input-icon,
+.auth-input-wrapper:focus-within .auth-input-icon {
+  color: #6fa3ef;
+}
+
+/* Password Eye Toggle Button */
+.auth-eye-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.auth-eye-btn:hover {
+  color: #f8fafc;
+}
+
+/* ── Interactive Password Lock Animation ────────────────────────────────── */
+.auth-lock-shackle {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 6px 6px;
+}
+
+.is-locked .auth-lock-shackle {
+  transform: translateY(0);
+}
+
+.is-unlocked .auth-lock-shackle {
+  transform: translateY(-3.5px);
+}
+
+/* Matching Password Tick State */
+.auth-password-status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.auth-password-status.match {
+  color: #34d399;
+}
+
+.auth-password-status.mismatch {
+  color: #ff6f61;
+}
+
+/* ── Role Selector Chips (for Register Mode) ──────────────────────────── */
+.auth-role-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.auth-role-chip {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-role-chip.is-selected {
+  background: rgba(111, 163, 239, 0.16);
+  border-color: #6fa3ef;
+  color: #6fa3ef;
+  box-shadow: 0 0 12px rgba(111, 163, 239, 0.2);
+}
+
+/* ── Submit CTA Button ─────────────────────────────────────────────────── */
+.auth-submit-btn {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff6f61 0%, #ff8f84 100%);
+  border: none;
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255, 111, 97, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 111, 97, 0.45);
+  filter: brightness(1.05);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mode Switch Link Text */
+.auth-switch-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.auth-switch-btn {
+  background: transparent;
+  border: none;
+  color: #6fa3ef;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
+
+.auth-switch-btn:hover {
+  color: #93c5fd;
+}
+
+/* Form Footer */
+.auth-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 24px;
+}
+
+/* ── Visual Media Pane (Signora 3D Avatar & Glass Telemetry) ──────────── */
+.auth-pane-visual {
+  background: radial-gradient(circle at 60% 40%, #151a28 0%, #080b12 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(28px, 4vw, 44px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+}
+
+.mode-register .auth-pane-visual {
+  border-left: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Visual Ambient Glow Orb */
+.auth-visual-orb {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(111, 163, 239, 0.25) 0%, rgba(255, 111, 97, 0.12) 60%, transparent 80%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+/* Live Telemetry Pill at Top of Visual Panel */
+.auth-visual-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+  z-index: 2;
+}
+
+/* 3D Avatar Center Display Container */
+.auth-visual-avatar-box {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  z-index: 2;
+}
+
+/* Floating Frosted Glass Card at Bottom of Visual Pane */
+.auth-visual-glass-card {
+  position: relative;
+  z-index: 3;
+  background: rgba(15, 20, 30, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 20px 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.auth-visual-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.auth-visual-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auth-visual-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.auth-visual-feature-item svg {
+  color: #34d399;
+  flex-shrink: 0;
+}
+
+/* ── Interactive Keyframes & Shakes ────────────────────────────────────── */
+@keyframes auth-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.has-shake {
+  animation: auth-shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes auth-text-glide {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,491 @@
+/* ==========================================================================
+   SIGNORA — CIRCULAR REMOTE DIAL & DRAG-AND-DROP NAVIGATION
+   Inspired by classic TV remote D-pads, rotary click wheels, and sci-fi portals.
+   ========================================================================== */
+
+/* ── 1. Floating Glowing FAB Trigger (Bottom-Right) ───────────────────── */
+.fab-remote-trigger {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9998;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background: radial-gradient(circle at 35% 35%, rgba(32, 40, 58, 0.92) 0%, rgba(12, 16, 26, 0.98) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(255, 111, 97, 0.35),
+    0 0 45px rgba(111, 163, 239, 0.25),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.7);
+  animation: fab-float-bob 3.6s ease-in-out infinite, fab-pulse-glow 3s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.fab-remote-trigger:hover {
+  transform: scale(1.08) translateY(-4px);
+  border-color: rgba(111, 163, 239, 0.6);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(255, 111, 97, 0.55),
+    0 0 60px rgba(111, 163, 239, 0.45),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.5);
+}
+
+.fab-remote-trigger:active {
+  transform: scale(0.96) translateY(1px);
+}
+
+.fab-radar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 111, 97, 0.4);
+  animation: radar-sweep-wave 2.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  pointer-events: none;
+}
+
+.fab-remote-tooltip {
+  position: absolute;
+  right: 74px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(12, 16, 26, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.fab-remote-trigger:hover .fab-remote-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* ── 2. Fullscreen Modal Backdrop ─────────────────────────────────────── */
+.circular-remote-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(4, 7, 14, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: remote-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── 3. The Circular TV Remote Navigation Dial ────────────────────────── */
+.circular-remote-hub {
+  position: relative;
+  width: min(92vw, 460px);
+  height: min(92vw, 460px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(24, 31, 48, 0.94) 0%, rgba(10, 13, 22, 0.98) 85%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.85),
+    0 0 50px rgba(111, 163, 239, 0.2),
+    0 0 80px rgba(255, 111, 97, 0.15),
+    inset 0 2px 2px rgba(255, 255, 255, 0.25),
+    inset 0 -3px 4px rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: remote-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  user-select: none;
+}
+
+/* TV Remote D-Pad Engraved Bezel Rim */
+.remote-bezel-ring {
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.remote-cardinal-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.remote-marker {
+  position: absolute;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+.remote-marker.top { top: 6px; left: 50%; transform: translateX(-50%); }
+.remote-marker.bottom { bottom: 6px; left: 50%; transform: translateX(-50%); }
+.remote-marker.left { left: 8px; top: 50%; transform: translateY(-50%); }
+.remote-marker.right { right: 8px; top: 50%; transform: translateY(-50%); }
+
+/* ── 4. Central Circular Nav Receptor (Drop Zone & OK Button) ──────────── */
+.remote-center-portal {
+  position: relative;
+  z-index: 12;
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(32, 42, 65, 0.98) 0%, rgba(13, 17, 28, 1) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    inset 0 2px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(255, 111, 97, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.remote-center-portal:hover {
+  transform: scale(1.06);
+  border-color: rgba(111, 163, 239, 0.7);
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.8),
+    0 0 35px rgba(111, 163, 239, 0.5),
+    inset 0 2px 2px rgba(255, 255, 255, 0.45);
+}
+
+/* Drop-Hover Active State (When an item is dragged over the center circle) */
+.remote-center-portal.is-drag-hovered {
+  transform: scale(1.16);
+  background: radial-gradient(circle at 35% 35%, #10b981 0%, #047857 100%);
+  border-color: #34d399;
+  box-shadow:
+    0 0 45px rgba(52, 211, 153, 0.75),
+    0 0 80px rgba(16, 185, 129, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  animation: portal-pulse-active 1s ease-in-out infinite alternate;
+}
+
+.portal-pulse-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(111, 163, 239, 0.4);
+  animation: portal-sweep-ring 2.2s linear infinite;
+  pointer-events: none;
+}
+
+.portal-core-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.portal-core-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.portal-core-hint {
+  font-size: 0.58rem;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+/* ── 5. Orbiting Radial Page Items (TV Remote Radial Buttons) ──────────── */
+.remote-orbital-items {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.radial-page-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 58px;
+  height: 58px;
+  margin-top: -29px;
+  margin-left: -29px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(28, 36, 54, 0.95) 0%, rgba(13, 17, 28, 0.98) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.55),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  pointer-events: auto;
+  color: #f8fafc;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+  touch-action: none;
+}
+
+.radial-page-btn:hover {
+  transform: scale(1.15) !important;
+  border-color: rgba(111, 163, 239, 0.7);
+  background: radial-gradient(circle at 35% 35%, rgba(42, 54, 80, 1) 0%, rgba(18, 24, 38, 1) 100%);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(111, 163, 239, 0.45);
+  color: #ffffff;
+}
+
+.radial-page-btn:active {
+  cursor: grabbing;
+}
+
+.radial-page-btn.is-active-route {
+  border-color: #ff6f61;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 111, 97, 0.3) 0%, rgba(20, 26, 40, 0.95) 100%);
+  box-shadow:
+    0 8px 24px rgba(255, 111, 97, 0.35),
+    0 0 16px rgba(255, 111, 97, 0.5);
+}
+
+.radial-page-btn.is-dragging {
+  opacity: 0.4;
+  transform: scale(0.9) !important;
+}
+
+.radial-btn-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radial-btn-label {
+  position: absolute;
+  bottom: -22px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  white-space: nowrap;
+  background: rgba(8, 12, 20, 0.85);
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 6. TV Remote Utility Quick-Action Bar (Top & Bottom) ──────────────── */
+.remote-top-bar {
+  position: absolute;
+  top: -68px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(14, 18, 28, 0.85);
+  backdrop-filter: blur(16px);
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.remote-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.remote-action-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.remote-close-btn {
+  background: rgba(255, 111, 97, 0.18);
+  border: 1px solid rgba(255, 111, 97, 0.4);
+  color: #ff8f84;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.remote-close-btn:hover {
+  background: #ff6f61;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.remote-instructions-pill {
+  position: absolute;
+  bottom: -56px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(11, 15, 24, 0.88);
+  border: 1px solid rgba(111, 163, 239, 0.25);
+  color: #93c5fd;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 7. Keyframe Animations ────────────────────────────────────────────── */
+@keyframes fab-float-bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fab-pulse-glow {
+  0%, 100% {
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.6),
+      0 0 24px rgba(255, 111, 97, 0.35),
+      0 0 45px rgba(111, 163, 239, 0.25),
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.7),
+      0 0 36px rgba(255, 111, 97, 0.55),
+      0 0 60px rgba(111, 163, 239, 0.4),
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.45);
+  }
+}
+
+@keyframes radar-sweep-wave {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes remote-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes remote-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes portal-sweep-ring {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes portal-pulse-active {
+  0% {
+    box-shadow: 0 0 35px rgba(52, 211, 153, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 60px rgba(52, 211, 153, 0.95), inset 0 3px 6px rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Warp Flash Screen Effect on Drop / Navigation */
+.remote-warp-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: radial-gradient(circle, rgba(111, 163, 239, 0.5) 0%, rgba(255, 111, 97, 0.3) 40%, transparent 80%);
+  pointer-events: none;
+  animation: warp-flash-anim 0.45s ease-out forwards;
+}
+
+@keyframes warp-flash-anim {
+  0% { opacity: 0; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* ── 8. Responsive Adaptations ─────────────────────────────────────────── */
+@media (max-width: 540px) {
+  .circular-remote-hub {
+    width: 320px;
+    height: 320px;
+  }
+  .remote-center-portal {
+    width: 96px;
+    height: 96px;
+  }
+  .radial-page-btn {
+    width: 48px;
+    height: 48px;
+    margin-top: -24px;
+    margin-left: -24px;
+  }
+  .radial-btn-label {
+    display: none;
+  }
+  .remote-instructions-pill {
+    font-size: 0.68rem;
+    padding: 4px 10px;
+  }
+}

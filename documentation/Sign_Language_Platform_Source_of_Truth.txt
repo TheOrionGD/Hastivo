@@ -1,0 +1,1181 @@
+SYSTEM SOURCE OF TRUTH
+
+Sign-Language Communication Platform
+
+Product Requirements • Functional Specification • Architecture •
+Engineering Rules
+
+Brand statement
+
+“Vibrant Connections Through Language Colors”
+
+Document Control
+
+How this document must be used
+
+This document is the canonical description of what the platform is
+intended to do, how users interact with it, how information moves
+through the system, and what engineering constraints must be respected.
+An AI development agent must read this document before modifying code.
+It must treat explicit requirements as binding, inspect the existing
+repository before choosing implementation details, and report conflicts
+or missing dependencies instead of silently inventing behavior.
+
+Do not interpret a described capability as already implemented. Verify
+it in source code and tests.
+
+Do not fabricate AI outputs, recognition results, analytics, user
+records, or successful service responses.
+
+Where a requirement depends on an unavailable model, dataset, API
+credential, or asset, document the dependency and implement a truthful
+unavailable state.
+
+Preserve existing working code and the repository’s established
+framework unless a justified migration is approved.
+
+This document defines product behavior; API schemas, model choices,
+dataset licenses, and deployment values must be finalized and versioned
+as engineering decisions.
+
+1.  Product Overview
+
+The product is an interactive, AI-assisted sign-language communication
+platform. It is intended to help people communicate across
+spoken/written language and sign language through two primary
+translation directions: Text-to-Sign and Sign-to-Text. It also provides
+a real-time, two-participant conversation experience that combines
+speech capture, sign recognition, contextual language processing, speech
+output, and an animated 3D avatar.
+
+The platform is more than a text translator or a camera-based gesture
+demo. It is a multi-service application combining a user-facing web
+experience, secure application backend, language/AI processing, computer
+vision, sign representation, avatar animation, real-time event delivery,
+persistence, moderation, and administration.
+
+1.1 Primary capabilities
+
+Introduce the product through an animated splash experience and exactly
+seven onboarding screens.
+
+Provide public landing, registration, login, and authenticated user
+experiences.
+
+Convert typed text or speech transcripts into structured sign sequences
+and play them through a 3D avatar.
+
+Recognize sign-language input from a live camera stream, display
+recognized signs, and produce a contextual sentence.
+
+Convert generated text to speech with user-configurable voice and
+playback settings where supported.
+
+Support simultaneous speech-to-sign and sign-to-speech/sign-to-text
+workflows in a real-time conversation session.
+
+Persist user-owned translation and conversation history.
+
+Provide user settings, profile management, moderation review,
+administrator actions, notifications, and audit trails.
+
+1.2 Language and accuracy principles
+
+Sign languages are complete natural languages with their own grammar,
+word order, non-manual markers, spatial features, and regional
+variation. The system must not assume that a spoken-language sentence
+can be translated by replacing each word with an isolated gesture. Nor
+may it assume that a model trained for one sign language works for
+another. The target sign language, supported dialects, dataset
+provenance, vocabulary coverage, and evaluation methodology must be
+explicitly selected and documented.
+
+The requirements supplied so far do not conclusively lock the target
+sign language. Given the intended context, Indian Sign Language (ISL)
+may be a candidate, but the implementation agent must confirm this
+product decision with the owner before selecting datasets or claiming
+language coverage. ASL, ISL, and other sign languages are not
+interchangeable.
+
+2.  Product Principles and Non-Negotiable Rules
+
+Functional correctness takes priority over visual completeness.
+
+Use real persisted data and actual service responses in production
+workflows.
+
+Never show dummy values, fabricated analytics, random recognition
+labels, or hardcoded AI outputs as genuine results.
+
+Do not delete unused declarations or incomplete functions merely to
+silence lint diagnostics; investigate and implement their intended
+behavior.
+
+Do not disable lint rules, suppress compiler diagnostics globally, or
+weaken tests to manufacture a clean report.
+
+Do not create disconnected services, duplicate business logic, or
+unnecessary microservices.
+
+Every visible control must perform its advertised action or be clearly
+disabled/unavailable.
+
+All errors, unavailable dependencies, permission failures, and
+low-confidence recognition outcomes must be represented honestly.
+
+Protect user privacy, especially camera, microphone, biometric-like
+landmark, and conversation data.
+
+3.  Users, Roles and Access
+
+Anonymous Sign In is a required login option. Its exact identity
+lifecycle, persistence, conversion to a registered account, and
+permitted features must be specified during implementation. Anonymous
+access must not bypass authorization, moderation, rate limits, or
+privacy controls.
+
+4.  User Experience and Screen Requirements
+
+4.1 Splash screen
+
+Display the system logo/icon with a polished entrance animation.
+
+Introduce an interactive human-like robot avatar rendered in real time
+with Three.js; Blender may be used to create or refine the model.
+
+The avatar should perform context-relevant movement and gestures rather
+than remaining static.
+
+For a brand reveal, the avatar may move beside the brand name and
+perform a suitable presentation gesture.
+
+Support reusable animation states and transitions so the avatar can
+later act as a visual representative across the product.
+
+Load the avatar and assets gracefully, provide a fallback if WebGL or
+model loading fails, and avoid blocking access unnecessarily.
+
+4.2 Onboarding — exactly seven screens
+
+Create exactly seven first-run onboarding screens. Each screen explains
+one essential concept in plain language for users who may have no
+technical knowledge. Keep copy concise and use illustrations or
+animation where helpful.
+
+Explain what the platform is and the communication problem it addresses.
+
+Introduce Text-to-Sign.
+
+Introduce Sign-to-Text.
+
+Explain the 3D signing avatar.
+
+Introduce real-time two-way conversation.
+
+Explain history, privacy, and user controls.
+
+Help the user get started and direct them to the appropriate next
+action.
+
+Navigation: Left Arrow = previous; Right Arrow = next; Next button =
+next; Previous button = previous where applicable; Skip = finish
+onboarding. Show progress, support keyboard and accessible controls, and
+use smooth transitions. Persist onboarding completion so it is not
+repeatedly shown unless the user restarts it.
+
+4.3 Global transitions and motion
+
+Use consistent fade, slide, zoom, and restrained 3D transitions between
+screens.
+
+Use gaming-quality polish without sacrificing clarity, performance, or
+accessibility.
+
+Avoid forced delays and motion that blocks user input.
+
+Respect prefers-reduced-motion and provide reduced-motion behavior.
+
+Keep animation timing, easing, and interaction feedback consistent
+across the application.
+
+4.4 Public landing page — exactly eight sections plus footer
+
+The public landing page must contain exactly eight main content sections
+followed by a footer. Use cinematic, scroll-driven storytelling with
+layered backgrounds/frames and synchronized text movement. The exact
+content of each section can be refined, but the count must remain eight.
+
+Hero and product identity.
+
+Communication challenge and product purpose.
+
+Text-to-Sign capability.
+
+Sign-to-Text capability.
+
+3D avatar and sign animation experience.
+
+Real-time two-way conversation.
+
+Accessibility, privacy, and user control.
+
+Call to action / getting started.
+
+The footer is shared and configurable; final footer copy/content will be
+supplied later. The Text-to-Sign and Sign-to-Text workspaces must not
+display the footer. Other pages use the common footer where appropriate.
+The footer must not be duplicated or separately hardcoded into
+individual pages.
+
+4.5 Login page
+
+Use a two-column layout. The left side contains branding, introduction,
+and a visual. The right side contains:
+
+Welcome to [System Name] (final system name is a pending product
+decision).
+
+Email address or username.
+
+Password field.
+
+Sign In action.
+
+OR separator.
+
+Google sign-in option.
+
+Anonymous Sign In option.
+
+Registration link that navigates to registration.
+
+Forgot-password flow if supported by the authentication implementation.
+
+Authentication must be real and backend-validated. Provide field
+validation, loading, error, and success states without exposing
+sensitive authentication details.
+
+4.6 Registration page
+
+Use a matching two-column layout. Collect username, full name, email,
+phone number, password, and confirm password.
+
+Password lock-and-re-entry interaction
+
+The first password field accepts the initial password.
+
+A Confirm / Lock Password control allows the user to freeze the first
+entry in the current registration form.
+
+After locking, the first field becomes read-only/disabled and an
+explicit unlock/reset action is available.
+
+The user re-enters the password in a second field.
+
+Compare the two entries client-side for immediate feedback; show
+match/mismatch status.
+
+Only submit after validation succeeds. The backend must independently
+validate and hash the submitted password.
+
+Security clarification: the lock control is a user-interface
+confirmation aid, not a security boundary. Do not store passwords in
+local storage, logs, analytics, or persistent client state. Do not
+transmit the first password separately. The password is submitted
+securely over HTTPS and hashed server-side using an appropriate
+password-hashing algorithm.
+
+4.7 Authenticated dashboard
+
+After authentication, provide a clear home dashboard with direct access
+to:
+
+Text-to-Sign
+
+Sign-to-Text
+
+Real-Time Conversation
+
+Conversation History
+
+Settings
+
+Profile
+
+Dashboard metrics and recent activity, if shown, must be derived from
+actual authorized records. Show genuine zero/empty states when the user
+has no activity.
+
+4.8 Text-to-Sign workspace
+
+Purpose: convert user-provided text or speech transcript into a
+linguistically valid sign sequence and render that sequence using the 3D
+avatar.
+
+Inputs
+
+Manual text entry.
+
+Speech input through browser/device speech recognition or a configured
+speech-to-text provider.
+
+Editable transcript before translation.
+
+Explicit source-language and target-sign-language selection where
+supported.
+
+Processing and output
+
+Validate and normalize the input while preserving the user’s intended
+meaning.
+
+Identify the source language when supported.
+
+Perform context-aware linguistic processing; do not use naive
+word-by-word substitution.
+
+Map the processed meaning into a supported sign-language representation,
+such as gloss/structured sign tokens and required non-manual or spatial
+metadata where the language model supports them.
+
+Resolve each sign token to a validated animation asset or procedural
+animation instruction.
+
+Return an ordered sequence with timing, transitions, metadata, and
+confidence/coverage information where available.
+
+Render the sequence through the 3D avatar.
+
+Provide play, pause, resume, replay, speed adjustment, and relevant
+synchronization controls.
+
+Allow the user to inspect the input and translation output.
+
+The avatar must not pretend to sign unsupported vocabulary. If a sign is
+unavailable, report the uncovered segment and offer a clear limitation
+state rather than silently substituting an unrelated gesture. This page
+has no footer.
+
+4.9 Sign-to-Text workspace
+
+Purpose: capture sign-language activity through a live camera, recognize
+supported signs, and convert the recognized sequence into readable text.
+
+Request camera permission only when the user initiates the camera
+workflow.
+
+Display a large landscape-oriented camera workspace, approximately 16:9
+where screen size permits.
+
+The original requirement mentions a six-metre line/reference. Treat this
+as a capture-distance or calibration requirement to be clarified and
+validated, not as a guaranteed distance measurable by an ordinary
+webcam.
+
+Overlay hand/body landmarks, joints, connecting lines, motion trails,
+and recognition indicators where available.
+
+Recognize signs using an actual trained model and supported dataset.
+
+Display recognized words/sign tokens sequentially with timestamps and
+confidence where available.
+
+Preserve the raw recognized sequence separately from the AI-generated
+sentence.
+
+Use contextual language processing to generate a readable sentence
+without changing the intended meaning or adding unrelated content.
+
+Provide optional text-to-speech playback with supported voice choices,
+speed, and volume controls.
+
+Release camera and processing resources when the user stops or leaves
+the workspace.
+
+Do not claim reliable recognition outside the trained dataset, camera
+conditions, signer variation, and evaluated vocabulary. This page has no
+footer.
+
+4.10 Conversation History
+
+Provide searchable, filterable, user-scoped records for:
+
+Text-to-Sign: original text/transcript, language settings, generated
+sign sequence metadata, and replayable animation references.
+
+Sign-to-Text: recognized sign sequence, generated sentence,
+confidence/coverage information, and speech metadata.
+
+Text-to-Speech records where the product chooses to persist them.
+
+Real-Time Conversation: session participants, timestamped
+messages/events, and session metadata.
+
+Support search, category/date filters, detail view, replay where assets
+remain available, individual or selected deletion, and export where
+implemented. Use chronological lists/timelines and dividers rather than
+generic cards. Enforce ownership and retention rules.
+
+4.11 Real-Time Conversation
+
+Provide a simultaneous two-participant workspace. On wide screens, use
+two coordinated columns; on smaller screens, stack the workspaces while
+preserving clear participant identity.
+
+Participant A — speech to sign
+
+Speech input only in this module; do not add manual typing as the
+primary input for this participant.
+
+Capture speech and produce a live transcript.
+
+Send transcript for contextual AI processing.
+
+Convert the result into sign-language sequence instructions.
+
+Play the sequence through the 3D avatar.
+
+Show transcript, processing status, current sign, and playback controls.
+
+Participant B — sign to text/speech
+
+Capture sign input through the camera.
+
+Run landmark tracking and actual sign recognition.
+
+Display recognized words sequentially.
+
+Process the recognized sequence into a contextual sentence.
+
+Display both raw recognized words and the generated sentence.
+
+Optionally speak the generated sentence using configured TTS settings.
+
+Session behavior
+
+Support Start, Stop, Pause, Resume, and Continue controls with clearly
+defined state transitions.
+
+Continue should finalize/process the participant’s current input and
+make the resulting output available without ending the overall session.
+
+Stop should stop the relevant capture/processing operation or end the
+session according to the control context; the UI must make the scope
+clear.
+
+The two participant pipelines must run independently and must not
+unnecessarily block one another.
+
+Preserve message order, participant association, and timestamps.
+
+Handle reconnects, permission loss, service failures, and participant
+disconnection.
+
+Persist completed sessions and associated records in History according
+to user consent and retention settings.
+
+4.12 Profile and Settings
+
+Profile
+
+Profile photo/avatar.
+
+Username, full name, email, and phone.
+
+Account creation date and account status.
+
+Preferred UI language, theme, and accent preference.
+
+Edit profile and verified email-change flow.
+
+Password change/reset, session management, privacy controls, and logout.
+
+Account deletion/deactivation request where supported by policy and
+implementation.
+
+Settings
+
+Seven interface languages: English, Tamil, Telugu, Kannada, Malayalam,
+Hindi, and Urdu.
+
+Complete localization of interface strings, validation messages, and
+relevant system content.
+
+Correct Unicode fonts and right-to-left layout for Urdu.
+
+Persist language choice. UI language must remain separate from target
+sign language.
+
+Light and dark themes.
+
+Seven configurable accent-color choices are a pending design decision;
+do not invent final choices without approval.
+
+Camera, microphone, voice, playback speed, volume, accessibility,
+notification, privacy, and translation preferences.
+
+Privacy Policy, Terms, Help/Support, About, and Logout.
+
+5.  Brand and Visual Design System
+
+The following five brand colors are fixed and must remain unchanged in
+both light and dark themes:
+
+Brand statement: “Vibrant Connections Through Language Colors”.
+
+5.1 Theme behavior
+
+The five brand colors must not be altered to create theme variants.
+Theme-specific background, text, surface, and border tokens may change
+to maintain contrast and readability.
+
+5.2 Cardless interface direction
+
+Avoid generic rounded-card dashboards and excessive drop shadows.
+
+Prefer open layouts, full-width sections, whitespace, typography
+hierarchy, and thin dividers.
+
+Use floating navigation and a global command palette (Ctrl+K / Cmd+K).
+
+Use large task-focused workspaces for camera and avatar experiences.
+
+Ensure responsive behavior, keyboard navigation, semantic HTML, visible
+focus states, and accessible contrast.
+
+6.  Logical System Architecture
+
+These are logical architecture layers, not a requirement to create
+fourteen separate deployable services. Service boundaries must remain
+proportional to actual responsibilities.
+
+7.  Repository Structure and Service Responsibilities
+
+The repository’s existing technologies and code must be audited before
+implementation choices are finalized. The directories must remain
+separate and responsibilities must be explicit.
+
+8.  Recommended Technology Direction
+
+Recommended baseline, subject to repository audit and compatibility:
+
+Do not adopt every listed technology automatically. The agent must
+inspect the current repository, justify additions, and avoid unnecessary
+framework churn.
+
+9.  Data Domains and Persistence Requirements
+
+The data model must cover the following domains, adapted to the existing
+database design:
+
+Users and authentication/session records.
+
+User profile and preferences (UI language, theme, accessibility, voice,
+camera and notification settings).
+
+Translation jobs and results, including input language and target sign
+language.
+
+Sign representation records and references to versioned animation
+assets.
+
+Sign-to-Text recognition events, recognized tokens, confidence,
+timestamps and generated sentence.
+
+Conversation sessions, participants, ordered messages/events, timestamps
+and completion status.
+
+Speech metadata and generated audio references where persistence is
+consented to and necessary.
+
+Moderation cases, evidence references, categories, severity, review
+state and administrative decisions.
+
+Notifications and delivery status.
+
+Audit events for security-sensitive and administrative actions.
+
+Model/dataset/version metadata needed to reproduce and evaluate results.
+
+Apply user ownership, access controls, schema validation, indexes,
+timestamps, retention/deletion policies, and appropriate data
+minimization. Do not store raw camera/audio by default.
+
+10. AI and Sign-Language Processing Specifications
+
+10.1 Text-to-Sign pipeline
+
+Receive validated text or a speech transcript from the backend.
+
+Identify source language and normalize text without losing meaning.
+
+Perform contextual and semantic analysis.
+
+Apply target sign-language grammar and representation rules.
+
+Produce a structured sign sequence (for example, gloss/token sequence
+plus supported spatial, timing, and non-manual metadata).
+
+Resolve tokens against a versioned sign vocabulary and animation
+library.
+
+Return sequence metadata, unsupported-token coverage, confidence where
+meaningful, and model/dataset version.
+
+The frontend avatar renderer executes the validated sequence and exposes
+playback controls.
+
+10.2 Sign-to-Text pipeline
+
+Acquire permitted live camera frames.
+
+Detect hands and relevant body/face landmarks.
+
+Extract temporal features across frames, not only isolated still-image
+poses.
+
+Run the configured sign recognition model.
+
+Produce recognized tokens with timestamps and calibrated confidence
+where available.
+
+Apply language-aware sequence processing to generate a sentence.
+
+Return raw recognition and generated sentence as separate fields.
+
+Offer optional TTS and persist the result according to user settings.
+
+10.3 Model and dataset governance
+
+Record model name/version, dataset source/version, license,
+language/dialect, vocabulary scope, and preprocessing assumptions.
+
+Document training, validation, and test separation to prevent data
+leakage.
+
+Measure accuracy using suitable metrics and representative
+signer/device/lighting conditions.
+
+Calibrate confidence thresholds and define low-confidence behavior.
+
+Do not state that the system understands all sign language or supports
+unrestricted conversation unless demonstrated by evaluation.
+
+Provide a clear unsupported-sign or uncertain-recognition path.
+
+11. Real-Time Event Contract
+
+Use a versioned, validated event contract. Suggested event families
+include:
+
+These are suggested names, not a mandate to use them verbatim. Every
+event must include the minimum required session/participant identifiers,
+sequence ordering, timestamp, schema version, and authorization context.
+Never trust client-supplied participant identity without server
+validation.
+
+12. Moderation and Administration
+
+Moderate manual text, speech transcripts, AI-generated sentences,
+sign-recognized content, and real-time conversation content where policy
+and privacy permit.
+
+Create a moderation record with category, severity, confidence,
+timestamp, user/session reference, evidence reference, and review
+status.
+
+Treat automated detection as a signal for human review, not conclusive
+proof.
+
+Provide administrators with a review queue and relevant context subject
+to role permissions.
+
+Allow authorized administrators to apply a 24-hour temporary block or a
+7-day temporary suspension after review.
+
+Restrictions must store start and expiry timestamps, block
+login/protected access during the period, and automatically expire
+unless extended.
+
+Do not delete the user’s account when applying a temporary restriction.
+
+Send an email notification through a configured provider with reason,
+restriction type, start/end, and appeal/review information.
+
+Record administrator identity, decision, reason, timestamps, and changes
+in an append-only or tamper-evident audit trail where feasible.
+
+Define appeal handling, moderation retention, notification retries, and
+administrator permission scopes before production release.
+
+13. Security, Privacy and Accessibility
+
+Use HTTPS/TLS in deployed environments and secure cookie/token practices
+appropriate to the chosen authentication design.
+
+Hash passwords with a modern password-hashing algorithm such as
+Argon2id; never store plaintext passwords.
+
+Enforce server-side authorization on every protected resource and
+administrative action.
+
+Validate and sanitize inputs; apply rate limits, secure headers,
+appropriate CORS, and abuse protections.
+
+Keep secrets in environment/secret management, never in source code or
+frontend bundles.
+
+Request camera and microphone permissions only when needed and explain
+their purpose.
+
+Provide clear recording/processing indicators and stop controls.
+
+Do not persist raw video/audio unless explicitly required, consented to,
+and covered by retention controls.
+
+Minimize personal data, restrict access, and support deletion/retention
+policies.
+
+Support keyboard navigation, semantic controls, visible focus,
+screen-reader labels, contrast, captions, and reduced motion.
+
+14. Zero Placeholder / Zero Fake Data Policy
+
+Production behavior must never rely on fabricated content presented as
+genuine.
+
+No dummy users, profiles, emails, phone numbers, conversation messages,
+history records, dashboard metrics, moderation alerts, or notifications.
+
+No hardcoded AI outputs, random sign labels, fabricated confidence
+values, generated landmark coordinates, or simulated model success.
+
+No fake API responses or artificial delays that imitate real processing.
+
+All dynamic data must come from its actual service/database/model.
+
+Use genuine empty states (for example, zero counts and ‘No activity
+yet’) when no records exist.
+
+If a dependency is unavailable, return a structured unavailable/error
+response and show a truthful UI state.
+
+Static constants are allowed for configuration, design tokens, route
+identifiers, supported language lists, and other genuine application
+constants.
+
+Mocks and fixtures are permitted only in isolated tests or clearly
+separated showcase demonstrations; they must never enter production
+workflows or be represented as real results.
+
+15. Code Quality and Lint Remediation Policy
+
+Run the correct lint, type-check, compiler, and test tools across every
+service. Investigate every diagnostic rather than suppressing it.
+
+Identify unused variables, imports, parameters, functions, components,
+hooks, types, state, service methods, API endpoints, and configuration.
+
+For each unused declaration, trace its intended purpose through
+references, requirements, API contracts, and workflows.
+
+If it represents unfinished functionality, implement and connect that
+functionality; do not delete it merely to silence a warning.
+
+If genuinely obsolete or redundant, explain why and obtain approval
+before removal.
+
+Fix invalid hook usage, missing dependencies, unhandled promises,
+unreachable code, unsafe assertions, missing return paths, resource
+leaks, and incomplete error handling.
+
+Do not use blanket eslint-disable, @ts-ignore, @ts-nocheck, underscore
+renaming, dummy console.log statements, or artificial expressions to
+hide warnings.
+
+Do not weaken lint rules or tests just to obtain a clean report.
+
+Use actual scripts configured in each service; do not assume all
+directories use the same package manager.
+
+The final report must include file/line, diagnostic, root cause,
+intended functionality, implemented correction, tests performed, and
+final status for material issues.
+
+16. Testing and Acceptance Criteria
+
+16.1 Test levels
+
+16.2 Acceptance criteria
+
+All required screens and navigation flows exist and are connected.
+
+Exactly seven onboarding screens and exactly eight landing-page sections
+are present.
+
+Footer is configurable, appears on applicable pages, and is absent from
+Text-to-Sign and Sign-to-Text.
+
+Login, registration, anonymous access, and authorization follow the
+implemented security design.
+
+Text-to-Sign produces real structured sign output for the supported
+language/vocabulary and the avatar can execute supported sequences.
+
+Sign-to-Text processes actual camera input using the configured
+recognition model and reports uncertainty honestly.
+
+Real-time conversation supports concurrent independent participant
+pipelines and ordered events.
+
+History is persisted, user-scoped, searchable/filterable, and
+manageable.
+
+Settings and profile changes persist.
+
+Moderation review, temporary restrictions, expiry, notification, and
+audit workflows work.
+
+No fabricated production data or fake integrations remain.
+
+Critical lint/type/build/test diagnostics are resolved or explicitly
+justified.
+
+Documentation and deployment instructions match the actual
+implementation.
+
+17. Repository Implementation Workflow for the AI Development Agent
+
+Phase 1 — Repository audit
+
+Inspect every directory, source file, package manifest, environment
+template, database schema, API, test, and existing integration. Do not
+modify code yet. Report what exists, what works, what is incomplete, and
+what is missing.
+
+Phase 2 — Requirements traceability
+
+Map every requirement in this document to existing files, planned
+modules, APIs, data models, tests, and dependencies. Identify
+contradictions and decisions requiring owner approval.
+
+Phase 3 — Architecture and contracts
+
+Define service boundaries, database models, REST APIs, real-time events,
+error contracts, authentication, configuration, and observability. Avoid
+unnecessary microservices.
+
+Phase 4 — Core infrastructure
+
+Implement configuration, database access, authentication, authorization,
+logging, health checks, validation, and secure service communication.
+
+Phase 5 — AI and vision foundations
+
+Verify datasets, licenses, models, target sign language, model
+execution, evaluation and structured outputs. Implement truthful
+unavailable states for missing dependencies.
+
+Phase 6 — Core workflows
+
+Complete Text-to-Sign, Sign-to-Text, avatar animation, speech, history,
+and real-time conversation as end-to-end workflows.
+
+Phase 7 — User/admin experience
+
+Complete profile, settings, localization, moderation, admin review,
+restrictions, notifications, and audit.
+
+Phase 8 — Integration and testing
+
+Run unit, contract, integration, E2E, security, accessibility, and
+performance tests. Fix root causes rather than suppressing failures.
+
+Phase 9 — Documentation and deployment
+
+Update architecture diagrams, API docs, environment templates, startup
+scripts, deployment configuration, troubleshooting and known
+limitations.
+
+18. Required Final Engineering Report
+
+At the end of each implementation milestone, report:
+
+Files inspected and changed.
+
+Features completed and the evidence used to verify them.
+
+Services and endpoints implemented.
+
+Database changes and migrations.
+
+Models/datasets/assets integrated, including versions and licenses.
+
+Commands executed and actual test/build/lint results.
+
+Unresolved issues, external dependencies, credentials, and owner
+decisions.
+
+Features not implemented; do not label partial work complete.
+
+How to run each service locally and how to run the complete system.
+
+Known accuracy, latency, browser, device, and dataset limitations.
+
+19. Open Decisions Requiring Confirmation
+
+20. Final Authority Statement
+
+This document is the authoritative baseline for the intended product
+behavior and engineering constraints. The AI development agent must use
+it as the source of truth when planning, implementing, testing, and
+documenting the platform. It must not silently omit requirements, invent
+capabilities, fabricate data, or replace real workflows with visual
+simulations. If the repository conflicts with this document, preserve
+working code while reporting the conflict and proposing a traceable
+resolution. If this document is ambiguous, record the ambiguity and
+request a decision rather than guessing. Approved changes must be
+reflected in a new version of this document.
+
+Field | Value
+
+Document type | Authoritative product and engineering source of truth
+
+Version | 1.0 — consolidated baseline
+
+Status | Requirements baseline; implementation details must be validated
+against the repository
+
+Audience | Product owner, AI coding agents, frontend/backend engineers,
+AI/ML engineers, computer-vision engineers, QA and DevOps
+
+Scope | Complete client application and all supporting services
+
+Change rule | Any approved requirement change must be reflected here
+before implementation diverges
+
+Role | Capabilities
+
+Anonymous visitor | View public landing content, onboarding and public
+information; use anonymous access only within explicitly defined limits.
+
+Authenticated user | Use translation workflows, manage profile and
+preferences, view and manage their own history, and join permitted
+conversation sessions.
+
+Administrator | Access protected administration features, review
+moderation cases, inspect authorized user records, apply approved
+restrictions, and review audit logs.
+
+Token | Hex value | Role
+
+Coral | #FF6F61 | Primary expressive accent
+
+Blue | #6FA3EF | Secondary accent
+
+Yellow | #FFC107 | Highlight / attention accent
+
+Charcoal | #2E2E2E | Brand dark neutral
+
+Light Grey | #D1CFCF | Brand light neutral
+
+Token | Light theme | Dark theme
+
+Background | #FFFFFF | #17191E
+
+Secondary background | #F5F6F8 | #1E2229
+
+Surface | #FFFFFF | #242830
+
+Elevated surface | #F5F6F8 | #2E333D
+
+Primary text | #2E2E2E | #FFFFFF
+
+Secondary text | #62666D | #C3C7CE
+
+Border | #D1CFCF | #41444B
+
+Layer | Responsibility
+
+1.  Presentation | Landing, onboarding, dashboard, workspaces, profile,
+    settings, admin UI.
+
+2.  Interaction | Text, keyboard, touch, camera, microphone,
+    accessibility input.
+
+3.  API gateway | Routing, validation, rate limits, request correlation,
+    service routing.
+
+4.  Identity and access | Authentication, authorization, sessions, roles
+    and permissions.
+
+5.  Application logic | Profiles, preferences, history, session
+    lifecycle, moderation workflows.
+
+6.  Orchestration | Coordinates backend, AI, vision, real-time,
+    notification and storage services.
+
+7.  AI/NLP | Language identification, contextual processing, sentence
+    generation, moderation.
+
+8.  Computer vision | Frame processing, hand/body tracking, feature
+    extraction and sign recognition.
+
+9.  Sign representation and animation | Sign vocabulary, grammar-aware
+    representation, sequence mapping and avatar execution.
+
+10. Real-time communication | WebSocket events, streaming,
+    participant/session coordination and synchronization.
+
+11. Audio processing | Speech recognition, TTS, voice settings and
+    playback.
+
+12. Persistence | Users, preferences, sessions, history, moderation,
+    audit and media metadata.
+
+13. Security and privacy | Encryption, access control, consent, data
+    minimization and retention.
+
+14. Infrastructure and observability | Containers, deployment,
+    configuration, logs, metrics, tracing and health checks.
+
+Directory | Primary responsibility
+
+frontend/ | Client application, UI, routing, state, camera/microphone
+interaction, avatar rendering and API integration.
+
+backend/ | Core application APIs, identity, business logic, persistence
+coordination, authorization and administration.
+
+ai-service/ | AI/NLP pipelines, contextual translation, sign sequence
+planning, sentence processing and moderation inference.
+
+computer-vision/ | Camera/frame processing, landmark detection,
+gesture/sign recognition and confidence output.
+
+microservice/ | Only independently justified services such as real-time
+communication, notifications, queues or specialized orchestration; avoid
+duplicate logic.
+
+documentation/ | Architecture, requirements, API/event contracts, setup,
+operations and decision records.
+
+testing/ | Unit, integration, contract, security and end-to-end tests.
+
+showcase/ | Demonstrations and system visualizations; clearly label any
+demonstration-only fixtures.
+
+Area | Recommended stack | Notes
+
+Frontend | React, TypeScript, Vite, Tailwind CSS, Framer Motion, Zustand
+or existing state solution | Use Three.js / React Three Fiber for avatar
+rendering if compatible.
+
+Core backend | Node.js, TypeScript, Fastify | Use existing framework if
+already established and functional.
+
+Database | MongoDB Atlas with native driver or established ODM/ORM |
+Choose one consistent access strategy; do not introduce duplicate
+persistence layers.
+
+AI service | Python, FastAPI, PyTorch, Hugging Face models and/or
+configured hosted LLM | Model and dataset selection must be based on
+target sign language and evaluated capability.
+
+Computer vision | Python, OpenCV, MediaPipe, PyTorch | Actual sign
+recognition requires suitable labeled data and sequence modeling.
+
+Real-time | Socket.IO/WebSocket; WebRTC when peer media transport is
+needed | Use WebRTC for media transport only where architecture requires
+it; WebSockets for application events.
+
+Queue/cache | Redis and BullMQ or Python-compatible queue where
+justified | Avoid introducing a queue for simple synchronous operations.
+
+3D assets | Blender, GLB/glTF, Three.js | Avatar rig must support
+required hand/finger articulation and animation retargeting.
+
+Speech | Whisper or another configured ASR; browser/native or cloud TTS
+| Provider availability, languages, latency, and cost must be verified.
+
+Testing | Vitest, React Testing Library, Playwright, Pytest,
+API/contract tests | Use the tools appropriate to each service.
+
+Infrastructure | Docker, Docker Compose, Nginx, GitHub Actions;
+observability tools as needed | Deployment topology must follow actual
+hosting constraints.
+
+Event | Purpose
+
+conversation:created / joined | Session lifecycle and participant entry.
+
+speech:started / transcript | Speech capture state and transcript
+updates.
+
+sign:detected | Recognized sign/token event with timestamp and
+confidence.
+
+translation:started / completed / failed | Translation job lifecycle.
+
+avatar:sequence | Validated sign animation sequence reference and
+timing.
+
+caption:updated | Caption/transcript update for a participant.
+
+audio:generated | TTS output metadata/reference.
+
+conversation:paused / resumed / ended | Session state changes.
+
+service:error | Structured, scoped error notification.
+
+Test level | Required coverage
+
+Unit | Validation, utility logic, state transitions, AI preprocessing,
+recognition postprocessing, moderation rules.
+
+Component | Forms, navigation, onboarding, theme/language controls,
+camera UI, avatar controls, error/empty states.
+
+API/contract | Authentication, authorization, request/response schemas,
+backend-to-service contracts, event schemas.
+
+Integration | Frontend/backend, backend/AI, backend/vision, persistence,
+real-time and notification paths.
+
+End-to-end | Registration/login, Text-to-Sign, Sign-to-Text, real-time
+conversation, history, moderation/admin workflows.
+
+Non-functional | Security, accessibility, performance, reliability,
+privacy and supported-device testing.
+
+Decision | Current status / required action
+
+Final system/product name | Not provided in the consolidated
+requirements; keep configurable and do not invent a final brand name.
+
+Target sign language and dialect | Must be confirmed before
+dataset/model selection and any accuracy claims.
+
+Supported spoken languages | UI languages are specified; speech and
+translation language coverage must be separately confirmed.
+
+Six-metre camera reference | Clarify whether this is a physical
+capture-distance requirement, calibration guide, or visual reference.
+
+Seven accent colors | Original five brand colors are fixed; the seven
+selectable accent choices remain to be specified.
+
+Footer content | Shared footer is required/configurable; final content
+will be supplied later.
+
+Anonymous account lifecycle | Define persistence, permissions,
+conversion, and cleanup behavior.
+
+Data retention and consent | Define whether transcripts/audio/session
+metadata are stored, for how long, and how users delete them.
+
+Admin appeal process | Define appeal channel, review SLA, and
+notification wording.
+
+Deployment provider and scale | Confirm hosting, GPU availability,
+expected concurrency, and budget before final infrastructure design.

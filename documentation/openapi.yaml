@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: Signora Assistive Sign Language Platform API Specification
+  description: Central API contract covering Core Backend Gateway, AI Language Engine, Computer Vision Service, and Duplex Microservice.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Core Backend Gateway
+  - url: http://localhost:8000
+    description: AI Language Processing Service
+  - url: http://localhost:8001
+    description: Computer Vision & Hand Landmark Service
+  - url: http://localhost:5002
+    description: Real-Time Duplex & Notification Microservice
+
+paths:
+  /api/v1/health:
+    get:
+      summary: System Health & Subsystem Status
+      responses:
+        '200':
+          description: Health telemetry status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  service:
+                    type: string
+                  subsystems:
+                    type: object
+
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, displayName]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                displayName:
+                  type: string
+                role:
+                  type: string
+                  enum: [citizen, admin]
+      responses:
+        '201':
+          description: User registered successfully
+        '409':
+          description: User already exists
+
+  /api/v1/auth/login:
+    post:
+      summary: Authenticate user and receive JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  role:
+                    type: string
+        '401':
+          description: Invalid credentials
+        '403':
+          description: Account suspended
+
+  /api/v1/translation/text-to-sign:
+    post:
+      summary: Translate text or speech transcript into ISL animation instructions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                  example: "Where is the train to Delhi?"
+      responses:
+        '200':
+          description: ISL animation sequence and grammatical tokens
+
+  /api/v1/translation/sign-to-text:
+    post:
+      summary: Convert detected landmarks or signs into natural text captions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                landmarks:
+                  type: array
+                  items:
+                    type: object
+                signs:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Synthesized sentence and confidence score
+
+  /api/v1/vision/classify-landmarks:
+    post:
+      summary: Classify 21 hand landmarks into ISL gestures
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [landmarks]
+              properties:
+                sessionId:
+                  type: string
+                landmarks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      x:
+                        type: number
+                      y:
+                        type: number
+                      z:
+                        type: number
+      responses:
+        '200':
+          description: Classified signs and finger extension states
+
+  /api/v1/admin/restrictions:
+    post:
+      summary: Apply administrative restriction to an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId, type]
+              properties:
+                userId:
+                  type: string
+                type:
+                  type: string
+                  enum: [temporary-block, temporary-suspension, translation_blocked]
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Restriction applied with auto-expiry
