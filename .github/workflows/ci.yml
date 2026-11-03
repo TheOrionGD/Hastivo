@@ -93,12 +93,12 @@ jobs:
 
       - name: Run AI Service Tests
         working-directory: ai-service
-        run: pytest
+        run: python -m pytest
 
       - name: Install Computer Vision Requirements
         run: pip install -r computer-vision/requirements.txt
 
       - name: Run Vision Service Tests
         working-directory: computer-vision
-        run: pytest
+        run: python -m pytest
 
