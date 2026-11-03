@@ -1,6 +1,6 @@
-# Contributing to Hastivo AI
+# Contributing to Hastivo
 
-Thank you for your interest in contributing to **Hastivo AI**, the accessible Indian Sign Language (ISL) communication platform.
+Thank you for your interest in contributing to **Hastivo**, the accessible Indian Sign Language (ISL) communication platform.
 
 ## Code of Conduct
 Please review our [Code of Conduct](CODE_OF_CONDUCT.md) before participating in this repository.
@@ -20,8 +20,8 @@ Hastivo enforces a strict **Zero-Placeholder, Zero-Mock-Data, and Zero-Hardcoded
 
 ### 2. Fork and Clone
 ```bash
-git clone https://github.com/your-username/hastivo-ai.git
-cd hastivo-ai
+git clone https://github.com/your-username/hastivo.git
+cd hastivo
 ```
 
 ### 3. Setting Up Environments

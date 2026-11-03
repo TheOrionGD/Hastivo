@@ -5,7 +5,7 @@ import { AvatarViewer } from '../../components/avatar/AvatarViewer.jsx';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Real-Time Conversation Workspace (Cardless Split-Screen)
+ * Hastivo — Real-Time Conversation Workspace (Cardless Split-Screen)
  * Master Specification Section 4.10:
  * - Simultaneous two-participant workspace (two-column desktop, stacked mobile).
  * - Participant A (Speech-to-Sign): Live mic, speech recognition, live transcript, 3D avatar, controls.

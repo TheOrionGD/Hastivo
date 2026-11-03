@@ -1,4 +1,4 @@
-# Hastivo AI — Real-Time Duplex Communication Protocol
+# Hastivo — Real-Time Duplex Communication Protocol
 
 ## 1. Overview
 

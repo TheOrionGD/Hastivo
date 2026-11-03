@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNotification } from '../../contexts/NotificationContext';
 
 /**
- * Hastivo AI — Help & Support Screen (Cardless UI)
+ * Hastivo — Help & Support Screen (Cardless UI)
  */
 export default function Help() {
   const { notifySuccess } = useNotification();
@@ -47,7 +47,7 @@ export default function Help() {
           Help & Support Center
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '40px' }}>
-          Troubleshooting, feature guides, and assistance for Hastivo AI
+          Troubleshooting, feature guides, and assistance for Hastivo
         </p>
 
         <div style={{ height: '1px', background: 'var(--border)', marginBottom: '48px' }} />

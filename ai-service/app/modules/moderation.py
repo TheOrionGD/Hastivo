@@ -1,5 +1,5 @@
 """
-Hastivo AI — Content Moderation & Gesture Safety Evaluation Module
+Hastivo — Content Moderation & Gesture Safety Evaluation Module
 Assesses:
 - Text & Speech transcripts
 - Detected Gesture Sequences

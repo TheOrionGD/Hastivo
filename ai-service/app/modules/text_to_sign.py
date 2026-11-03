@@ -1,5 +1,5 @@
 """
-Hastivo AI — Text-to-Sign (ISL) Intelligence Engine
+Hastivo — Text-to-Sign (ISL) Intelligence Engine
 Linguistic processing:
 1. Normalization & Preprocessing
 2. ISL Grammar Parsing:

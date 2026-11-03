@@ -1,6 +1,6 @@
 <div align="center">
 
-# Hastivo AI 🤟
+# Hastivo 🤟
 
 ### Real-Time Indian Sign Language (ISL) Assistive Communication & 3D Kinematic Avatar Platform
 
@@ -12,7 +12,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg)](https://fastapi.tiangolo.com/)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10-orange.svg)](https://developers.google.com/mediapipe)
 
-**Hastivo AI** bridges communication between the Deaf/Hard-of-Hearing community and hearing individuals across India. It provides low-latency, bidirectional Indian Sign Language (ISL) translation powered by Three.js procedural & FBX 3D avatars, MediaPipe computer vision landmark tracking, and real-time duplex WebSockets.
+**Hastivo** bridges communication between the Deaf/Hard-of-Hearing community and hearing individuals across India. It provides low-latency, bidirectional Indian Sign Language (ISL) translation powered by Three.js procedural & FBX 3D avatars, MediaPipe computer vision landmark tracking, and real-time duplex WebSockets.
 
 [Key Features](#key-features) • [Architecture](#architecture-overview) • [Directory Structure](#repository-structure) • [Prerequisites](#prerequisites) • [Installation](#installation--setup) • [Environment Setup](#environment-variable-configuration) • [Testing](#testing--verification) • [Security](#security--governance)
 
@@ -24,7 +24,7 @@
 
 Over 18 million Deaf and Hard-of-Hearing citizens in India encounter significant daily barriers in healthcare, government administration, legal services, and education due to a severe shortage of certified Indian Sign Language (ISL) interpreters. Most commercial accessibility tools cater exclusively to American Sign Language (ASL), which differs substantially in grammar, fingerspelling syntax (two-handed in ISL vs. one-handed in ASL), and regional vocabulary.
 
-**Hastivo AI solves this by delivering:**
+**Hastivo solves this by delivering:**
 - An automated Indian Sign Language (ISL) grammar parsing and synthesis engine.
 - High-fidelity 3D humanoid avatar kinematic animation (Mixamo X-Bot & Y-Bot rigs + procedural avatars).
 - Real-time vision-based sign recognition using 21 3D hand landmarks per hand.
@@ -101,7 +101,7 @@ flowchart TD
 ## 5. Repository Structure
 
 ```
-hastivo-ai/
+hastivo/
 ├── .agents/                      # Agent governance and system rule definitions
 ├── .github/                      # GitHub configuration
 │   ├── ISSUE_TEMPLATE/           # Bug report and feature request templates
@@ -183,8 +183,8 @@ Ensure your environment has the following tools installed:
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/your-username/hastivo-ai.git
-cd hastivo-ai
+git clone https://github.com/your-username/hastivo.git
+cd hastivo
 ```
 
 ### Step 2: Install Node.js Dependencies

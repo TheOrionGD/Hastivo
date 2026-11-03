@@ -6,7 +6,7 @@ import { AvatarViewer } from '../../components/avatar/AvatarViewer.jsx';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Text-to-Sign Primary Workspace (Cardless Redesign)
+ * Hastivo — Text-to-Sign Primary Workspace (Cardless Redesign)
  * Master Specification Section 4.7:
  * - Visually dominant 3D avatar stage without enclosed box containers.
  * - Open input editor with manual typing, speech-to-text mic, live transcript, word/character count.

@@ -5,7 +5,7 @@ import { PageContainer, CardlessBadge, CardlessButton } from '../../components/c
 import { translationService } from '../../services/translationService';
 
 /**
- * Hastivo AI — Sign-to-Text Studio (Cardless Redesign)
+ * Hastivo — Sign-to-Text Studio (Cardless Redesign)
  * Master Specification Section 4.8:
  * - Wide landscape 16:9 camera view with real-time hand tracking & landmark overlay.
  * - Camera device selection and start/stop/pause controls.

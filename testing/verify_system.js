@@ -1,5 +1,5 @@
 /**
- * Hastivo AI — Automated System Verification Suite
+ * Hastivo — Automated System Verification Suite
  * Tests:
  * 1. 7 Interface Languages dictionary completeness (SRS 13.2)
  * 2. Navigation compliance (Zero conventional headers/footers in production output)
@@ -16,7 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('====================================================');
-console.log('   HASTIVO AI — SYSTEM VERIFICATION SUITE');
+console.log('   HASTIVO — SYSTEM VERIFICATION SUITE');
 console.log('====================================================\n');
 
 let passCount = 0;
@@ -90,7 +90,7 @@ for (const id of expectedRouteIds) {
 console.log('\n--- 4. Testing Onboarding Verification (SRS 5.1 - 5.8) ---');
 const onboardingPath = path.resolve(__dirname, '../frontend/src/pages/public/Onboarding.jsx');
 const onboardingContent = fs.readFileSync(onboardingPath, 'utf8');
-assert(onboardingContent.includes('Welcome to Hastivo AI'), 'Slide 1: Welcome to Hastivo AI matches SRS 5.2');
+assert(onboardingContent.includes('Welcome to Hastivo'), 'Slide 1: Welcome to Hastivo matches SRS 5.2');
 assert(onboardingContent.includes('Turn Text into Signs'), 'Slide 2: Turn Text into Signs matches SRS 5.3');
 assert(onboardingContent.includes('Let Your Gestures Speak'), 'Slide 3: Let Your Gestures Speak matches SRS 5.4');
 assert(onboardingContent.includes('Communicate in Real Time'), 'Slide 4: Communicate in Real Time matches SRS 5.5');

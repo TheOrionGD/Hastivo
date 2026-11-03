@@ -718,7 +718,7 @@ app.post(['/api/v1/translation/text-to-sign', '/api/v1/translate/text-to-sign'],
         })),
         animationSequence: aiData.animationSequence,
         estimatedDurationMs: aiData.estimatedDurationMs,
-        source: 'Hastivo-AI-Intelligence-Engine (HTTP)',
+        source: 'Hastivo-Intelligence-Engine (HTTP)',
       });
     }
   } catch {}
@@ -743,7 +743,7 @@ app.post(['/api/v1/translation/text-to-sign', '/api/v1/translate/text-to-sign'],
       })),
       animationSequence: pyData.animationSequence,
       estimatedDurationMs: pyData.estimatedDurationMs,
-      source: 'Hastivo-AI-Intelligence-Engine (Direct)',
+      source: 'Hastivo-Intelligence-Engine (Direct)',
     });
   }
 
@@ -1149,7 +1149,7 @@ app.get('/api/v1/admin/audit/export', (req, res) => {
       headers.map((h) => `"${String(r[h] || '').replace(/"/g, '""')}"`).join(',')
     );
     const csvContent = [
-      `# HASTIVO AI AUDIT REPORT - EXPORTED AT: ${timestamp}`,
+      `# HASTIVO AUDIT REPORT - EXPORTED AT: ${timestamp}`,
       `# SHA256 CRYPTOGRAPHIC INTEGRITY HASH: ${signature}`,
       headers.join(','),
       ...rows,

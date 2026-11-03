@@ -2,7 +2,7 @@
 
 ## Our Pledge
 
-Participation in Hastivo AI is open to all. The project thrives on constructive
+Participation in Hastivo is open to all. The project thrives on constructive
 dialogue, mutual respect, and shared dedication to accessibility. All interactions
 across issues, pull requests, and discussions are expected to uphold professional
 standards and remain free from discrimination, harassment, or hostile behavior.

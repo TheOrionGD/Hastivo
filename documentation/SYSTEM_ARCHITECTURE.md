@@ -1,4 +1,4 @@
-# Hastivo AI — System Architecture & Topology
+# Hastivo — System Architecture & Topology
 
 ## 1. System Overview
 

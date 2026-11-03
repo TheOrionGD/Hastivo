@@ -1,7 +1,7 @@
 # HASTIVO --- Editorial / Swiss Grid Design System
 
 **Document:** `design.md`\
-**Product:** Hastivo AI --- bidirectional Indian Sign Language (ISL)
+**Product:** Hastivo --- bidirectional Indian Sign Language (ISL)
 communication\
 **Status:** Design and frontend implementation specification\
 **Scope:** All client-side routes, shared components, interaction

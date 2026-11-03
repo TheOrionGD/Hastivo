@@ -8,7 +8,7 @@ import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '..
 import config from '../../config/env';
 
 /**
- * Hastivo AI — Settings Screen (Cardless Redesign)
+ * Hastivo — Settings Screen (Cardless Redesign)
  * Master Specification Section 4.11:
  * - Clear open sections with whitespace & subtle dividers.
  * - 1. Language (7 languages: English, Tamil, Telugu, Kannada, Urdu RTL, Malayalam, Hindi).
@@ -88,7 +88,7 @@ export default function Settings() {
   const handleTestVoice = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance('Welcome to Hastivo AI. Voice output is functioning smoothly.');
+      const utterance = new SpeechSynthesisUtterance('Welcome to Hastivo. Voice output is functioning smoothly.');
       utterance.rate = speechRate;
       utterance.volume = speechVolume;
       if (selectedVoice) {

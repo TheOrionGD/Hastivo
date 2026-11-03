@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Hastivo AI — Global Editorial / Swiss Grid Design System Components
+ * Hastivo — Global Editorial / Swiss Grid Design System Components
  * 
  * Philosophy:
  * - Minimal, structured, and professional.

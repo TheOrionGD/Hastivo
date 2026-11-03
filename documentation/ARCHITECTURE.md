@@ -1,6 +1,6 @@
-# Hastivo AI — System Architecture
+# Hastivo — System Architecture
 
-This document describes the high-level architecture, module decomposition, and data flow of **Hastivo AI**.
+This document describes the high-level architecture, module decomposition, and data flow of **Hastivo**.
 
 ```mermaid
 flowchart TD

@@ -7,7 +7,7 @@ import AvatarGuide from '../../components/common/AvatarGuide';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — User Profile Screen (Cardless Redesign)
+ * Hastivo — User Profile Screen (Cardless Redesign)
  * Master Specification Section 4.12:
  * - Profile avatar emblem, username, full name, email, phone number.
  * - Account creation date, account status, preferred language, theme, accent color.
@@ -295,7 +295,7 @@ export default function UserProfile() {
             </div>
 
             <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              Hastivo AI Identity Framework &bull; Zero-Cloud Biometric Retention
+              Hastivo Identity Framework &bull; Zero-Cloud Biometric Retention
             </span>
           </div>
         </section>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
- * Hastivo AI — Account Restricted Screen (Cardless UI)
+ * Hastivo — Account Restricted Screen (Cardless UI)
  */
 export default function AccountRestricted() {
   const { user } = useAuth();

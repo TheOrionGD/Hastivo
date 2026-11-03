@@ -1,4 +1,4 @@
-# Hastivo AI — Artificial Intelligence & Computer Vision Processing Pipelines
+# Hastivo — Artificial Intelligence & Computer Vision Processing Pipelines
 
 ## 1. Text-to-Sign Intelligence Engine (`ai-service/`)
 

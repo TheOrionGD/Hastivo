@@ -1,4 +1,4 @@
-# Hastivo AI — Deployment & Operations Guide
+# Hastivo — Deployment & Operations Guide
 
 ## 1. Port & Environment Matrix
 

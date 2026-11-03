@@ -6,7 +6,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import '../../styles/circular-remote-nav.css';
 
 /**
- * Hastivo AI — Minimal Cardless Floating Navigation Bar
+ * Hastivo — Minimal Cardless Floating Navigation Bar
  * Master Specification Section 2.A:
  * - Floating, position-aware, visually lightweight.
  * - Transparent / subtly translucent background adapting to light and dark themes.
@@ -255,7 +255,7 @@ export default function FloatingNav() {
             marginRight: '4px',
             flexShrink: 0,
           }}
-          title="Hastivo AI"
+          title="Hastivo"
         >
           S
         </Link>

@@ -5,7 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { getRoutesForRole } from '../../navigation/routeRegistry';
 
 /**
- * Hastivo AI — Global Cardless Command Palette
+ * Hastivo — Global Cardless Command Palette
  * Master Specification Section 2.B:
  * - Triggered via Ctrl+K / Cmd+K or visible search trigger.
  * - Search all accessible destinations + actions.

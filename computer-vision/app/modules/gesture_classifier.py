@@ -1,5 +1,5 @@
 """
-Hastivo AI — ISL Static & Dynamic Gesture Classifier
+Hastivo — ISL Static & Dynamic Gesture Classifier
 Analyzes hand landmark geometries, finger extension states, inter-finger distances, and orientations
 to classify ISL vocabulary signs with confidence scores.
 """

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Hastivo AI — Unauthorized Screen (Swiss Editorial UI)
+ * Hastivo — Unauthorized Screen (Swiss Editorial UI)
  */
 export default function Unauthorized() {
   return (

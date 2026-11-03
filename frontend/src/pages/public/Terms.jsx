@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Hastivo AI — Terms and Conditions Screen (Cardless UI)
+ * Hastivo — Terms and Conditions Screen (Cardless UI)
  */
 export default function Terms() {
   return (
@@ -26,7 +26,7 @@ export default function Terms() {
               1. User Responsibilities & Acceptable Use
             </h3>
             <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
-              Hastivo AI is designed to bridge communication barriers between sign-language users and spoken-language communicators. Users agree not to misuse the real-time translation bridge to transmit hateful, harassing, or malicious signals.
+              Hastivo is designed to bridge communication barriers between sign-language users and spoken-language communicators. Users agree not to misuse the real-time translation bridge to transmit hateful, harassing, or malicious signals.
             </p>
           </section>
 

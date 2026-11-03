@@ -307,7 +307,7 @@ export const ROUTES = [
   },
   {
     id: 'about',
-    label: 'About Hastivo AI',
+    label: 'About Hastivo',
     path: '/about',
     roles: [USER_ROLES.CITIZEN, USER_ROLES.ADMIN],
     aliases: ['about', 'about hastivo', 'system info', 'version'],

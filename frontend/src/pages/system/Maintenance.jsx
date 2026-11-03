@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Hastivo AI — Maintenance Screen (Cardless UI)
+ * Hastivo — Maintenance Screen (Cardless UI)
  */
 export default function Maintenance() {
   return (
@@ -12,7 +12,7 @@ export default function Maintenance() {
           Scheduled Platform Maintenance
         </h1>
         <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Hastivo AI is currently undergoing scheduled kinematic rig upgrades and lexicon database optimization.
+          Hastivo is currently undergoing scheduled kinematic rig upgrades and lexicon database optimization.
         </p>
 
         <div style={{ padding: '16px 20px', borderRadius: 'var(--radius-control)', background: 'rgba(255, 193, 7, 0.12)', border: '1px solid var(--color-amber)', marginBottom: '32px', fontSize: '0.92rem', color: 'var(--color-amber)', fontWeight: 600 }}>

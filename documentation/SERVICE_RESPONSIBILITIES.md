@@ -1,4 +1,4 @@
-# Hastivo AI — Service Responsibility Specification
+# Hastivo — Service Responsibility Specification
 
 This document details the exact architectural boundaries, runtime requirements, and public contracts for all eight system directories in the Hastivo repository.
 

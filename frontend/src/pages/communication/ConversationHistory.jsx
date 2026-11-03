@@ -8,7 +8,7 @@ import { useNotification } from '../../contexts/NotificationContext';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Conversation History (Cardless Editorial Design)
+ * Hastivo — Conversation History (Cardless Editorial Design)
  * Master Specification Section 4.9:
  * - Editorial-style chronological history timeline.
  * - Date grouping (Today, Yesterday, Earlier).

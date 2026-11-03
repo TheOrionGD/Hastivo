@@ -6,7 +6,7 @@ import AvatarGuide from '../../components/common/AvatarGuide';
 import { PageContainer, SectionDivider, CardlessStatsRow, CardlessBadge, EditorialModuleDirectory, EditorialModuleItem } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Home Dashboard (Cardless Redesign)
+ * Hastivo — Home Dashboard (Cardless Redesign)
  * Master Specification Section 4.6:
  * - Open-layout dashboard without conventional boxed cards.
  * - Welcome message with user info and current date summary.

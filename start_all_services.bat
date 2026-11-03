@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-title Hastivo AI - Master Services Launcher
+title Hastivo - Master Services Launcher
 
 echo ========================================================
-echo       HASTIVO AI - ASSISTIVE PLATFORM LAUNCHER           
+echo       HASTIVO - ASSISTIVE PLATFORM LAUNCHER           
 echo ========================================================
 echo.
 echo Launching all 5 microservices in separate terminal windows...
@@ -14,7 +14,7 @@ if "%ROOT_DIR:~-1%"=="\" set ROOT_DIR=%ROOT_DIR:~0,-1%
 
 :: 1. AI Language & Morphology Engine (Python / FastAPI :8000)
 echo [1/5] Starting AI Service (FastAPI :8000)...
-start "Hastivo - 1. AI Language Service (:8000)" cmd /k "cd /d "%ROOT_DIR%\ai-service" && title Hastivo AI Service (:8000) && color 0B && python run_server.py"
+start "Hastivo - 1. AI Language Service (:8000)" cmd /k "cd /d "%ROOT_DIR%\ai-service" && title Hastivo Service (:8000) && color 0B && python run_server.py"
 timeout /t 2 /nobreak >nul
 
 :: 2. Computer Vision & Landmark Engine (Python / MediaPipe :8001)

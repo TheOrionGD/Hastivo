@@ -1,5 +1,5 @@
 /**
- * Hastivo AI — Master Automated System Test Orchestrator
+ * Hastivo — Master Automated System Test Orchestrator
  * Executes and aggregates tests across all eight system tiers.
  */
 
@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 console.log('╔══════════════════════════════════════════════════════════════╗');
-console.log('║        HASTIVO AI — MASTER SYSTEM TEST ORCHESTRATOR          ║');
+console.log('║        HASTIVO — MASTER SYSTEM TEST ORCHESTRATOR          ║');
 console.log('╚══════════════════════════════════════════════════════════════╝\n');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Hastivo AI — 500 Internal Error Screen (Swiss Editorial UI)
+ * Hastivo — 500 Internal Error Screen (Swiss Editorial UI)
  */
 export default function ServerError500() {
   return (

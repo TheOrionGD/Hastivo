@@ -4,7 +4,7 @@ import { PageContainer, CardlessBadge, SectionDivider } from '../../components/c
 import AvatarGuide from '../../components/common/AvatarGuide';
 
 /**
- * Hastivo AI — Architecture & Engineering Specifications
+ * Hastivo — Architecture & Engineering Specifications
  * Editorial Swiss documentation page exposing certified subsystem topologies,
  * data flow pipelines, security boundaries, and microservice definitions.
  */
@@ -62,7 +62,7 @@ export default function ArchitectureSpecs() {
             Architecture & Engineering Specs
           </h1>
           <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', marginTop: '8px', maxWidth: '780px', lineHeight: 1.6 }}>
-            Comprehensive architectural blueprints, microservice contracts, and air-gapped security boundaries governing the Hastivo AI platform.
+            Comprehensive architectural blueprints, microservice contracts, and air-gapped security boundaries governing the Hastivo platform.
           </p>
         </div>
 

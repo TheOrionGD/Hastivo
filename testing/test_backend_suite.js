@@ -7,7 +7,7 @@ import http from 'http';
 import assert from 'assert';
 
 console.log('====================================================');
-console.log('   HASTIVO AI — BACKEND GATEWAY TEST SUITE');
+console.log('   HASTIVO — BACKEND GATEWAY TEST SUITE');
 console.log('====================================================\n');
 
 let passCount = 0;

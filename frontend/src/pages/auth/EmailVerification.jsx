@@ -6,7 +6,7 @@ import config from '../../config/env';
 import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Hastivo AI — Email Verification Screen (SRS Section 7.5)
+ * Hastivo — Email Verification Screen (SRS Section 7.5)
  * UI:
  * - Email verification status
  * - Registered email display

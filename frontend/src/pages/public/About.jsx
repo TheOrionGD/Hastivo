@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Hastivo AI — About Screen (Cardless UI)
+ * Hastivo — About Screen (Cardless UI)
  */
 export default function About() {
   return (
@@ -31,7 +31,7 @@ export default function About() {
               About the Platform
             </h3>
             <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '1rem' }}>
-              Hastivo AI is an intelligent bidirectional sign-language communication platform engineered to diminish communication barriers between sign-language users and people who primarily communicate through spoken or written language.
+              Hastivo is an intelligent bidirectional sign-language communication platform engineered to diminish communication barriers between sign-language users and people who primarily communicate through spoken or written language.
             </p>
           </section>
 

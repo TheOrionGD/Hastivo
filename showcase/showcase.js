@@ -1,5 +1,5 @@
 /**
- * Hastivo AI — Interactive Demonstration & Telemetry Script
+ * Hastivo — Interactive Demonstration & Telemetry Script
  * Strictly Zero Dummy Data Policy Compliant
  */
 

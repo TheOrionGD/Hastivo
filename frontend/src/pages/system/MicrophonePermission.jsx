@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 /**
- * Hastivo AI — Microphone Permission Screen (Cardless UI)
+ * Hastivo — Microphone Permission Screen (Cardless UI)
  */
 export default function MicrophonePermission() {
   const [status, setStatus] = useState('pending');
@@ -27,7 +27,7 @@ export default function MicrophonePermission() {
           Microphone Access Required
         </h1>
         <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Hastivo AI uses your microphone to transcribe spoken voice into text before synthesizing 3D sign language avatar animations.
+          Hastivo uses your microphone to transcribe spoken voice into text before synthesizing 3D sign language avatar animations.
         </p>
 
         {status === 'granted' ? (

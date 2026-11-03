@@ -1,5 +1,5 @@
 """
-Hastivo AI — Indian Sign Language (ISL) Dataset Downloader
+Hastivo — Indian Sign Language (ISL) Dataset Downloader
 Downloads the full Indian Sign Language (A-Z, 1-9) dataset from Hugging Face
 and saves it to o:\sign\data\isl_dataset.
 """

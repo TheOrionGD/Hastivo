@@ -1,5 +1,5 @@
 /**
- * Hastivo AI — 7 Interface Languages Dictionary (SRS Section 13.2)
+ * Hastivo — 7 Interface Languages Dictionary (SRS Section 13.2)
  * Supported languages:
  * 1. English (en) - LTR
  * 2. Tamil (ta) - LTR
@@ -22,7 +22,7 @@ export const LANGUAGES = [
 
 export const translations = {
   en: {
-    appName: 'Hastivo AI',
+    appName: 'Hastivo',
     tagline: 'Vibrant Connections Through Language Colors.',
     dashboard: 'Dashboard',
     textToSign: 'Text-to-Sign',

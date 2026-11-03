@@ -6,7 +6,7 @@ import { useNotification } from '../../contexts/NotificationContext';
 import { PageContainer, EditorialHeader } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Flagged Content Screen (SRS Section 15.4)
+ * Hastivo — Flagged Content Screen (SRS Section 15.4)
  * UI:
  * - Flagged content list
  * - Search by content/user

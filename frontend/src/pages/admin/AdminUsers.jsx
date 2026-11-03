@@ -6,7 +6,7 @@ import { useNotification } from '../../contexts/NotificationContext';
 import { PageContainer, EditorialHeader } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo AI — Administrator User Management Screen (SRS Section 15.5 & 15.6)
+ * Hastivo — Administrator User Management Screen (SRS Section 15.5 & 15.6)
  * Display:
  * - User identifier, username, full name, email, account status, registration date
  * - Moderation & restriction history

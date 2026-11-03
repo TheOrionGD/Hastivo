@@ -5,7 +5,7 @@ import config from '../../config/env';
 import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Hastivo AI — Reset Password Screen (SRS Section 7.4)
+ * Hastivo — Reset Password Screen (SRS Section 7.4)
  * UI:
  * - New Password
  * - Confirm New Password

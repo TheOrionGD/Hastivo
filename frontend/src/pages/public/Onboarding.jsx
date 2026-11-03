@@ -13,7 +13,7 @@ const ONBOARDING_SLIDES = [
   {
     step: 1,
     badge: '01 // INTRODUCTION',
-    title: 'Welcome to Hastivo AI',
+    title: 'Welcome to Hastivo',
     subtitle: 'Intelligent Communication Platform',
     description:
       'An open neural infrastructure engineered to bridge the gap between Indian Sign Language (ISL) and spoken orthography through spatial kinematics.',
