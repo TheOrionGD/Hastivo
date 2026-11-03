@@ -138,44 +138,10 @@ privacy controls.
 
 4.1 Splash screen
 
-Display the system logo/icon with a polished entrance animation.
-
-Introduce an interactive human-like robot avatar rendered in real time
-with Three.js; Blender may be used to create or refine the model.
-
-The avatar should perform context-relevant movement and gestures rather
-than remaining static.
-
-For a brand reveal, the avatar may move beside the brand name and
-perform a suitable presentation gesture.
-
-Support reusable animation states and transitions so the avatar can
-later act as a visual representative across the product.
-
-Load the avatar and assets gracefully, provide a fallback if WebGL or
-model loading fails, and avoid blocking access unnecessarily.
-
+KEEP THE EXISTING ONE AS IT IS
 4.2 Onboarding — exactly seven screens
 
-Create exactly seven first-run onboarding screens. Each screen explains
-one essential concept in plain language for users who may have no
-technical knowledge. Keep copy concise and use illustrations or
-animation where helpful.
-
-Explain what the platform is and the communication problem it addresses.
-
-Introduce Text-to-Sign.
-
-Introduce Sign-to-Text.
-
-Explain the 3D signing avatar.
-
-Introduce real-time two-way conversation.
-
-Explain history, privacy, and user controls.
-
-Help the user get started and direct them to the appropriate next
-action.
+KEEP THE EXISTING ONE AS IT IS
 
 Navigation: Left Arrow = previous; Right Arrow = next; Next button =
 next; Previous button = previous where applicable; Skip = finish
@@ -199,34 +165,7 @@ Keep animation timing, easing, and interaction feedback consistent
 across the application.
 
 4.4 Public landing page — exactly eight sections plus footer
-
-The public landing page must contain exactly eight main content sections
-followed by a footer. Use cinematic, scroll-driven storytelling with
-layered backgrounds/frames and synchronized text movement. The exact
-content of each section can be refined, but the count must remain eight.
-
-Hero and product identity.
-
-Communication challenge and product purpose.
-
-Text-to-Sign capability.
-
-Sign-to-Text capability.
-
-3D avatar and sign animation experience.
-
-Real-time two-way conversation.
-
-Accessibility, privacy, and user control.
-
-Call to action / getting started.
-
-The footer is shared and configurable; final footer copy/content will be
-supplied later. The Text-to-Sign and Sign-to-Text workspaces must not
-display the footer. Other pages use the common footer where appropriate.
-The footer must not be duplicated or separately hardcoded into
-individual pages.
-
+KEEP THE EXISTING ONE AS IT IS
 4.5 Login page
 
 Use a two-column layout. The left side contains branding, introduction,
@@ -535,6 +474,11 @@ Avoid generic rounded-card dashboards and excessive drop shadows.
 
 Prefer open layouts, full-width sections, whitespace, typography
 hierarchy, and thin dividers.
+
+The result must be a coherent, accessible, responsive,
+production-oriented Editorial / Swiss Grid product: typography-led,
+grid-structured, asymmetric where useful, restrained in colour, cardless
+by default.
 
 Use floating navigation and a global command palette (Ctrl+K / Cmd+K).
 
@@ -1077,6 +1021,8 @@ already established and functional.
 Database | MongoDB Atlas with native driver or established ODM/ORM |
 Choose one consistent access strategy; do not introduce duplicate
 persistence layers.
+
+CLOUDNIARY | OBJECT STORAGE LIKE VIDEOS | FUTURE WORK..KEEP CREDENTIALS
 
 AI service | Python, FastAPI, PyTorch, Hugging Face models and/or
 configured hosted LLM | Model and dataset selection must be based on
