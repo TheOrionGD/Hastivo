@@ -63,7 +63,7 @@ export default function AdminAuditRecords() {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(records, null, 2));
     const dlAnchorElem = document.createElement('a');
     dlAnchorElem.setAttribute('href', dataStr);
-    dlAnchorElem.setAttribute('download', `signora_audit_records_${new Date().toISOString().split('T')[0]}.json`);
+    dlAnchorElem.setAttribute('download', `hastivo_audit_records_${new Date().toISOString().split('T')[0]}.json`);
     dlAnchorElem.click();
   };
 
@@ -74,7 +74,7 @@ export default function AdminAuditRecords() {
       const url = URL.createObjectURL(blob);
       const dl = document.createElement('a');
       dl.href = url;
-      dl.setAttribute('download', `signora_audit_signed_${new Date().toISOString().split('T')[0]}.csv`);
+      dl.setAttribute('download', `hastivo_audit_signed_${new Date().toISOString().split('T')[0]}.csv`);
       dl.click();
       URL.revokeObjectURL(url);
     } catch {
@@ -86,7 +86,7 @@ export default function AdminAuditRecords() {
       const csvStr = 'data:text/csv;charset=utf-8,' + encodeURIComponent([headers.join(','), ...rows].join('\r\n'));
       const dlAnchorElem = document.createElement('a');
       dlAnchorElem.setAttribute('href', csvStr);
-      dlAnchorElem.setAttribute('download', `signora_audit_signed_${new Date().toISOString().split('T')[0]}.csv`);
+      dlAnchorElem.setAttribute('download', `hastivo_audit_signed_${new Date().toISOString().split('T')[0]}.csv`);
       dlAnchorElem.click();
     }
   };

@@ -7,7 +7,7 @@ import { adminService } from '../../services/adminService';
 import { PageContainer, CardlessBadge, CardlessButton, CardlessStatsRow, SectionDivider, EditorialModuleDirectory, EditorialModuleItem } from '../../components/cardless/CardlessComponents';
 
 /**
- * Signora AI — Administrator Dashboard (Cardless Redesign)
+ * Hastivo AI — Administrator Dashboard (Cardless Redesign)
  * Master Specification Section 4.13:
  * - Cardless administration console for authorized operators.
  * - Moderation overview & flagged content timeline.

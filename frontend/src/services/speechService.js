@@ -1,5 +1,5 @@
 /**
- * Signora — Speech Recognition Service Adapter
+ * Hastivo — Speech Recognition Service Adapter
  * Real speech recognition via Web Speech API or supported platform runtime.
  * Never fabricates speech transcripts or simulates listening.
  */

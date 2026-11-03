@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AvatarCanvas } from '../../components/avatar/AvatarCanvas.jsx';
 import { API_ENDPOINTS, apiFetch } from '../../config/apiEndpoints.js';
-import '../../styles/signora-landing.css';
+import '../../styles/hastivo-landing.css';
 
 /**
- * Signora — Seven-Screen Onboarding Experience
+ * Hastivo — Seven-Screen Onboarding Experience
  * Architectural Swiss Minimalist Redesign matching design.md and index.css design tokens.
  */
 
@@ -13,7 +13,7 @@ const ONBOARDING_SLIDES = [
   {
     step: 1,
     badge: '01 // INTRODUCTION',
-    title: 'Welcome to Signora AI',
+    title: 'Welcome to Hastivo AI',
     subtitle: 'Intelligent Communication Platform',
     description:
       'An open neural infrastructure engineered to bridge the gap between Indian Sign Language (ISL) and spoken orthography through spatial kinematics.',
@@ -88,7 +88,7 @@ const ONBOARDING_SLIDES = [
     title: 'Enter the Sovereign Interface',
     subtitle: 'Ready for Deployment',
     description:
-      'Signora is initialized. Launch your terminal session to begin bidirectional translation, review logs, and explore custom dialect profiles.',
+      'Hastivo is initialized. Launch your terminal session to begin bidirectional translation, review logs, and explore custom dialect profiles.',
     isApproved: true,
     statusNotice: 'System Status: 100% Edge Autonomous',
     accentToken: 'var(--color-blue, var(--brand-blue))',
@@ -106,9 +106,9 @@ export default function Onboarding() {
 
   const handleComplete = useCallback(async () => {
     try {
-      localStorage.setItem('signora_onboarding_completed', 'true');
-      localStorage.setItem('signora_onboarding_completed_at', new Date().toISOString());
-      localStorage.setItem('signora_preferred_avatar_model', activeModel);
+      localStorage.setItem('hastivo_onboarding_completed', 'true');
+      localStorage.setItem('hastivo_onboarding_completed_at', new Date().toISOString());
+      localStorage.setItem('hastivo_preferred_avatar_model', activeModel);
     } catch (_) {
       // Storage safety
     }
@@ -595,8 +595,8 @@ export default function Onboarding() {
       {/* FOOTER TICKER */}
       <footer className="sl-footer" style={{ borderTop: 'var(--border-width, 1px) solid var(--border)', padding: '16px 0' }}>
         <div className="sl-max-w text-muted" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.14em', flexWrap: 'wrap', gap: '8px' }}>
-          <span>SIGNORA KINEMATIC ONBOARDING SUITE</span>
-          <span>© 2025 SIGNORA RECOGNIZE LABS • NEW DELHI</span>
+          <span>HASTIVO KINEMATIC ONBOARDING SUITE</span>
+          <span>© 2025 HASTIVO RECOGNIZE LABS • NEW DELHI</span>
         </div>
       </footer>
     </div>

@@ -6,7 +6,7 @@ import { AvatarViewer } from '../../components/avatar/AvatarViewer.jsx';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Signora AI — Text-to-Sign Primary Workspace (Cardless Redesign)
+ * Hastivo AI — Text-to-Sign Primary Workspace (Cardless Redesign)
  * Master Specification Section 4.7:
  * - Visually dominant 3D avatar stage without enclosed box containers.
  * - Open input editor with manual typing, speech-to-text mic, live transcript, word/character count.
@@ -235,7 +235,7 @@ export default function TextToSign() {
                   rows="5"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder="Type a sentence or click the microphone (e.g. 'Namaste, thank you for learning sign language with Signora')..."
+                  placeholder="Type a sentence or click the microphone (e.g. 'Namaste, thank you for learning sign language with Hastivo')..."
                   style={{
                     width: '100%',
                     padding: '16px 18px',

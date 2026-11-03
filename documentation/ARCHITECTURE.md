@@ -1,6 +1,6 @@
-# Signora AI — System Architecture
+# Hastivo AI — System Architecture
 
-This document describes the high-level architecture, module decomposition, and data flow of **Signora AI**.
+This document describes the high-level architecture, module decomposition, and data flow of **Hastivo AI**.
 
 ```mermaid
 flowchart TD

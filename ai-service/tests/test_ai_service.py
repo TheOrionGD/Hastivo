@@ -54,7 +54,7 @@ def test_language_detection():
     tamil = detect_language("வணக்கம் எப்படி இருக்கிறீர்கள்")
     assert tamil["code"] == "ta"
 
-    english = detect_language("Welcome to Signora assistive platform")
+    english = detect_language("Welcome to Hastivo assistive platform")
     assert english["code"] == "en"
 
 def test_regional_dialect_engine():

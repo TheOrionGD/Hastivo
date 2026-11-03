@@ -1,5 +1,5 @@
 /**
- * Signora — Backend Gateway API Test Suite
+ * Hastivo — Backend Gateway API Test Suite
  * Validates contracts, authentication, database persistence, moderation, and admin controls.
  */
 
@@ -7,7 +7,7 @@ import http from 'http';
 import assert from 'assert';
 
 console.log('====================================================');
-console.log('   SIGNORA AI — BACKEND GATEWAY TEST SUITE');
+console.log('   HASTIVO AI — BACKEND GATEWAY TEST SUITE');
 console.log('====================================================\n');
 
 let passCount = 0;
@@ -79,7 +79,7 @@ try {
 
   // 2. Authentication & JWT
   console.log('\n--- 2. Testing Authentication & JWT Flow ---');
-  const testEmail = `test_${Date.now()}@signora.isl`;
+  const testEmail = `test_${Date.now()}@hastivo.isl`;
   const regRes = await requestJson(`${BASE_URL}/api/v1/auth/register`, { method: 'POST' }, {
     email: testEmail,
     password: 'SecurePassword2026!',

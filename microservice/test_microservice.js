@@ -26,7 +26,7 @@ try {
 
   // Test Notification sending
   const notifPayload = JSON.stringify({
-    recipientEmail: 'citizen@signora.isl',
+    recipientEmail: 'citizen@hastivo.isl',
     userId: 'usr_citizen_002',
     notificationType: 'temporary_block_24h',
     reason: 'Policy safety violation testing',
@@ -50,7 +50,7 @@ try {
   });
 
   assert.strictEqual(notifRes.success, true);
-  assert.strictEqual(notifRes.notification.recipientEmail, 'citizen@signora.isl');
+  assert.strictEqual(notifRes.notification.recipientEmail, 'citizen@hastivo.isl');
   console.log('[PASS] Microservice Notification Dispatch endpoint passed');
 
   // Test WebSocket connection & Room joining

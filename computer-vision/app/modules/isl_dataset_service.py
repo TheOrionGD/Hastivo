@@ -1,5 +1,5 @@
 """
-Signora AI — Indian Sign Language (ISL) Dataset Service
+Hastivo AI — Indian Sign Language (ISL) Dataset Service
 Integrates the downloaded 42,745-sample ISL dataset (A-Z, 1-9) into the
 computer vision pipeline for sign recognition, dataset introspection, and benchmarking.
 """

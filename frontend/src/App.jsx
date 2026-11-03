@@ -131,7 +131,7 @@ function RouteLoader() {
           color: 'var(--text-muted)'
         }}
       >
-        Loading Signora Module
+        Loading Hastivo Module
       </div>
       <div
         style={{

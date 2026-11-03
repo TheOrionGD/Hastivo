@@ -1,4 +1,4 @@
-# Signora AI — Security, Authentication & Moderation Architecture
+# Hastivo AI — Security, Authentication & Moderation Architecture
 
 ## 1. Authentication & Cryptography
 

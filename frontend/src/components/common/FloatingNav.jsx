@@ -6,7 +6,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import '../../styles/circular-remote-nav.css';
 
 /**
- * Signora AI — Minimal Cardless Floating Navigation Bar
+ * Hastivo AI — Minimal Cardless Floating Navigation Bar
  * Master Specification Section 2.A:
  * - Floating, position-aware, visually lightweight.
  * - Transparent / subtly translucent background adapting to light and dark themes.
@@ -216,7 +216,7 @@ export default function FloatingNav() {
     <>
       {/* ── Minimalist Swiss Floating Navigation Dock ── */}
       <nav
-        className="signora-floating-dock cardless-floating-dock swiss-floating-dock"
+        className="hastivo-floating-dock cardless-floating-dock swiss-floating-dock"
         aria-label="Floating Navigation Bar"
         style={{
           position: 'fixed',
@@ -255,7 +255,7 @@ export default function FloatingNav() {
             marginRight: '4px',
             flexShrink: 0,
           }}
-          title="Signora AI"
+          title="Hastivo AI"
         >
           S
         </Link>
@@ -440,7 +440,7 @@ export default function FloatingNav() {
               >
                 <div className="portal-iris" />
                 <div className="portal-label">
-                  <span className="portal-glow-text">SIGNORA</span>
+                  <span className="portal-glow-text">HASTIVO</span>
                   <span className="portal-sub">PORTAL</span>
                 </div>
               </div>

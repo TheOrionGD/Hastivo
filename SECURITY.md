@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following table details security support for versions of Signora AI.
+The following table details security support for versions of Hastivo AI.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -26,7 +26,7 @@ We prioritize the security and privacy of our accessibility users and platform i
 - **Triage & Assessment**: Within 5 business days.
 - **Patch & Remediation Advisory**: Depending on severity, critical patches are deployed as soon as verified.
 
-## Security Practices in Signora AI
+## Security Practices in Hastivo AI
 - **Strict Zero Hardcoded Credentials**: Source code never contains production keys, secrets, or JWT tokens.
 - **JWT & Role-Based Access Control**: Gatekeeper authentication verifies tokens on every protected route.
 - **Real-Time Automated Moderation**: Outbound and inbound sign content passes through AI text/sign safety filters.

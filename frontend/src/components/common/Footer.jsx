@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const CURRENT_YEAR = new Date().getFullYear();
 
 /**
- * Signora AI — Global Editorial Three-Zone Footer
+ * Hastivo AI — Global Editorial Three-Zone Footer
  * 
  * Design Language: Editorial / Swiss Grid / Cardless Interface
  * - Zone 1: Typographic Brand & Mission
@@ -158,7 +158,7 @@ export default function Footer({ className = '', style = {} }) {
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <li><Link to="/vocabulary-explorer" style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>ISL Vocabulary Index</Link></li>
                 <li><Link to="/architecture-specs" style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>Architecture Specs</Link></li>
-                <li><Link to="/about" style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>About Signora AI</Link></li>
+                <li><Link to="/about" style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>About Hastivo AI</Link></li>
                 <li><Link to="/help" style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>Help & Accessibility</Link></li>
               </ul>
             </div>
@@ -203,7 +203,7 @@ export default function Footer({ className = '', style = {} }) {
             color: 'var(--text-muted)',
           }}
         >
-          <span>&copy; {CURRENT_YEAR} Signora AI &bull; ISL Accessibility Protocol</span>
+          <span>&copy; {CURRENT_YEAR} Hastivo AI &bull; ISL Accessibility Protocol</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34d399' }} />

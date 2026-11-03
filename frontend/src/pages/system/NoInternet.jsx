@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Signora AI — No Internet Screen (Cardless UI)
+ * Hastivo AI — No Internet Screen (Cardless UI)
  */
 export default function NoInternet() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);

@@ -1,5 +1,5 @@
 /**
- * Signora SignController
+ * Hastivo SignController
  * High-level sign language playback controller.
  * Responsibilities:
  * - Priority management: signing gestures override and suppress idle breathing/sway

@@ -1,5 +1,5 @@
 /**
- * Signora ArmController
+ * Hastivo ArmController
  * Controls upper arm orientation, elbow flexion/extension, and forearm rotation
  * for both Left and Right robotic arms.
  * Enabled on-demand when direct manual kinematics are commanded.

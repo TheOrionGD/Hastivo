@@ -1,7 +1,7 @@
-# SIGNORA --- Editorial / Swiss Grid Design System
+# HASTIVO --- Editorial / Swiss Grid Design System
 
 **Document:** `design.md`\
-**Product:** Signora AI --- bidirectional Indian Sign Language (ISL)
+**Product:** Hastivo AI --- bidirectional Indian Sign Language (ISL)
 communication\
 **Status:** Design and frontend implementation specification\
 **Scope:** All client-side routes, shared components, interaction
@@ -13,7 +13,7 @@ QA.
 ## 1. Purpose and governing principles
 
 This document defines the single visual and interaction system for the
-Signora client application. It is the implementation contract for
+Hastivo client application. It is the implementation contract for
 designers and frontend engineers.
 
 The product must use a **genuine Editorial / Swiss International
@@ -50,9 +50,9 @@ cards.
 
 When design decisions conflict, use this order:
 
-1.  This design system and the approved Signora brand/theme
+1.  This design system and the approved Hastivo brand/theme
     specification.
-2.  The approved Signora initialization-screen reference for its
+2.  The approved Hastivo initialization-screen reference for its
     specific composition.
 3.  Route-specific functional requirements.
 4.  Existing implementation, only where it contains required behaviour
@@ -80,7 +80,7 @@ product owner before changing paths.
                                                      diagnostics and avatar
                                                      selection
 
-  `/landing`                 Landing page            Explain Signora and its
+  `/landing`                 Landing page            Explain Hastivo and its
                                                      capabilities
 
   `/onboarding`              Onboarding              Teach navigation,
@@ -111,7 +111,7 @@ product owner before changing paths.
   `/help`                    Help & support          FAQs, troubleshooting
                                                      and feedback
 
-  `/about`                   About Signora           Product architecture
+  `/about`                   About Hastivo           Product architecture
                                                      and specifications
 
   `/camera-permission`       Camera permission guide Explain and test camera
@@ -409,7 +409,7 @@ Use display typography only where hierarchy requires it.
     duplicate text. Render the wordmark as live text or a proper vector
     logo asset.
 
-### 4.3 Signora wordmark
+### 4.3 Hastivo wordmark
 
 -   Render "Sign" in the primary text colour and "ora" in coral.
 -   Keep the wordmark on a shared baseline.
@@ -754,7 +754,7 @@ route-specific priorities.
 
 ### 8.1 Splash `/`
 
-Composition: - Minimal protocol header. - Oversized Signora wordmark and
+Composition: - Minimal protocol header. - Oversized Hastivo wordmark and
 editorial statement on the left. - Startup diagnostics integrated into
 the left content region. - Large avatar stage in the central-right
 region. - Narrow annotation rail on the far right. - Bottom actions
@@ -1242,7 +1242,7 @@ exposed. 10. Visual screenshots and regression results are reviewed.
 ## 17. Final directive
 
 **Decommission the old frontend visual system and implement this design
-system as the single source of truth for the Signora client
+system as the single source of truth for the Hastivo client
 application.**
 
 Do not simply reskin the old dashboard, add an editorial theme over

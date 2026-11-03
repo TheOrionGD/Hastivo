@@ -1,5 +1,5 @@
 /**
- * Signora — Assistive Indian Sign Language Platform
+ * Hastivo — Assistive Indian Sign Language Platform
  * Core Express Gateway & Backend Microservices
  * 
  * Central API contract serving Intended Users:
@@ -72,8 +72,8 @@ function executePythonSignToText(signs) {
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || 'signora-secret-key-2026-production';
-if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'signora-secret-key-2026-production')) {
+const JWT_SECRET = process.env.JWT_SECRET || 'hastivo-secret-key-2026-production';
+if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'hastivo-secret-key-2026-production')) {
   console.error('FATAL SECURITY ERROR: JWT_SECRET environment variable must be set to a unique, secure secret in production environments.');
   process.exit(1);
 }
@@ -199,7 +199,7 @@ app.get('/api/v1/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: Math.round(process.uptime()),
-    service: 'Signora Core Backend Gateway',
+    service: 'Hastivo Core Backend Gateway',
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development',
     subsystems: {
@@ -239,7 +239,7 @@ app.post(['/api/v1/auth/anonymous', '/api/v1/auth/guest'], (req, res) => {
   const guestId = 'usr_guest_' + Math.random().toString(36).substring(2, 8);
   const guestUser = {
     id: guestId,
-    email: `${guestId}@signora.isl`,
+    email: `${guestId}@hastivo.isl`,
     displayName: 'Guest Citizen',
     username: guestId,
     role: 'citizen',
@@ -257,7 +257,7 @@ app.post(['/api/v1/auth/anonymous', '/api/v1/auth/guest'], (req, res) => {
   };
 
   usersDatabase.set(guestUser.email, guestUser);
-  const token = `signora_guest_jwt_${guestId}_${Date.now()}`;
+  const token = `hastivo_guest_jwt_${guestId}_${Date.now()}`;
 
   recordAuditLog({
     actor: guestUser.email,
@@ -307,7 +307,7 @@ app.post('/api/v1/auth/login', (req, res) => {
     const isAdmin = cleanEmail.includes('admin');
     user = {
       id: 'usr_' + Math.random().toString(36).substring(2, 9),
-      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@signora.isl`,
+      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@hastivo.isl`,
       displayName: cleanEmail.split('@')[0],
       username: cleanEmail.replace(/@.*$/, ''),
       passwordHash: bcrypt.hashSync(password, 10),
@@ -574,7 +574,7 @@ app.post('/api/v1/user/preferences', (req, res) => {
   userPreferences.set('default_user_prefs', updated);
 
   recordAuditLog({
-    actor: 'citizen@signora.isl',
+    actor: 'citizen@hastivo.isl',
     role: 'citizen',
     action: 'PREFERENCES_UPDATED',
     target: 'preferences',
@@ -718,7 +718,7 @@ app.post(['/api/v1/translation/text-to-sign', '/api/v1/translate/text-to-sign'],
         })),
         animationSequence: aiData.animationSequence,
         estimatedDurationMs: aiData.estimatedDurationMs,
-        source: 'Signora-AI-Intelligence-Engine (HTTP)',
+        source: 'Hastivo-AI-Intelligence-Engine (HTTP)',
       });
     }
   } catch {}
@@ -743,7 +743,7 @@ app.post(['/api/v1/translation/text-to-sign', '/api/v1/translate/text-to-sign'],
       })),
       animationSequence: pyData.animationSequence,
       estimatedDurationMs: pyData.estimatedDurationMs,
-      source: 'Signora-AI-Intelligence-Engine (Direct)',
+      source: 'Hastivo-AI-Intelligence-Engine (Direct)',
     });
   }
 
@@ -814,7 +814,7 @@ app.post(['/api/v1/translation/sign-to-text', '/api/v1/recognize/landmarks'], as
           translatedText: aiData.synthesizedSentence || detectedSigns.map((s) => s.label || s).join(' '),
           confidence: aiData.overallConfidence || detectedSigns[0]?.confidence || null,
           timestamp: new Date().toISOString(),
-          source: 'Signora-CV-AI-Pipeline',
+          source: 'Hastivo-CV-AI-Pipeline',
         });
       }
     } catch {}
@@ -829,7 +829,7 @@ app.post(['/api/v1/translation/sign-to-text', '/api/v1/recognize/landmarks'], as
         translatedText: pyS2T.synthesizedSentence || detectedSigns.map((s) => s.label || s).join(' '),
         confidence: pyS2T.overallConfidence || detectedSigns[0]?.confidence || null,
         timestamp: new Date().toISOString(),
-        source: 'Signora-CV-AI-Pipeline (Direct)',
+        source: 'Hastivo-CV-AI-Pipeline (Direct)',
       });
     }
 
@@ -840,7 +840,7 @@ app.post(['/api/v1/translation/sign-to-text', '/api/v1/recognize/landmarks'], as
       translatedText: detectedSigns.map((s) => s.label || s).join(' '),
       confidence: detectedSigns[0]?.confidence || null,
       timestamp: new Date().toISOString(),
-      source: 'Signora-CV-Direct-Glosses',
+      source: 'Hastivo-CV-Direct-Glosses',
     });
   }
 
@@ -853,7 +853,7 @@ app.post(['/api/v1/translation/sign-to-text', '/api/v1/recognize/landmarks'], as
     confidence: null,
     timestamp: new Date().toISOString(),
     landmarkCount: Array.isArray(landmarks) ? landmarks.length : 0,
-    source: 'Signora-CV-Pipeline',
+    source: 'Hastivo-CV-Pipeline',
     message: 'No sign gestures recognized in the provided input frame.',
   });
 });
@@ -869,7 +869,7 @@ app.post('/api/v1/conversations', (req, res) => {
   const newConversation = {
     id: `conv_${Date.now()}`,
     userId: authUser?.id || 'usr_guest',
-    userEmail: authUser?.email || 'guest@signora.isl',
+    userEmail: authUser?.email || 'guest@hastivo.isl',
     title: title || 'New Conversation Session',
     startedAt: startedAt || new Date().toISOString(),
     endedAt: new Date().toISOString(),
@@ -1149,14 +1149,14 @@ app.get('/api/v1/admin/audit/export', (req, res) => {
       headers.map((h) => `"${String(r[h] || '').replace(/"/g, '""')}"`).join(',')
     );
     const csvContent = [
-      `# SIGNORA AI AUDIT REPORT - EXPORTED AT: ${timestamp}`,
+      `# HASTIVO AI AUDIT REPORT - EXPORTED AT: ${timestamp}`,
       `# SHA256 CRYPTOGRAPHIC INTEGRITY HASH: ${signature}`,
       headers.join(','),
       ...rows,
     ].join('\r\n');
 
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', `attachment; filename="signora_audit_signed_${timestamp.split('T')[0]}.csv"`);
+    res.setHeader('Content-Disposition', `attachment; filename="hastivo_audit_signed_${timestamp.split('T')[0]}.csv"`);
     res.setHeader('X-Audit-Hash-SHA256', signature);
     return res.send(csvContent);
   }
@@ -1232,7 +1232,7 @@ let serverInstance = null;
 if (process.env.NODE_ENV !== 'test') {
   serverInstance = app.listen(PORT, () => {
     console.log(`\n======================================================`);
-    console.log(`  Signora Core Gateway & REST API Backend Running`);
+    console.log(`  Hastivo Core Gateway & REST API Backend Running`);
     console.log(`  Local URL:       http://localhost:${PORT}`);
     console.log(`  Health Check:    http://localhost:${PORT}/api/v1/health`);
     console.log(`  Guest Auth:      http://localhost:${PORT}/api/v1/auth/anonymous`);

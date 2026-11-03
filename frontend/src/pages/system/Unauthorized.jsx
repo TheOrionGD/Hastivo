@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Signora AI — Unauthorized Screen (Swiss Editorial UI)
+ * Hastivo AI — Unauthorized Screen (Swiss Editorial UI)
  */
 export default function Unauthorized() {
   return (

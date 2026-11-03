@@ -1,5 +1,5 @@
 /**
- * Signora — Central Backend API Endpoints & Contract Registry
+ * Hastivo — Central Backend API Endpoints & Contract Registry
  * 
  * Defines all backend REST & WebSocket routes for:
  * 1. Authentication (Sign In, Registration, Session, SSO, Guest)
@@ -94,7 +94,7 @@ export const API_ENDPOINTS = {
  */
 export async function apiFetch(endpoint, options = {}) {
   const token = typeof sessionStorage !== 'undefined'
-    ? sessionStorage.getItem('signora_auth_token')
+    ? sessionStorage.getItem('hastivo_auth_token')
     : null;
 
   const headers = {

@@ -1,5 +1,5 @@
 /**
- * Signora — Central Route & Command Registry
+ * Hastivo — Central Route & Command Registry
  * Shared between React Router, Command Palette, and Global Voice Navigation.
  * Role permissions are enforced consistently.
  */
@@ -161,7 +161,7 @@ export const ROUTES = [
     path: '/landing',
     roles: [USER_ROLES.CITIZEN, USER_ROLES.ADMIN],
     aliases: ['landing', 'welcome'],
-    description: 'Public introduction to Signora',
+    description: 'Public introduction to Hastivo',
     category: 'Public',
     inPalette: false,
   },
@@ -171,7 +171,7 @@ export const ROUTES = [
     path: '/onboarding',
     roles: [USER_ROLES.CITIZEN, USER_ROLES.ADMIN],
     aliases: ['onboarding', 'tutorial', 'getting started'],
-    description: 'Seven-screen introduction to Signora',
+    description: 'Seven-screen introduction to Hastivo',
     category: 'Public',
     inPalette: false,
   },
@@ -191,7 +191,7 @@ export const ROUTES = [
     path: '/register',
     roles: [USER_ROLES.CITIZEN, USER_ROLES.ADMIN],
     aliases: ['register', 'sign up', 'create account'],
-    description: 'Create a new Signora account',
+    description: 'Create a new Hastivo account',
     category: 'Public',
     inPalette: false,
   },
@@ -307,10 +307,10 @@ export const ROUTES = [
   },
   {
     id: 'about',
-    label: 'About Signora AI',
+    label: 'About Hastivo AI',
     path: '/about',
     roles: [USER_ROLES.CITIZEN, USER_ROLES.ADMIN],
-    aliases: ['about', 'about signora', 'system info', 'version'],
+    aliases: ['about', 'about hastivo', 'system info', 'version'],
     description: 'System specifications, product overview, and team info',
     category: 'Public',
     inPalette: true,

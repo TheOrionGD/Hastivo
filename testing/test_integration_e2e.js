@@ -1,5 +1,5 @@
 /**
- * Signora AI — Multi-Service Integration & End-to-End Test Suite
+ * Hastivo AI — Multi-Service Integration & End-to-End Test Suite
  * Tests live inter-service communication across:
  * - Backend Gateway (:5000 / test instance)
  * - AI Language Processing Engine (:8000)
@@ -16,7 +16,7 @@ import { execSync } from 'child_process';
 import { WebSocket } from 'ws';
 
 console.log('====================================================');
-console.log('   SIGNORA AI — MULTI-SERVICE INTEGRATION & E2E SUITE');
+console.log('   HASTIVO AI — MULTI-SERVICE INTEGRATION & E2E SUITE');
 console.log('====================================================\n');
 
 let passCount = 0;

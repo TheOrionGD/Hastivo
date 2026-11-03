@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SIGNORA AUTH PORTAL — HARDWARE DEVICE CARD & SLIDING SPLIT SCREEN
+   HASTIVO AUTH PORTAL — HARDWARE DEVICE CARD & SLIDING SPLIT SCREEN
    Inspired by Apple/Dribbble B2B SaaS Auth Experiences
    ========================================================================== */
 
@@ -443,7 +443,7 @@
   margin-top: 24px;
 }
 
-/* ── Visual Media Pane (Signora 3D Avatar & Glass Telemetry) ──────────── */
+/* ── Visual Media Pane (Hastivo 3D Avatar & Glass Telemetry) ──────────── */
 .auth-pane-visual {
   background: radial-gradient(circle at 60% 40%, #151a28 0%, #080b12 100%);
   overflow: hidden;

@@ -1,5 +1,5 @@
 /**
- * Signora — Translation Service Interface
+ * Hastivo — Translation Service Interface
  * Prepares clean service interfaces for Text-to-Sign and Sign-to-Text.
  * Enforces strict data integrity: no simulated translations or fake confidence scores.
  */

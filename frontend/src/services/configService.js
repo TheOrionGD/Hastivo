@@ -1,5 +1,5 @@
 /**
- * Signora — Service Configuration Interface
+ * Hastivo — Service Configuration Interface
  * Manages service endpoint inspection and connectivity testing.
  * Distinguishes Electron desktop runtime from Web browser runtime.
  */

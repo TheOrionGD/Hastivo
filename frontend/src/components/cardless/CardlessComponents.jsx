@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Signora AI — Global Editorial / Swiss Grid Design System Components
+ * Hastivo AI — Global Editorial / Swiss Grid Design System Components
  * 
  * Philosophy:
  * - Minimal, structured, and professional.

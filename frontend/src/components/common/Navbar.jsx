@@ -40,7 +40,7 @@ export default function Navbar() {
         >
           <img
             src="/logo.png"
-            alt="Signora Logo"
+            alt="Hastivo Logo"
             style={{
               width: '32px',
               height: '32px',

@@ -1,5 +1,5 @@
 /* ============================================================
-   SIGNORA AI — SHOWCASE & TELEMETRY DESIGN SYSTEM
+   HASTIVO AI — SHOWCASE & TELEMETRY DESIGN SYSTEM
    Cardless Architecture & Master Design System (from frontend)
    Strictly Zero Dummy Data & No Boxed Cards Philosophy
    ============================================================ */
@@ -54,7 +54,7 @@
   --blue-glow:     0 0 24px rgba(111, 163, 239, 0.35);
 }
 
-/* ── Dark Theme (Default per Signora Identity) ──────────────── */
+/* ── Dark Theme (Default per Hastivo Identity) ──────────────── */
 :root, [data-theme='dark'] {
   --background:           #17191E;
   --background-secondary: #1E2229;

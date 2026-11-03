@@ -10,7 +10,7 @@ class VisionSettings(BaseSettings):
     HOST: str = "0.0.0.0"
     ENVIRONMENT: str = "development"
     LOG_LEVEL: str = "info"
-    SERVICE_NAME: str = "Signora Real-Time Computer Vision & Hand Landmark Service"
+    SERVICE_NAME: str = "Hastivo Real-Time Computer Vision & Hand Landmark Service"
     API_VERSION: str = "1.0.0"
     MIN_DETECTION_CONFIDENCE: float = 0.65
     MIN_TRACKING_CONFIDENCE: float = 0.60

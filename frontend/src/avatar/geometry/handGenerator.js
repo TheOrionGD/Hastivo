@@ -1,5 +1,5 @@
 /**
- * Signora Procedural Mechanical Hand Engine
+ * Hastivo Procedural Mechanical Hand Engine
  * Authentically reconstructed based on reference robotic hand:
  * - Broad, clearly visible sculpted central mechanical palm
  * - Distinct, visible mechanical knuckle hinge sockets

@@ -1,5 +1,5 @@
 /**
- * Signora EyeController
+ * Hastivo EyeController
  * Handles digital eye shape, size, independent left/right gaze, and digital blinking pulses.
  * Electric blue illumination (#6FA3EF) on black visor screen.
  */

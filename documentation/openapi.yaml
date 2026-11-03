@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Signora Assistive Sign Language Platform API Specification
+  title: Hastivo Assistive Sign Language Platform API Specification
   description: Central API contract covering Core Backend Gateway, AI Language Engine, Computer Vision Service, and Duplex Microservice.
   version: 1.0.0
 servers:

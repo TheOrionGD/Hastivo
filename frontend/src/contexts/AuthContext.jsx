@@ -7,21 +7,21 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => {
-    return typeof window !== 'undefined' ? sessionStorage.getItem('signora_auth_token') : null;
+    return typeof window !== 'undefined' ? sessionStorage.getItem('hastivo_auth_token') : null;
   });
   const [role, setRole] = useState(() => {
-    return typeof window !== 'undefined' ? sessionStorage.getItem('signora_auth_role') : null;
+    return typeof window !== 'undefined' ? sessionStorage.getItem('hastivo_auth_role') : null;
   });
   const [user, setUser] = useState(() => {
     if (typeof window === 'undefined') return null;
-    const storedToken = sessionStorage.getItem('signora_auth_token');
-    const storedRole = sessionStorage.getItem('signora_auth_role');
-    const storedEmail = sessionStorage.getItem('signora_auth_email');
-    const storedIsGuest = sessionStorage.getItem('signora_is_guest') === 'true';
+    const storedToken = sessionStorage.getItem('hastivo_auth_token');
+    const storedRole = sessionStorage.getItem('hastivo_auth_role');
+    const storedEmail = sessionStorage.getItem('hastivo_auth_email');
+    const storedIsGuest = sessionStorage.getItem('hastivo_is_guest') === 'true';
 
     if (storedToken && storedRole) {
       return {
-        email: storedEmail || 'user@signora.local',
+        email: storedEmail || 'user@hastivo.local',
         name: storedIsGuest ? 'Guest Citizen' : (storedEmail?.split('@')[0] || 'Citizen'),
         isGuest: storedIsGuest,
       };
@@ -33,9 +33,9 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const handleStorageChange = (e) => {
-      if (e.key === 'signora_auth_token' || e.key === 'signora_auth_role') {
-        const curToken = sessionStorage.getItem('signora_auth_token');
-        const curRole = sessionStorage.getItem('signora_auth_role');
+      if (e.key === 'hastivo_auth_token' || e.key === 'hastivo_auth_role') {
+        const curToken = sessionStorage.getItem('hastivo_auth_token');
+        const curRole = sessionStorage.getItem('hastivo_auth_role');
         setToken(curToken);
         setRole(curRole);
       }
@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
       if (res.ok && res.data) {
         const data = res.data;
         const userRole = data.user?.role === 'admin' || data.role === 'admin' ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-        const sessionToken = data.token || 'signora-tok-' + Date.now();
+        const sessionToken = data.token || 'hastivo-tok-' + Date.now();
 
         setUser({
           email: data.user?.email || data.email || identifier,
@@ -69,9 +69,9 @@ export function AuthProvider({ children }) {
         setRole(userRole);
         setToken(sessionToken);
 
-        sessionStorage.setItem('signora_auth_token', sessionToken);
-        sessionStorage.setItem('signora_auth_role', userRole);
-        sessionStorage.setItem('signora_auth_email', identifier);
+        sessionStorage.setItem('hastivo_auth_token', sessionToken);
+        sessionStorage.setItem('hastivo_auth_role', userRole);
+        sessionStorage.setItem('hastivo_auth_email', identifier);
 
         setLoading(false);
         return { success: true, role: userRole };
@@ -83,19 +83,19 @@ export function AuthProvider({ children }) {
     // Local / Sandboxed Authenticated Session for immediate testing and resilience
     const isAdminUser = identifier.toLowerCase().includes('admin');
     const userRole = isAdminUser ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-    const sessionToken = 'signora-tok-' + Date.now();
+    const sessionToken = 'hastivo-tok-' + Date.now();
 
     setUser({
-      email: identifier.includes('@') ? identifier : `${identifier}@signora.isl`,
+      email: identifier.includes('@') ? identifier : `${identifier}@hastivo.isl`,
       name: identifier.split('@')[0],
       username: identifier.replace(/@.*$/, ''),
     });
     setRole(userRole);
     setToken(sessionToken);
 
-    sessionStorage.setItem('signora_auth_token', sessionToken);
-    sessionStorage.setItem('signora_auth_role', userRole);
-    sessionStorage.setItem('signora_auth_email', identifier);
+    sessionStorage.setItem('hastivo_auth_token', sessionToken);
+    sessionStorage.setItem('hastivo_auth_role', userRole);
+    sessionStorage.setItem('hastivo_auth_email', identifier);
 
     setLoading(false);
     return { success: true, role: userRole };
@@ -127,16 +127,16 @@ export function AuthProvider({ children }) {
             'view_architecture_specs',
           ],
         };
-        const sessionToken = data.token || 'signora-guest-tok-' + Date.now();
+        const sessionToken = data.token || 'hastivo-guest-tok-' + Date.now();
 
         setUser(guestUser);
         setRole(USER_ROLES.CITIZEN);
         setToken(sessionToken);
 
-        sessionStorage.setItem('signora_auth_token', sessionToken);
-        sessionStorage.setItem('signora_auth_role', USER_ROLES.CITIZEN);
-        sessionStorage.setItem('signora_auth_email', guestUser.email);
-        sessionStorage.setItem('signora_is_guest', 'true');
+        sessionStorage.setItem('hastivo_auth_token', sessionToken);
+        sessionStorage.setItem('hastivo_auth_role', USER_ROLES.CITIZEN);
+        sessionStorage.setItem('hastivo_auth_email', guestUser.email);
+        sessionStorage.setItem('hastivo_is_guest', 'true');
 
         setLoading(false);
         return { success: true, role: USER_ROLES.CITIZEN, isGuest: true };
@@ -146,7 +146,7 @@ export function AuthProvider({ children }) {
     }
 
     const anonUser = {
-      email: 'guest@signora.isl',
+      email: 'guest@hastivo.isl',
       name: 'Guest Citizen',
       username: 'guest_citizen',
       isAnonymous: true,
@@ -167,10 +167,10 @@ export function AuthProvider({ children }) {
     setRole(userRole);
     setToken(sessionToken);
 
-    sessionStorage.setItem('signora_auth_token', sessionToken);
-    sessionStorage.setItem('signora_auth_role', userRole);
-    sessionStorage.setItem('signora_auth_email', 'guest@signora.isl');
-    sessionStorage.setItem('signora_is_guest', 'true');
+    sessionStorage.setItem('hastivo_auth_token', sessionToken);
+    sessionStorage.setItem('hastivo_auth_role', userRole);
+    sessionStorage.setItem('hastivo_auth_email', 'guest@hastivo.isl');
+    sessionStorage.setItem('hastivo_is_guest', 'true');
 
     setLoading(false);
     return { success: true, role: userRole, isGuest: true };
@@ -193,9 +193,9 @@ export function AuthProvider({ children }) {
     setRole(userRole);
     setToken(sessionToken);
 
-    sessionStorage.setItem('signora_auth_token', sessionToken);
-    sessionStorage.setItem('signora_auth_role', userRole);
-    sessionStorage.setItem('signora_auth_email', googleUser.email);
+    sessionStorage.setItem('hastivo_auth_token', sessionToken);
+    sessionStorage.setItem('hastivo_auth_role', userRole);
+    sessionStorage.setItem('hastivo_auth_email', googleUser.email);
 
     setLoading(false);
     return { success: true, role: userRole };
@@ -216,15 +216,15 @@ export function AuthProvider({ children }) {
       if (res.ok && res.data) {
         const data = res.data;
         const userRole = selectedRole === 'admin' ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-        const sessionToken = data.token || 'signora-reg-' + Date.now();
+        const sessionToken = data.token || 'hastivo-reg-' + Date.now();
 
         setUser({ email: data.user?.email || email, name: displayName, username, phone, role: userRole });
         setRole(userRole);
         setToken(sessionToken);
 
-        sessionStorage.setItem('signora_auth_token', sessionToken);
-        sessionStorage.setItem('signora_auth_role', userRole);
-        sessionStorage.setItem('signora_auth_email', email);
+        sessionStorage.setItem('hastivo_auth_token', sessionToken);
+        sessionStorage.setItem('hastivo_auth_role', userRole);
+        sessionStorage.setItem('hastivo_auth_email', email);
 
         setLoading(false);
         return { success: true, role: userRole };
@@ -247,9 +247,9 @@ export function AuthProvider({ children }) {
     setRole(userRole);
     setToken(sessionToken);
 
-    sessionStorage.setItem('signora_auth_token', sessionToken);
-    sessionStorage.setItem('signora_auth_role', userRole);
-    sessionStorage.setItem('signora_auth_email', email);
+    sessionStorage.setItem('hastivo_auth_token', sessionToken);
+    sessionStorage.setItem('hastivo_auth_role', userRole);
+    sessionStorage.setItem('hastivo_auth_email', email);
 
     setLoading(false);
     return { success: true, role: userRole };
@@ -259,13 +259,13 @@ export function AuthProvider({ children }) {
     setUser(null);
     setRole(null);
     setToken(null);
-    sessionStorage.removeItem('signora_auth_token');
-    sessionStorage.removeItem('signora_auth_role');
-    sessionStorage.removeItem('signora_auth_email');
-    sessionStorage.removeItem('signora_is_guest');
+    sessionStorage.removeItem('hastivo_auth_token');
+    sessionStorage.removeItem('hastivo_auth_role');
+    sessionStorage.removeItem('hastivo_auth_email');
+    sessionStorage.removeItem('hastivo_is_guest');
   };
 
-  const isGuest = !!user?.isGuest || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('signora_is_guest') === 'true');
+  const isGuest = !!user?.isGuest || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('hastivo_is_guest') === 'true');
 
   return (
     <AuthContext.Provider

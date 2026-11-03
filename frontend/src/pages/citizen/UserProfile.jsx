@@ -7,7 +7,7 @@ import AvatarGuide from '../../components/common/AvatarGuide';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Signora AI — User Profile Screen (Cardless Redesign)
+ * Hastivo AI — User Profile Screen (Cardless Redesign)
  * Master Specification Section 4.12:
  * - Profile avatar emblem, username, full name, email, phone number.
  * - Account creation date, account status, preferred language, theme, accent color.
@@ -21,7 +21,7 @@ export default function UserProfile() {
   const { currentLang } = useLanguage();
   const navigate = useNavigate();
 
-  const accentColor = localStorage.getItem('signora_accent_color') || '#FF6F61';
+  const accentColor = localStorage.getItem('hastivo_accent_color') || '#FF6F61';
 
   return (
     <div className="page-wrapper">
@@ -295,7 +295,7 @@ export default function UserProfile() {
             </div>
 
             <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              Signora AI Identity Framework &bull; Zero-Cloud Biometric Retention
+              Hastivo AI Identity Framework &bull; Zero-Cloud Biometric Retention
             </span>
           </div>
         </section>

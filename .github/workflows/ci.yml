@@ -1,4 +1,4 @@
-name: Signora CI/CD
+name: Hastivo CI/CD
 
 on:
   push:

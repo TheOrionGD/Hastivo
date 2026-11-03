@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 import { AvatarCanvas } from '../../components/avatar/AvatarCanvas.jsx';
-import '../../styles/signora-landing.css';
+import '../../styles/hastivo-landing.css';
 
 /**
- * Signora Landing Page — Clean Open Swiss Minimalist Structure
+ * Hastivo Landing Page — Clean Open Swiss Minimalist Structure
  *
  * Requirements fulfilled:
  * 1. ZERO top header, navbar, menubar, or sidebar (All navigation lives in the initial floating dock with drag-to-center warp).
@@ -110,7 +110,7 @@ export default function Landing() {
                 </h1>
 
                 <p className="sl-hero-desc">
-                  Signora deploys sub-100ms spatial computer vision and kinematic neural rigs. We parse the full grammar of Indian Sign Language—handshapes, spatial syntax, and facial non-manual markers—directly on client silicon.
+                  Hastivo deploys sub-100ms spatial computer vision and kinematic neural rigs. We parse the full grammar of Indian Sign Language—handshapes, spatial syntax, and facial non-manual markers—directly on client silicon.
                 </p>
               </div>
 
@@ -232,7 +232,7 @@ export default function Landing() {
               <div className="sl-avatar-hud-foot">
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{ width: '6px', height: '6px', backgroundColor: 'var(--color-coral, var(--brand-coral))', display: 'inline-block' }} />
-                  SIGNORA-KINETIC V2.4.0
+                  HASTIVO-KINETIC V2.4.0
                 </span>
                 <span className="text-coral">EDGE PRIVACY VERIFIED</span>
               </div>
@@ -323,7 +323,7 @@ export default function Landing() {
             </div>
             <div>
               <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '640px', fontWeight: 300, margin: 0, lineHeight: 1.6 }}>
-                Indian Sign Language has a rich, independent spatial grammar distinct from linear English or Hindi. Signora reorganizes sentence syntax rather than doing direct word-for-word translation.
+                Indian Sign Language has a rich, independent spatial grammar distinct from linear English or Hindi. Hastivo reorganizes sentence syntax rather than doing direct word-for-word translation.
               </p>
             </div>
           </div>
@@ -452,7 +452,7 @@ export default function Landing() {
             </div>
             <div>
               <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '640px', fontWeight: 300, margin: 0, lineHeight: 1.6 }}>
-                Under constitutional privacy doctrines and the Rights of Persons with Disabilities (RPwD) Act 2016, Signora guarantees zero-retention edge security.
+                Under constitutional privacy doctrines and the Rights of Persons with Disabilities (RPwD) Act 2016, Hastivo guarantees zero-retention edge security.
               </p>
             </div>
           </div>

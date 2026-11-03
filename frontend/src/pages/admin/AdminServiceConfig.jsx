@@ -77,14 +77,14 @@ export default function AdminServiceConfig() {
                 htmlFor="api-url"
                 style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}
               >
-                Service URL (e.g. <code>https://api.signora.org</code> or <code>http://localhost:5000</code>)
+                Service URL (e.g. <code>https://api.hastivo.org</code> or <code>http://localhost:5000</code>)
               </label>
               <input
                 id="api-url"
                 type="text"
                 value={targetUrl}
                 onChange={(e) => setTargetUrl(e.target.value)}
-                placeholder="https://api.signora.org"
+                placeholder="https://api.hastivo.org"
                 className="input-field"
                 style={{
                   width: '100%',

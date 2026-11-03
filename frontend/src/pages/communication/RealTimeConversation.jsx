@@ -5,7 +5,7 @@ import { AvatarViewer } from '../../components/avatar/AvatarViewer.jsx';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Signora AI — Real-Time Conversation Workspace (Cardless Split-Screen)
+ * Hastivo AI — Real-Time Conversation Workspace (Cardless Split-Screen)
  * Master Specification Section 4.10:
  * - Simultaneous two-participant workspace (two-column desktop, stacked mobile).
  * - Participant A (Speech-to-Sign): Live mic, speech recognition, live transcript, 3D avatar, controls.
@@ -79,7 +79,7 @@ export default function RealTimeConversation() {
       socket.onopen = () => {
         socket.send(JSON.stringify({
           event: 'conversation:join',
-          roomId: 'signora_live_duplex',
+          roomId: 'hastivo_live_duplex',
           data: { role: 'participant', userId: 'usr_citizen' }
         }));
       };

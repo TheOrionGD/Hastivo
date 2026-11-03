@@ -6,7 +6,7 @@ import { avatarService } from '../../services/avatarService';
 import SplashAvatarStage from '../../components/splash/SplashAvatarStage';
 
 /**
- * SIGNORA — Exact Reference UI Reconstruction
+ * HASTIVO — Exact Reference UI Reconstruction
  * Visual Specification: media_1793688240579_fafea2bd.jpg
  *
  * Architectural Matrix:
@@ -17,14 +17,14 @@ import SplashAvatarStage from '../../components/splash/SplashAvatarStage';
  * - Vertical Grid Line 1: Left boundary of the avatar column with coral rim illumination
  * - Vertical Grid Line 2: Right boundary of the avatar column with cyan-blue rim illumination
  * - Left Content:
- *     - Oversized geometric wordmark "Signora" ("Sign" pure white #FFF, "ora" coral #FF6F61)
+ *     - Oversized geometric wordmark "Hastivo" ("Sign" pure white #FFF, "ora" coral #FF6F61)
  *     - Uppercase tracked headline: "VIBRANT CONNECTIONS / THROUGH LANGUAGE COLORS"
  *     - Short accent line (32px)
  *     - 3-line descriptive summary
  *     - Startup Verification: "STARTUP VERIFICATION" + "5/5 (100%)", coral progress bar, 5 rows
- *     - Actions: Solid coral button "Continue to Signora →" and underlined link "Explore Overview →"
+ *     - Actions: Solid coral button "Continue to Hastivo →" and underlined link "Explore Overview →"
  * - Avatar Column: Centered 3D humanoid robot, framed upper-body to thighs
- * - Right Annotation Column: "HUMAN SIGN LANGUAGE AI", vertical guide, "INCLUSIVE ACCESSIBLE GLOBAL", "01 ── SIGNORA 3D AVATAR INITIALIZING..."
+ * - Right Annotation Column: "HUMAN SIGN LANGUAGE AI", vertical guide, "INCLUSIVE ACCESSIBLE GLOBAL", "01 ── HASTIVO 3D AVATAR INITIALIZING..."
  */
 
 const SPLASH_STYLES = `
@@ -283,8 +283,8 @@ export default function Splash() {
     if (!isMountedRef.current || hasStartedTransition) return;
     setHasStartedTransition(true);
     if (timerRef.current) clearTimeout(timerRef.current);
-    const token = sessionStorage.getItem('signora_auth_token');
-    const onboardingCompleted = localStorage.getItem('signora_onboarding_completed') === 'true';
+    const token = sessionStorage.getItem('hastivo_auth_token');
+    const onboardingCompleted = localStorage.getItem('hastivo_onboarding_completed') === 'true';
     if (token) navigate('/dashboard');
     else if (onboardingCompleted) navigate('/signin');
     else navigate('/onboarding');
@@ -555,7 +555,7 @@ export default function Splash() {
                 }}
               />
 
-              {/* Giant Signora Wordmark */}
+              {/* Giant Hastivo Wordmark */}
               <h1 className="splash-wordmark" style={{ marginBottom: 'clamp(18px, 2.4vh, 28px)' }}>
                 <span className="splash-wordmark-sign">Sign</span>
                 <span className="splash-wordmark-ora">ora</span>
@@ -678,7 +678,7 @@ export default function Splash() {
                 className="splash-btn-primary"
                 onClick={handleProceed}
               >
-                <span>Continue to Signora</span>
+                <span>Continue to Hastivo</span>
                 <span aria-hidden="true" style={{ fontSize: '1.05em', lineHeight: 1 }}>→</span>
               </button>
 
@@ -799,7 +799,7 @@ export default function Splash() {
            │  HUMAN SIGN LANGUAGE AI                                │
            │  [vertical guide]                                      │
            │  INCLUSIVE ACCESSIBLE GLOBAL                           │
-           │  01 ── SIGNORA 3D AVATAR / INITIALIZING...             │
+           │  01 ── HASTIVO 3D AVATAR / INITIALIZING...             │
            └────────────────────────────────────────────────────────┘
           */}
           <div
@@ -865,7 +865,7 @@ export default function Splash() {
               </div>
             </div>
 
-            {/* Bottom Cluster: 01 ── + SIGNORA 3D AVATAR INITIALIZING... */}
+            {/* Bottom Cluster: 01 ── + HASTIVO 3D AVATAR INITIALIZING... */}
             <div style={{ marginBottom: '14px' }}>
               <div
                 style={{
@@ -892,7 +892,7 @@ export default function Splash() {
                 />
               </div>
               <div className="splash-annotation">
-                <div>SIGNORA 3D AVATAR</div>
+                <div>HASTIVO 3D AVATAR</div>
                 <div>INITIALIZING ...</div>
               </div>
             </div>

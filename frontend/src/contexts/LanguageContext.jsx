@@ -5,12 +5,12 @@ const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
   const [currentLang, setCurrentLang] = useState(() => {
-    const saved = localStorage.getItem('signora_language');
+    const saved = localStorage.getItem('hastivo_language');
     return saved && translations[saved] ? saved : 'en';
   });
 
   useEffect(() => {
-    localStorage.setItem('signora_language', currentLang);
+    localStorage.setItem('hastivo_language', currentLang);
     const langMeta = LANGUAGES.find((l) => l.code === currentLang);
     if (langMeta) {
       document.documentElement.setAttribute('lang', langMeta.code);

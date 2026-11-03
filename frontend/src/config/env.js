@@ -1,5 +1,5 @@
 /**
- * Signora — Environment Configuration
+ * Hastivo — Environment Configuration
  * All VITE_ variables are publicly exposed to the browser bundle.
  * Private credentials must never appear here.
  */

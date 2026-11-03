@@ -11,8 +11,8 @@ Ensure you have installed:
 ## 2. Clone and Initial Setup
 
 ```bash
-git clone https://github.com/your-username/signora-ai.git
-cd signora-ai
+git clone https://github.com/your-username/hastivo-ai.git
+cd hastivo-ai
 ```
 
 ## 3. Environment Variables

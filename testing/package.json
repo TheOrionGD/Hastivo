@@ -1,7 +1,7 @@
 {
-  "name": "signora-testing-framework",
+  "name": "hastivo-testing-framework",
   "version": "1.0.0",
-  "description": "Signora End-to-End System Testing & Verification Framework",
+  "description": "Hastivo End-to-End System Testing & Verification Framework",
   "type": "module",
   "scripts": {
     "test": "node run_all_tests.js",

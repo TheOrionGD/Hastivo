@@ -5,7 +5,7 @@ import { useNotification } from '../../contexts/NotificationContext';
 import '../../styles/auth-editorial.css';
 
 /**
- * Signora Editorial / Swiss Grid Sign-In & Registration Portal
+ * Hastivo Editorial / Swiss Grid Sign-In & Registration Portal
  * Visual Specification: media_1793703067436_53e4e791.jpg
  *
  * Architecture:
@@ -15,7 +15,7 @@ import '../../styles/auth-editorial.css';
  *   - Summary: "Real-time Indian Sign Language bidirectional communication platform..."
  *   - Embedded Community Imagery with bottom bullet nodes (01 Sub-100ms 27-DOF, 02 Zero-cloud edge, 03 Certified ISL)
  * - Right Section:
- *   - "Welcome to Signora" + "Sign in to access your inclusive communication platform."
+ *   - "Welcome to Hastivo" + "Sign in to access your inclusive communication platform."
  *   - Email or username field with "✓ Entered" live check and "✕" clear button
  *   - Password field with "Forgot password?" and password visibility toggle
  *   - "Keep me logged in" custom coral check
@@ -24,7 +24,7 @@ import '../../styles/auth-editorial.css';
  *   - Outlined Google Sign In: "Sign in with Google"
  *   - Outlined Guest Access: "Anonymous Sign In (Guest Access)"
  *   - "Don't have an account? Register here"
- * - Bottom Bar: "© 2026 Signora Platform" and "🌐 ISL / ENG"
+ * - Bottom Bar: "© 2026 Hastivo Platform" and "🌐 ISL / ENG"
  * - Floating Command Deck remains active at bottom of viewport
  */
 export default function AuthPortal({ initialMode = 'signin' }) {
@@ -77,7 +77,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
     setIsSubmitting(true);
     try {
       const res = await signIn(loginIdentifier.trim(), loginPassword);
-      notifySuccess('Signed In', 'Welcome back to Signora!');
+      notifySuccess('Signed In', 'Welcome back to Hastivo!');
       if (res?.role === 'admin') {
         navigate('/admin');
       } else {
@@ -111,7 +111,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
     setErrorMessage('');
     try {
       await signInAnonymous();
-      notifySuccess('Guest Access Granted', 'Welcome to Signora as an anonymous citizen.');
+      notifySuccess('Guest Access Granted', 'Welcome to Hastivo as an anonymous citizen.');
       navigate(from);
     } catch (err) {
       triggerShake(err.message || 'Anonymous sign-in failed.');
@@ -138,7 +138,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
     setIsSubmitting(true);
     try {
       await register(email.trim(), password, fullName.trim(), 'citizen', phone.trim(), username.trim());
-      notifySuccess('Account Created', 'Registration successful! Welcome to Signora.');
+      notifySuccess('Account Created', 'Registration successful! Welcome to Hastivo.');
       navigate('/dashboard');
     } catch (err) {
       triggerShake(err.message || 'Registration failed.');
@@ -221,7 +221,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
           <div className="auth-editorial-right">
             {mode === 'signin' ? (
               <>
-                <h2 className="auth-form-title">Welcome to Signora</h2>
+                <h2 className="auth-form-title">Welcome to Hastivo</h2>
                 <p className="auth-form-subtitle">
                   Sign in to access your inclusive communication platform.
                 </p>
@@ -388,7 +388,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
               <>
                 <h2 className="auth-form-title">Create Account</h2>
                 <p className="auth-form-subtitle">
-                  Join Signora for real-time sign language access.
+                  Join Hastivo for real-time sign language access.
                 </p>
 
                 {errorMessage && (
@@ -587,7 +587,7 @@ export default function AuthPortal({ initialMode = 'signin' }) {
 
       {/* Bottom Sub-Bar Matching Reference */}
       <div className="auth-bottom-subbar">
-        <span>© 2026 Signora Platform</span>
+        <span>© 2026 Hastivo Platform</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span>🌐</span>
           <span>ISL / ENG</span>

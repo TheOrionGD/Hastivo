@@ -1,5 +1,5 @@
 /**
- * Signora — Conversation History Service
+ * Hastivo — Conversation History Service
  * Retrieves genuine conversation records from MongoDB backend.
  * Never supplies fake conversations or simulated history.
  */

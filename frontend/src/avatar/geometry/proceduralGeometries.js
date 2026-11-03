@@ -1,12 +1,12 @@
 /**
- * Signora Procedural Robotic Geometry Engine
+ * Hastivo Procedural Robotic Geometry Engine
  * Procedurally models the friendly robot assistant exactly matching the reference image:
  * - Friendly rounded capsule helmet (chubby, aerodynamic, smooth)
  * - Inset rounded-pill glossy black digital visor screen with white border bezel
  * - Bright electric blue glowing digital eyes (^ ^) and smile (◡)
  * - Concentric circular ear headphone modules with glowing amber outer rings
  * - Articulated mechanical neck column
- * - Compact, slender armored torso with charcoal center shield and Signora "S" emblem
+ * - Compact, slender armored torso with charcoal center shield and Hastivo "S" emblem
  * - Clavicle glowing amber vents and rib blue accent slits
  * - Segmented slim mechanical abdomen with illuminated amber waist belt
  * - Integrated curved shoulder pauldrons with amber accent line
@@ -554,7 +554,7 @@ export function createArcReactorLensGeometry() {
 
 /**
  * 11c. Arc Reactor Bold Embroidered "S" Emblem Geometry
- * Iconic, bold interlocking hexagonal ribbons forming the Signora cybernetic "S".
+ * Iconic, bold interlocking hexagonal ribbons forming the Hastivo cybernetic "S".
  * Upper loop: Coral/Orange (#FF583F)
  * Lower loop: Electric Blue (#3088FF)
  */

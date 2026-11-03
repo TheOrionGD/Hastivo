@@ -6,7 +6,7 @@ import config from '../../config/env';
 import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Signora AI — Email Verification Screen (SRS Section 7.5)
+ * Hastivo AI — Email Verification Screen (SRS Section 7.5)
  * UI:
  * - Email verification status
  * - Registered email display
@@ -24,7 +24,7 @@ export default function EmailVerification() {
   const [isVerified, setIsVerified] = useState(!!token || user?.emailVerified);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  const displayEmail = user?.email || 'citizen@signora.isl';
+  const displayEmail = user?.email || 'citizen@hastivo.isl';
 
   const handleResend = async () => {
     if (resendCooldown > 0) return;

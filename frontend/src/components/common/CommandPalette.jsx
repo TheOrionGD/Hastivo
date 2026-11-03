@@ -5,7 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { getRoutesForRole } from '../../navigation/routeRegistry';
 
 /**
- * Signora AI — Global Cardless Command Palette
+ * Hastivo AI — Global Cardless Command Palette
  * Master Specification Section 2.B:
  * - Triggered via Ctrl+K / Cmd+K or visible search trigger.
  * - Search all accessible destinations + actions.
@@ -30,7 +30,7 @@ export default function CommandPalette() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recents, setRecents] = useState(() => {
     try {
-      return JSON.parse(sessionStorage.getItem('signora_recent_commands') || '[]');
+      return JSON.parse(sessionStorage.getItem('hastivo_recent_commands') || '[]');
     } catch {
       return [];
     }
@@ -191,7 +191,7 @@ export default function CommandPalette() {
     const updated = [cmd.label, ...recents.filter((r) => r !== cmd.label)].slice(0, 5);
     setRecents(updated);
     try {
-      sessionStorage.setItem('signora_recent_commands', JSON.stringify(updated));
+      sessionStorage.setItem('hastivo_recent_commands', JSON.stringify(updated));
     } catch {}
 
     setIsOpen(false);

@@ -1,7 +1,7 @@
 {
-  "name": "signora-backend",
+  "name": "hastivo-backend",
   "version": "1.0.0",
-  "description": "Signora Assistive Indian Sign Language Platform — Core Gateway & Backend Service",
+  "description": "Hastivo Assistive Indian Sign Language Platform — Core Gateway & Backend Service",
   "main": "server.js",
   "type": "module",
   "scripts": {

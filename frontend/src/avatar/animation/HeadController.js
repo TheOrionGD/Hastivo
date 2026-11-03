@@ -1,5 +1,5 @@
 /**
- * Signora HeadController
+ * Hastivo HeadController
  * Controls robotic head rotation, pitch tilt, roll tilt, nodding,
  * listening gestures, and smooth return to neutral posture.
  */

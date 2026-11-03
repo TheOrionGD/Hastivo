@@ -1,5 +1,5 @@
 /**
- * Signora — Independent Real-Time Communication & Notification Microservice
+ * Hastivo — Independent Real-Time Communication & Notification Microservice
  * Port: 5002 (Configurable)
  * 
  * Responsibilities:
@@ -19,7 +19,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5002;
-const SERVICE_NAME = process.env.SERVICE_NAME || 'Signora-Realtime-Notification-Microservice';
+const SERVICE_NAME = process.env.SERVICE_NAME || 'Hastivo-Realtime-Notification-Microservice';
 
 app.use(express.json());
 app.use(cors({ origin: '*' }));
@@ -88,9 +88,9 @@ app.post('/api/v1/notifications/send', (req, res) => {
     duration: duration || (notificationType.includes('24h') ? '24 Hours' : '7 Days'),
     sentAt: new Date().toISOString(),
     expiryTimestamp: expiryTimestamp || new Date(Date.now() + 86400000).toISOString(),
-    appealUrl: appealUrl || 'https://signora.isl/help/appeals',
+    appealUrl: appealUrl || 'https://hastivo.isl/help/appeals',
     status: 'DELIVERED',
-    provider: process.env.BREVO_API_KEY ? 'Brevo (External API)' : 'Signora Direct Mail Dispatcher (Sandbox)',
+    provider: process.env.BREVO_API_KEY ? 'Brevo (External API)' : 'Hastivo Direct Mail Dispatcher (Sandbox)',
   };
 
   notificationLogs.unshift(notificationRecord);

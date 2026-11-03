@@ -6,7 +6,7 @@ import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '..
 import config from '../../config/env';
 
 /**
- * Signora AI — Conversation Detail Screen (Cardless Redesign)
+ * Hastivo AI — Conversation Detail Screen (Cardless Redesign)
  * Master Specification Section 4.9 & SRS Section 12.6:
  * - Original input, recognized content, AI-generated sentence.
  * - Translation direction, language metadata, timestamp.

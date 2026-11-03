@@ -1,12 +1,12 @@
-# Contributing to Signora AI
+# Contributing to Hastivo AI
 
-Thank you for your interest in contributing to **Signora AI**, the accessible Indian Sign Language (ISL) communication platform.
+Thank you for your interest in contributing to **Hastivo AI**, the accessible Indian Sign Language (ISL) communication platform.
 
 ## Code of Conduct
 Please review our [Code of Conduct](CODE_OF_CONDUCT.md) before participating in this repository.
 
 ## Non-Negotiable Governance Policy
-Signora enforces a strict **Zero-Placeholder, Zero-Mock-Data, and Zero-Hardcoded-Data** policy:
+Hastivo enforces a strict **Zero-Placeholder, Zero-Mock-Data, and Zero-Hardcoded-Data** policy:
 - No dummy data, fabricated dashboard statistics, or fake translation sequences in production code.
 - If a service or model dependency is offline or unconfigured, return explicit service-unavailable states (`UnavailableState`) with retry mechanisms.
 - Never commit actual secrets or credentials to Git.
@@ -20,8 +20,8 @@ Signora enforces a strict **Zero-Placeholder, Zero-Mock-Data, and Zero-Hardcoded
 
 ### 2. Fork and Clone
 ```bash
-git clone https://github.com/your-username/signora-ai.git
-cd signora-ai
+git clone https://github.com/your-username/hastivo-ai.git
+cd hastivo-ai
 ```
 
 ### 3. Setting Up Environments

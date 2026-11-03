@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
- * Signora AI — Account Restricted Screen (Cardless UI)
+ * Hastivo AI — Account Restricted Screen (Cardless UI)
  */
 export default function AccountRestricted() {
   const { user } = useAuth();
@@ -36,7 +36,7 @@ export default function AccountRestricted() {
         </h1>
 
         <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Your Signora account has received an administrative action following a safety policy review. Protected translation and live conversation features are suspended for this duration.
+          Your Hastivo account has received an administrative action following a safety policy review. Protected translation and live conversation features are suspended for this duration.
         </p>
 
         <div

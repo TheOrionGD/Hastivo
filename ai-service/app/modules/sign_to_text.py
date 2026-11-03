@@ -1,5 +1,5 @@
 """
-Signora AI — Sign-to-Text Contextual Translation Engine
+Hastivo AI — Sign-to-Text Contextual Translation Engine
 Converts recognized sign sequences into natural, grammatically correct text while strictly preserving:
 1. The exact raw recognized tokens with confidence scores.
 2. Semantic fidelity without hallucinating unrelated entities.

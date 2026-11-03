@@ -1,5 +1,5 @@
 /**
- * Signora — Admin Moderation Service
+ * Hastivo — Admin Moderation Service
  * Connects to genuine moderation queue endpoint.
  * Never creates dummy flagged items or simulated severity reviews.
  */

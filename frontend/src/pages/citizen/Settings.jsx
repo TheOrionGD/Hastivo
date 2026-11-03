@@ -8,7 +8,7 @@ import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '..
 import config from '../../config/env';
 
 /**
- * Signora AI — Settings Screen (Cardless Redesign)
+ * Hastivo AI — Settings Screen (Cardless Redesign)
  * Master Specification Section 4.11:
  * - Clear open sections with whitespace & subtle dividers.
  * - 1. Language (7 languages: English, Tamil, Telugu, Kannada, Urdu RTL, Malayalam, Hindi).
@@ -29,9 +29,9 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState('language');
 
   // 7 Selectable Accent Colors (SRS 13.3)
-  const [accentColor, setAccentColor] = useState(() => localStorage.getItem('signora_accent_color') || '#FF6F61');
+  const [accentColor, setAccentColor] = useState(() => localStorage.getItem('hastivo_accent_color') || '#FF6F61');
   const ACCENT_COLORS = [
-    { name: 'Signora Coral', hex: '#FF6F61' },
+    { name: 'Hastivo Coral', hex: '#FF6F61' },
     { name: 'Sky Blue', hex: '#6FA3EF' },
     { name: 'Amber Glow', hex: '#FFC107' },
     { name: 'Emerald', hex: '#10B981' },
@@ -80,7 +80,7 @@ export default function Settings() {
 
   const handleAccentChange = (hex) => {
     setAccentColor(hex);
-    localStorage.setItem('signora_accent_color', hex);
+    localStorage.setItem('hastivo_accent_color', hex);
     document.documentElement.style.setProperty('--color-coral', hex);
     notifySuccess('Accent Color Applied', `Theme accent set to ${hex}`);
   };
@@ -88,7 +88,7 @@ export default function Settings() {
   const handleTestVoice = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance('Welcome to Signora AI. Voice output is functioning smoothly.');
+      const utterance = new SpeechSynthesisUtterance('Welcome to Hastivo AI. Voice output is functioning smoothly.');
       utterance.rate = speechRate;
       utterance.volume = speechVolume;
       if (selectedVoice) {
@@ -667,7 +667,7 @@ export default function Settings() {
               </Link>
 
               <Link to="/about" style={{ padding: '16px 0', borderBottom: '1px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
-                <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>About Signora &rarr;</strong>
+                <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>About Hastivo &rarr;</strong>
                 <span style={{ fontSize: '0.80rem', color: 'var(--text-secondary)' }}>Architecture & Mission info</span>
               </Link>
             </div>

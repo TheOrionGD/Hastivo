@@ -1,5 +1,5 @@
 /**
- * Signora Procedural Signing Engine
+ * Hastivo Procedural Signing Engine
  * Data-driven Indian Sign Language (ISL) animation engine.
  * Supports:
  * - Structured ISL gesture keyframe playback with arm, elbow, wrist, and 5-finger kinematics
@@ -536,7 +536,7 @@ export class SigningEngine {
 
     const gesture = {
       signId: 'IMAGE_DEFAULT_SIGN',
-      label: `Signora Default Sign: ${sideLabel}`,
+      label: `Hastivo Default Sign: ${sideLabel}`,
       duration: 3.2,
       face: 'happy',
       head: { nod: 0.12, tilt: 0.0 },

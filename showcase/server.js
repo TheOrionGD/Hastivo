@@ -12,7 +12,7 @@ app.use(express.static(__dirname));
 
 app.listen(PORT, () => {
   console.log(`\n======================================================`);
-  console.log(`  Signora Interactive Showcase & Telemetry Running`);
+  console.log(`  Hastivo Interactive Showcase & Telemetry Running`);
   console.log(`  URL: http://localhost:${PORT}`);
   console.log(`======================================================\n`);
 });

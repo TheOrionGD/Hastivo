@@ -1,5 +1,5 @@
 /**
- * SignoraAvatar - Non-Humanoid Robot Assistant
+ * HastivoAvatar - Non-Humanoid Robot Assistant
  * Direct Three.js Procedural Implementation matching the reference aesthetic.
  * 
  * Features matching the reference assistant exactly:
@@ -9,7 +9,7 @@
  * - 10 digital expressions driven by FaceController
  * - Concentric circular ear headphone modules with glowing amber outer rings
  * - Articulated mechanical neck column
- * - Compact, slender armored torso with charcoal center shield and Signora "S" emblem
+ * - Compact, slender armored torso with charcoal center shield and Hastivo "S" emblem
  * - Clavicle glowing amber vents and rib blue accent slits
  * - Segmented slim mechanical abdomen with illuminated amber waist belt
  * - Integrated curved shoulder pauldrons with amber accent line
@@ -28,14 +28,14 @@ import { ArmController } from '../animation/ArmController.js';
 import { WristController } from '../animation/WristController.js';
 import { HandAnimationController } from '../animation/HandController.js';
 
-export class SignoraAvatar {
+export class HastivoAvatar {
   constructor(options = {}) {
     this.options = options;
     this.materials = createAvatarMaterials({ wireframe: options.wireframe || false });
 
     // Top-level container
     this.root = new THREE.Group();
-    this.root.name = 'SignoraRoboticAvatar';
+    this.root.name = 'HastivoRoboticAvatar';
 
     // Bone collection for animation
     this.bones = {};

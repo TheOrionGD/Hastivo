@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Signora AI — About Screen (Cardless UI)
+ * Hastivo AI — About Screen (Cardless UI)
  */
 export default function About() {
   return (
@@ -17,7 +17,7 @@ export default function About() {
             Version 1.0 Production Release
           </div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 5vw, 3.5rem)', fontWeight: 900, color: 'var(--text-primary)', margin: '0 0 12px', letterSpacing: '-0.03em' }}>
-            Signora <span style={{ color: 'var(--color-coral)' }}>AI</span>
+            Hastivo <span style={{ color: 'var(--color-coral)' }}>AI</span>
           </h1>
           <p style={{ fontSize: '1.25rem', color: 'var(--color-blue)', fontWeight: 600, margin: '0 0 16px', fontFamily: 'var(--font-display)' }}>
             Vibrant Connections Through Language Colors.
@@ -31,7 +31,7 @@ export default function About() {
               About the Platform
             </h3>
             <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '1rem' }}>
-              Signora AI is an intelligent bidirectional sign-language communication platform engineered to diminish communication barriers between sign-language users and people who primarily communicate through spoken or written language.
+              Hastivo AI is an intelligent bidirectional sign-language communication platform engineered to diminish communication barriers between sign-language users and people who primarily communicate through spoken or written language.
             </p>
           </section>
 
@@ -76,7 +76,7 @@ export default function About() {
               Technology Acknowledgements
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', margin: 0 }}>
-              Built with React, Three.js, MediaPipe landmark tracking, Web Speech APIs, Express, and Groq language understanding. Designed according to the Signora Software Requirements Specification.
+              Built with React, Three.js, MediaPipe landmark tracking, Web Speech APIs, Express, and Groq language understanding. Designed according to the Hastivo Software Requirements Specification.
             </p>
           </section>
         </div>

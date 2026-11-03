@@ -1,11 +1,11 @@
 /**
- * Signora — Avatar Service
+ * Hastivo — Avatar Service
  * Handles avatar asset resolution, active model preference, and asset verification.
  * 
  * Supports:
  * - X-Bot: Female Bot (/models/x-bot.fbx)
  * - Y-Bot: Male Bot (/models/y-bot.fbx)
- * - Procedural: Signora Procedural Robot
+ * - Procedural: Hastivo Procedural Robot
  */
 
 export const AVATAR_MODELS = [
@@ -45,8 +45,8 @@ export const AVATAR_MODELS = [
   },
   {
     id: 'procedural',
-    name: 'Signora Procedural',
-    label: 'Signora (Procedural)',
+    name: 'Hastivo Procedural',
+    label: 'Hastivo (Procedural)',
     gender: 'neutral',
     genderSymbol: '🤖',
     badge: 'Procedural Rig',
@@ -72,7 +72,7 @@ export const avatarService = {
 
   getActiveModel() {
     try {
-      const stored = localStorage.getItem('signora_active_avatar');
+      const stored = localStorage.getItem('hastivo_active_avatar');
       if (stored && AVATAR_MODELS.some(m => m.id === stored)) {
         return stored;
       }
@@ -84,7 +84,7 @@ export const avatarService = {
 
   setActiveModel(modelId) {
     try {
-      localStorage.setItem('signora_active_avatar', modelId);
+      localStorage.setItem('hastivo_active_avatar', modelId);
     } catch {
       // LocalStorage might be disabled
     }

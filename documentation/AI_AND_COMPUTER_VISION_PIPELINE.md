@@ -1,4 +1,4 @@
-# Signora AI — Artificial Intelligence & Computer Vision Processing Pipelines
+# Hastivo AI — Artificial Intelligence & Computer Vision Processing Pipelines
 
 ## 1. Text-to-Sign Intelligence Engine (`ai-service/`)
 

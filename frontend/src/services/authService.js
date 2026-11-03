@@ -1,5 +1,5 @@
 /**
- * Signora — Authentication Service Interface
+ * Hastivo — Authentication Service Interface
  * Follows strict data integrity: Standardized REST endpoints with honest error reporting.
  */
 import config from '../config/env';
@@ -51,7 +51,7 @@ export const authService = {
 
   getCurrentUserToken() {
     return typeof sessionStorage !== 'undefined'
-      ? sessionStorage.getItem('signora_auth_token')
+      ? sessionStorage.getItem('hastivo_auth_token')
       : null;
   },
 };

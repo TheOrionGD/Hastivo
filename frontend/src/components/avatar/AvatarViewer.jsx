@@ -1,6 +1,6 @@
 /**
  * AvatarViewer - High-Level Interactive 3D Avatar Viewport
- * Displays the procedural humanoid Signora character with:
+ * Displays the procedural humanoid Hastivo character with:
  * - Real-time gesture captions & fingerspelling readout
  * - Speed controls (0.75x, 1x, 1.25x)
  * - Quick gesture toolbar (Namaste, Wave, Thank You, Thumbs Up)
@@ -208,7 +208,7 @@ export const AvatarViewer = forwardRef(function AvatarViewer({
               boxShadow: '0 0 8px #6FA3EF'
             }}
           />
-          SIGNORA 3D AVATAR
+          HASTIVO 3D AVATAR
         </span>
 
         {/* Live Gesture Caption Badge - Right next to 3D avatar tag at top instead of bottom */}

@@ -1,5 +1,5 @@
 /**
- * Signora WristController
+ * Hastivo WristController
  * Controls mechanical wrist orientation (flexion/extension, deviation, rotation)
  * for both Left and Right hands.
  */

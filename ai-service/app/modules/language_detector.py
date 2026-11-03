@@ -1,5 +1,5 @@
 """
-Signora AI — Multilingual Language Identification Module
+Hastivo AI — Multilingual Language Identification Module
 Supports:
 - English (en) [Latin]
 - Hindi (hi) [Devanagari: \u0900-\u097F]

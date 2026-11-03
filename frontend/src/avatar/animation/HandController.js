@@ -1,5 +1,5 @@
 /**
- * Signora Hand Animation Controller
+ * Hastivo Hand Animation Controller
  * Handles kinematic finger articulation, wrist flexion/rotation, and hand posture interpolation.
  * Supports standard signing postures, A-Z fingerspelling, and numbers 0-9.
  */

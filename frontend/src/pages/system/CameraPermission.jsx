@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 /**
- * Signora AI — Camera Permission Screen (Cardless UI)
+ * Hastivo AI — Camera Permission Screen (Cardless UI)
  */
 export default function CameraPermission() {
   const [status, setStatus] = useState('pending');
@@ -27,7 +27,7 @@ export default function CameraPermission() {
           Camera Access Required
         </h1>
         <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Signora AI uses your camera to capture hand landmarks and skeletal movement for sign language gesture recognition. All landmark processing is strictly local.
+          Hastivo AI uses your camera to capture hand landmarks and skeletal movement for sign language gesture recognition. All landmark processing is strictly local.
         </p>
 
         {status === 'granted' ? (

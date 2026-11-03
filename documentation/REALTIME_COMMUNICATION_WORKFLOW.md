@@ -1,4 +1,4 @@
-# Signora AI — Real-Time Duplex Communication Protocol
+# Hastivo AI — Real-Time Duplex Communication Protocol
 
 ## 1. Overview
 

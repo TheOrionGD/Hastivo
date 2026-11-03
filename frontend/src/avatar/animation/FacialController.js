@@ -1,5 +1,5 @@
 /**
- * Signora Robotic Facial & Digital Display Controller
+ * Hastivo Robotic Facial & Digital Display Controller
  * Controls the robot assistant's digital visor expressions,
  * electric blue digital eyes, digital smile, and head gestures.
  * 

@@ -1,7 +1,7 @@
 """
-Signora AI — Landmark & Gesture Visualizer
+Hastivo AI — Landmark & Gesture Visualizer
 Renders crisp skeletal joints, connection lines, bounding boxes, and label banners
-using official Signora brand colors:
+using official Hastivo brand colors:
 - Coral: #FF6F61 -> BGR (97, 111, 255)
 - Blue: #6FA3EF -> BGR (239, 163, 111)
 - Amber: #FFC107 -> BGR (7, 193, 255)

@@ -1,5 +1,5 @@
 /**
- * Signora — Admin Telemetry Service
+ * Hastivo — Admin Telemetry Service
  * Returns real system telemetry from backend.
  * Never invents fake traffic numbers, uptime, or error graphs.
  */

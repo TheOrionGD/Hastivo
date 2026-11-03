@@ -37,7 +37,7 @@ export const AvatarCanvas = forwardRef(function AvatarCanvas({
     });
     sceneRef.current = sceneInstance;
     if (typeof window !== 'undefined') {
-      window.__SIGNORA_SCENE__ = sceneInstance;
+      window.__HASTIVO_SCENE__ = sceneInstance;
     }
 
     if (initial.cameraMode && typeof sceneInstance.setCameraMode === 'function') {

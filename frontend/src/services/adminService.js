@@ -1,5 +1,5 @@
 /**
- * Signora — Administrator Services Interface
+ * Hastivo — Administrator Services Interface
  * 
  * Provides services for:
  * 1. AI Moderation Alerts & Flagged Content Management

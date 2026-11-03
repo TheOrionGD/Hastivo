@@ -1,6 +1,6 @@
-# Signora AI — API Reference & Endpoints
+# Hastivo AI — API Reference & Endpoints
 
-This document outlines the REST and WebSocket endpoints across Signora AI services. For full schema definitions, consult [`documentation/openapi.yaml`](../documentation/openapi.yaml).
+This document outlines the REST and WebSocket endpoints across Hastivo AI services. For full schema definitions, consult [`documentation/openapi.yaml`](../documentation/openapi.yaml).
 
 ## Backend Gateway (Port 5000)
 

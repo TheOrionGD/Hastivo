@@ -5,7 +5,7 @@ import AvatarGuide from '../../components/common/AvatarGuide';
 import config from '../../config/env';
 
 /**
- * Signora AI — ISL Vocabulary Explorer (Cardless Redesign)
+ * Hastivo AI — ISL Vocabulary Explorer (Cardless Redesign)
  * Master Specification Section 8.13:
  * - Searchable vocabulary index.
  * - Category / alphabetical navigation.

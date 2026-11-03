@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Signora AI — 404 Screen (Swiss Editorial UI)
+ * Hastivo AI — 404 Screen (Swiss Editorial UI)
  */
 export default function NotFound404() {
   return (

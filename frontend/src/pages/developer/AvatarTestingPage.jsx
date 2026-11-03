@@ -19,7 +19,7 @@ export default function AvatarTestingPage() {
       <div style={{ maxWidth: '1440px', margin: '0 auto', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
-            Signora 3D Avatar Diagnostics & Rig Testing Suite
+            Hastivo 3D Avatar Diagnostics & Rig Testing Suite
           </h1>
           <p style={{ color: '#8E99A8', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
             X-Bot (Female Bot) & Y-Bot (Male Bot) • Blender FBX 3D Rig • Mixamo 65-Bone Skeleton • 5-Finger Kinematics

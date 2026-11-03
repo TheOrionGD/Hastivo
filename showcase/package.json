@@ -1,7 +1,7 @@
 {
-  "name": "signora-showcase",
+  "name": "hastivo-showcase",
   "version": "1.0.0",
-  "description": "Signora Assistive Sign Language Platform — Interactive Demonstration & Telemetry Showcase",
+  "description": "Hastivo Assistive Sign Language Platform — Interactive Demonstration & Telemetry Showcase",
   "main": "server.js",
   "type": "module",
   "scripts": {

@@ -1,5 +1,5 @@
 /**
- * Signora Avatar Developer Testing Panel
+ * Hastivo Avatar Developer Testing Panel
  * Requirement 14 Implementation:
  * Complete diagnostic & articulation testing interface with live sliders,
  * 6 camera modes, tabbed inspection modes, skeleton toggles, and performance telemetry.
@@ -44,7 +44,7 @@ export function AvatarDevPanel({ onSignChange }) {
 
   // Signing Inputs
   const [signingSide, setSigningSide] = useState('R'); // 'R' | 'L' | 'both'
-  const [spellingText, setSpellingText] = useState('SIGNORA');
+  const [spellingText, setSpellingText] = useState('HASTIVO');
   const [activeSignInfo, setActiveSignInfo] = useState({ label: '', letter: '' });
 
   // Facial state
@@ -225,7 +225,7 @@ export function AvatarDevPanel({ onSignChange }) {
         const blob = new Blob([gltf], { type: 'model/gltf-binary' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'Signora_Humanoid_Robot_Avatar.glb';
+        link.download = 'Hastivo_Humanoid_Robot_Avatar.glb';
         link.click();
         URL.revokeObjectURL(link.href);
       },
@@ -634,7 +634,7 @@ export function AvatarDevPanel({ onSignChange }) {
                     { id: 'silver', color: '#DFE3E8', title: 'Aerospace Silver', clearcoat: 0.88, roughness: 0.12, metalness: 0.35 },
                     { id: 'white', color: '#F4F6F9', title: 'Ceramic White', clearcoat: 0.95, roughness: 0.08, metalness: 0.25 },
                     { id: 'blue', color: '#6FA3EF', title: 'Electric Blue', clearcoat: 0.92, roughness: 0.10, metalness: 0.38 },
-                    { id: 'coral', color: '#FF6F61', title: 'Signora Coral', clearcoat: 0.90, roughness: 0.12, metalness: 0.30 },
+                    { id: 'coral', color: '#FF6F61', title: 'Hastivo Coral', clearcoat: 0.90, roughness: 0.12, metalness: 0.30 },
                     { id: 'amber', color: '#FFC107', title: 'Amber Gold', clearcoat: 0.88, roughness: 0.14, metalness: 0.40 },
                     { id: 'stealth', color: '#1E222A', title: 'Obsidian Stealth', clearcoat: 0.80, roughness: 0.18, metalness: 0.45 }
                   ].map((swatch) => (
@@ -832,7 +832,7 @@ export function AvatarDevPanel({ onSignChange }) {
               {/* Active Asset Specs & Verification */}
               <div style={{ background: 'transparent', padding: '16px 0', borderBottom: '1px solid var(--border)' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '0.84rem', color: '#6FA3EF' }}>
-                  Live Rig & Asset Telemetry: {selectedModel === 'x-bot' ? 'X-Bot (Female Bot)' : selectedModel === 'y-bot' ? 'Y-Bot (Male Bot)' : 'Signora Procedural'}
+                  Live Rig & Asset Telemetry: {selectedModel === 'x-bot' ? 'X-Bot (Female Bot)' : selectedModel === 'y-bot' ? 'Y-Bot (Male Bot)' : 'Hastivo Procedural'}
                 </h4>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.76rem' }}>
@@ -1631,7 +1631,7 @@ export function AvatarDevPanel({ onSignChange }) {
                     { id: 'silver', label: 'Aerospace Silver', color: '#DFE3E8', clearcoat: 0.88, roughness: 0.12, metalness: 0.35, dot: '#DFE3E8' },
                     { id: 'white', label: 'Ceramic White', color: '#F4F6F9', clearcoat: 0.95, roughness: 0.08, metalness: 0.25, dot: '#FFFFFF' },
                     { id: 'blue', label: 'Electric Blue', color: '#6FA3EF', clearcoat: 0.92, roughness: 0.10, metalness: 0.38, dot: '#6FA3EF' },
-                    { id: 'coral', label: 'Signora Coral', color: '#FF6F61', clearcoat: 0.90, roughness: 0.12, metalness: 0.30, dot: '#FF6F61' },
+                    { id: 'coral', label: 'Hastivo Coral', color: '#FF6F61', clearcoat: 0.90, roughness: 0.12, metalness: 0.30, dot: '#FF6F61' },
                     { id: 'amber', label: 'Amber Gold', color: '#FFC107', clearcoat: 0.88, roughness: 0.14, metalness: 0.40, dot: '#FFC107' },
                     { id: 'stealth', label: 'Obsidian Stealth', color: '#1E222A', clearcoat: 0.80, roughness: 0.18, metalness: 0.45, dot: '#2E3440' },
                     { id: 'emerald', label: 'Cyber Emerald', color: '#10B981', clearcoat: 0.90, roughness: 0.10, metalness: 0.35, dot: '#10B981' }

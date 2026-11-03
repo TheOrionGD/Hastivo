@@ -1,5 +1,5 @@
 /**
- * Signora AI — Interactive Demonstration & Telemetry Script
+ * Hastivo AI — Interactive Demonstration & Telemetry Script
  * Strictly Zero Dummy Data Policy Compliant
  */
 
@@ -13,7 +13,7 @@ const SERVICES = {
 
 // ── 0. Theme System (Dark / Light Theme Sync) ─────────────────
 function initTheme() {
-  const saved = localStorage.getItem('signora_theme') || 'dark';
+  const saved = localStorage.getItem('hastivo_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
   updateThemeIcon(saved);
 }
@@ -22,7 +22,7 @@ window.toggleTheme = function () {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('signora_theme', next);
+  localStorage.setItem('hastivo_theme', next);
   updateThemeIcon(next);
 };
 

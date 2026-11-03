@@ -1,5 +1,5 @@
 /**
- * Signora BodyController
+ * Hastivo BodyController
  * Controls spine, pelvis, and chest bones. Handles subtle mechanical idle breathing,
  * torso rotation during signing, and ergonomic posture balancing.
  */

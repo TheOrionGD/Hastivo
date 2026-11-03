@@ -1,5 +1,5 @@
 /**
- * Signora ShoulderController
+ * Hastivo ShoulderController
  * Manages left and right robotic shoulder articulation: clavicle elevation/depression,
  * forward protraction, and scapular rotation for natural signing space reach.
  */

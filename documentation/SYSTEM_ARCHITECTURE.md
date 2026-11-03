@@ -1,8 +1,8 @@
-# Signora AI — System Architecture & Topology
+# Hastivo AI — System Architecture & Topology
 
 ## 1. System Overview
 
-Signora is an assistive communication platform bridging the communication gap between Deaf/Hard-of-Hearing individuals and hearing individuals using Indian Sign Language (ISL). 
+Hastivo is an assistive communication platform bridging the communication gap between Deaf/Hard-of-Hearing individuals and hearing individuals using Indian Sign Language (ISL). 
 
 The platform is engineered as an interconnected, microservice-oriented ecosystem partitioned into eight specialized directories, each with distinct lifecycle responsibilities.
 

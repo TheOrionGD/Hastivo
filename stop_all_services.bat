@@ -1,9 +1,9 @@
 @echo off
 setlocal
-title Signora AI - Graceful Shutdown
+title Hastivo AI - Graceful Shutdown
 
 echo ========================================================
-echo       SIGNORA AI - TERMINATING RUNNING SERVICES         
+echo       HASTIVO AI - TERMINATING RUNNING SERVICES         
 echo ========================================================
 echo.
 
@@ -18,7 +18,7 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":8000 :8001" ^| findstr "LIS
 )
 
 echo.
-echo All Signora AI services have been stopped.
+echo All Hastivo AI services have been stopped.
 echo ========================================================
 timeout /t 3
 

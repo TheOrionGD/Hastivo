@@ -1,12 +1,12 @@
 /**
- * Signora MixamoBotAvatar - First-Class FBX Avatar Rig (X-Bot & Y-Bot)
+ * Hastivo MixamoBotAvatar - First-Class FBX Avatar Rig (X-Bot & Y-Bot)
  * 
  * Supports:
  * - X-Bot: Sleek female humanoid robot assistant (Beta_Surface + Beta_Joints)
  * - Y-Bot: Athletic male humanoid robot assistant (Alpha_Surface + Alpha_Joints)
  * - Mixamo 65-bone humanoid skeleton with full 5-finger articulated kinematics
  * - PBR MeshPhysicalMaterial with dynamic outer layer coating (color, clearcoat, roughness, metalness)
- * - Compatible with Signora's SigningEngine, AvatarAnimationController, and HandAnimationController interfaces
+ * - Compatible with Hastivo's SigningEngine, AvatarAnimationController, and HandAnimationController interfaces
  */
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
@@ -185,7 +185,7 @@ class MixamoFingerController {
 }
 
 /**
- * MixamoHandController wraps Mixamo fingers & wrist into Signora's HandController interface
+ * MixamoHandController wraps Mixamo fingers & wrist into Hastivo's HandController interface
  */
 class MixamoHandController {
   constructor(bonesMap, side, wristBone) {
@@ -458,7 +458,7 @@ export class MixamoBotAvatar {
     this.options = options;
 
     this.root = new THREE.Group();
-    this.root.name = `Signora_${this.config.name}`;
+    this.root.name = `Hastivo_${this.config.name}`;
 
     this.bones = {};
     this.meshes = [];
@@ -473,7 +473,7 @@ export class MixamoBotAvatar {
     this.coatingClearcoat = options.clearcoat !== undefined ? options.clearcoat : 0.92;
     this.isWireframe = options.wireframe || false;
 
-    // Dynamic upper body opacity (compatible with Signora signing engine)
+    // Dynamic upper body opacity (compatible with Hastivo signing engine)
     this.currentUpperBodyOpacity = 1.0;
     this.targetUpperBodyOpacity = 1.0;
 
@@ -588,7 +588,7 @@ export class MixamoBotAvatar {
       LeftWrist: rawBones['mixamorigLeftHand'],
     };
 
-    // Populate both raw Mixamo names and Signora standard alias names
+    // Populate both raw Mixamo names and Hastivo standard alias names
     this.bones = { ...rawBones };
 
     // Standard alias mappings: proxy bones for arm kinematics
@@ -678,7 +678,7 @@ export class MixamoBotAvatar {
   }
 
   _applyRestStance() {
-    // Initial rest stance on proxy bones (matches Signora procedural ready stance)
+    // Initial rest stance on proxy bones (matches Hastivo procedural ready stance)
     this.proxyBones.RightUpperArm.rotation.set(0.42, -0.10, 0.28);
     this.proxyBones.RightElbow.rotation.set(-0.92, 0, 0);
     this.proxyBones.RightForearm.rotation.set(0, 0.35, 0);

@@ -1,12 +1,12 @@
 name: Feature Request
-description: Suggest an idea or enhancement for Signora AI
+description: Suggest an idea or enhancement for Hastivo AI
 title: "[ENHANCEMENT]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for suggesting improvements to make Signora AI more accessible and capable!
+        Thank you for suggesting improvements to make Hastivo AI more accessible and capable!
   - type: textarea
     id: problem
     attributes:

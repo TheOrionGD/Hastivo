@@ -1,5 +1,5 @@
 /**
- * Signora Avatar Animation Controller
+ * Hastivo Avatar Animation Controller
  * Manages procedural humanoid poses, kinetic blending, smooth return-to-idle,
  * and key animations: Idle Breathing, Neutral, Walk-in, Wave, Present, Point,
  * Thumbs-up, Shrug, Thinking, Listening, Acknowledgement, and Error Reaction.

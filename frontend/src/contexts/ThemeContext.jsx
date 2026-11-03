@@ -5,7 +5,7 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('signora_theme');
+    const saved = localStorage.getItem('hastivo_theme');
     if (saved === 'dark' || saved === 'light') return saved;
     return 'light'; // Default to Light theme per Master Swiss Editorial Specification
   });
@@ -14,7 +14,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('signora_theme', theme);
+    localStorage.setItem('hastivo_theme', theme);
 
     let active = true;
     // Sync to backend MongoDB user preferences if configured

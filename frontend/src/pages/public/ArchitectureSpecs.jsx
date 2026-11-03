@@ -4,7 +4,7 @@ import { PageContainer, CardlessBadge, SectionDivider } from '../../components/c
 import AvatarGuide from '../../components/common/AvatarGuide';
 
 /**
- * Signora AI — Architecture & Engineering Specifications
+ * Hastivo AI — Architecture & Engineering Specifications
  * Editorial Swiss documentation page exposing certified subsystem topologies,
  * data flow pipelines, security boundaries, and microservice definitions.
  */
@@ -62,13 +62,13 @@ export default function ArchitectureSpecs() {
             Architecture & Engineering Specs
           </h1>
           <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', marginTop: '8px', maxWidth: '780px', lineHeight: 1.6 }}>
-            Comprehensive architectural blueprints, microservice contracts, and air-gapped security boundaries governing the Signora AI platform.
+            Comprehensive architectural blueprints, microservice contracts, and air-gapped security boundaries governing the Hastivo AI platform.
           </p>
         </div>
 
         <AvatarGuide
           featureName="System Topology & Contracts"
-          description="Every microservice in Signora operates under zero-mock verification. Review live communication ports, runtimes, and air-gapped privacy boundaries below."
+          description="Every microservice in Hastivo operates under zero-mock verification. Review live communication ports, runtimes, and air-gapped privacy boundaries below."
           pose="presenting"
         />
 

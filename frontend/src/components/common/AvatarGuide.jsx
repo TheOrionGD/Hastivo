@@ -72,7 +72,7 @@ export default function AvatarGuide({
       <div style={{ flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
           <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>
-            Signora Assistant &bull; {featureName}
+            Hastivo Assistant &bull; {featureName}
           </strong>
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
             (Pose: {pose})

@@ -13,7 +13,7 @@ from .modules.language_detector import detect_language, LANGUAGE_NAMES
 app = FastAPI(
     title=settings.SERVICE_NAME,
     version=settings.API_VERSION,
-    description="Signora Artificial Intelligence and ISL Language Processing Microservice",
+    description="Hastivo Artificial Intelligence and ISL Language Processing Microservice",
 )
 
 app.add_middleware(

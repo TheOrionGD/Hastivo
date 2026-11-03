@@ -1,5 +1,5 @@
 /**
- * Signora Avatar Three.js Scene & Lighting Architecture
+ * Hastivo Avatar Three.js Scene & Lighting Architecture
  * Features:
  * - 4-Point Studio Lighting (Key, Fill, Rim, Ambient)
  * - Multi-mode Camera System:
@@ -15,7 +15,7 @@
  * - Full memory disposal
  */
 import * as THREE from 'three';
-import { SignoraAvatar } from '../core/SignoraAvatar.js';
+import { HastivoAvatar } from '../core/HastivoAvatar.js';
 import { MixamoBotAvatar } from '../core/MixamoBotAvatar.js';
 import { AvatarAnimationController } from '../animation/AvatarAnimationController.js';
 import { SigningEngine } from '../animation/SigningEngine.js';
@@ -189,7 +189,7 @@ export class AvatarScene {
     this.stage.receiveShadow = true;
     this.scene.add(this.stage);
 
-    // Subtle luminous stage perimeter ring (Signora Blue)
+    // Subtle luminous stage perimeter ring (Hastivo Blue)
     const ringGeom = new THREE.RingGeometry(1.36, 1.39, 48);
     ringGeom.rotateX(-Math.PI / 2);
     const ringMat = new THREE.MeshBasicMaterial({
@@ -239,7 +239,7 @@ export class AvatarScene {
         await mixamoAvatar.loadPromise;
       } else {
         // Procedural robot fallback
-        this.avatar = new SignoraAvatar({ wireframe: this.wireframe });
+        this.avatar = new HastivoAvatar({ wireframe: this.wireframe });
         this.scene.add(this.avatar.root);
         if (this.coatingColor && this.avatar.setOuterLayerCoating) {
           this.avatar.setOuterLayerCoating(this.coatingColor, this.coatingOptions);

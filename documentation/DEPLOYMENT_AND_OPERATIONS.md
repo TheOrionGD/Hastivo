@@ -1,4 +1,4 @@
-# Signora AI — Deployment & Operations Guide
+# Hastivo AI — Deployment & Operations Guide
 
 ## 1. Port & Environment Matrix
 
@@ -80,7 +80,7 @@ Or run individual suites:
 ```env
 PORT=5000
 NODE_ENV=development
-JWT_SECRET=signora-secret-key-2026-production
+JWT_SECRET=hastivo-secret-key-2026-production
 AI_SERVICE_URL=http://localhost:8000
 CV_SERVICE_URL=http://localhost:8001
 MICROSERVICE_URL=http://localhost:5002
@@ -91,7 +91,7 @@ MICROSERVICE_URL=http://localhost:5002
 PORT=8000
 HOST=0.0.0.0
 ENVIRONMENT=development
-MODEL_NAME=signora-isl-v2
+MODEL_NAME=hastivo-isl-v2
 ```
 
 ### Computer Vision Service (`computer-vision/.env`):
@@ -106,8 +106,8 @@ MAX_NUM_HANDS=2
 ### Duplex Microservice (`microservice/.env`):
 ```env
 PORT=5002
-SERVICE_NAME=Signora-Realtime-Notification-Microservice
-JWT_SECRET=signora-secret-key-2026-production
+SERVICE_NAME=Hastivo-Realtime-Notification-Microservice
+JWT_SECRET=hastivo-secret-key-2026-production
 ```
 
 ### Frontend (`frontend/.env`):

@@ -1,5 +1,5 @@
 """
-Signora AI — MediaPipe Hand & Joint Tracking Module
+Hastivo AI — MediaPipe Hand & Joint Tracking Module
 Supports both MediaPipe Tasks API (modern) and legacy Solutions API with robust graceful fallback.
 Extracts 21 3D landmarks per hand, joint angles, finger extensions, and bounding boxes.
 """

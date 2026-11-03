@@ -1,5 +1,5 @@
 /**
- * Signora FaceController
+ * Hastivo FaceController
  * Coordinates the digital display face: integrates EyeController with digital mouth
  * indicators and head gestures to produce all 10 required robotic expressions:
  * 1. Neutral (● ● with gentle curve)

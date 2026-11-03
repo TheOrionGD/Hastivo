@@ -179,7 +179,7 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
               textTransform: 'uppercase',
             }}
           >
-            SIGNORA 3D AVATAR KINEMATICS ENGINE
+            HASTIVO 3D AVATAR KINEMATICS ENGINE
           </span>
         </div>
 

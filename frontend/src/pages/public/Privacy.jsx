@@ -12,7 +12,7 @@ export default function Privacy() {
             marginBottom: '8px',
           }}
         >
-          Signora Privacy Policy & Data Architecture
+          Hastivo Privacy Policy & Data Architecture
         </h1>
 
         <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '32px' }}>
