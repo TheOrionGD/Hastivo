@@ -10,15 +10,29 @@ lerna-debug.log*
 # Dependencies
 node_modules/
 */node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
 # Production and Build Outputs
 dist/
+*/dist/
 dist-ssr/
 build/
+*/build/
+out/
+.next/
+.nuxt/
+.output/
 *.local
 
-# Python Artifacts & Caches
+# Python Artifacts, Virtual Environments & Caches
 __pycache__/
+*/__pycache__/
+*/**/__pycache__/
 *.py[cod]
 *$py.class
 *.so
@@ -27,9 +41,9 @@ env/
 venv/
 .venv/
 ENV/
-build/
+env.bak/
+venv.bak/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -43,6 +57,7 @@ wheels/
 .installed.cfg
 *.egg
 .pytest_cache/
+*/.pytest_cache/
 .coverage
 htmlcov/
 .tox/
@@ -50,10 +65,13 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
-# Environment Variables & Secrets (CRITICAL: Never commit secrets)
+# Environment Variables & Secrets (CRITICAL: Never commit credentials)
 .env
 .env.*
 !.env.example
+*.env
+!*.env.example
+atlas-credentials.env
 
 # Private Certificates, Keys & Cloud Credentials
 *.pem
@@ -86,10 +104,14 @@ client_secret*.json
 *.dump
 *.sql
 
-# Large Datasets & Model Checkpoints (Download via download_isl_dataset.py)
+# Heavy Binary Datasets, Extracted Media & Model Checkpoints
 data/isl_dataset/data/
 data/isl_dataset/.cache/
+data/bridgeconn_isl/samples/
+data/wlasl_dataset/
 *.parquet
+*.npz
+*.npy
 *.h5
 *.hdf5
 *.onnx
@@ -98,8 +120,15 @@ data/isl_dataset/.cache/
 *.tflite
 *.ckpt
 *.safetensors
+*.tar.gz
+*.zip
+*.7z
+*.rar
 
-# IDE and Editor Directories
+# MediaPipe & Large Model Assets (Downloadable via pipeline scripts)
+*.task
+
+# IDE, Editor & Tooling Directories
 .vscode/*
 !.vscode/extensions.json
 .idea/
@@ -110,6 +139,9 @@ data/isl_dataset/.cache/
 *.sw?
 *.sublime-project
 *.sublime-workspace
+.fleet/
+.cursor/
+.agents/
 
 # OS Generated Files
 .DS_Store
@@ -121,6 +153,9 @@ ehthumbs.db
 Thumbs.db
 [Dd]esktop.ini
 
-# Temporary Test Files and Reports
+# Temporary Test Files, Coverage, and Lint Reports
 testing/oxlint_frontend.json
 testing/lint_summary.txt
+coverage/
+.turbo/
+.parcel-cache/
