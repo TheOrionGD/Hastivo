@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import AvatarGuide from '../../components/common/AvatarGuide';
 import { translationService } from '../../services/translationService';
+import { speechService } from '../../services/speechService';
 import { useNotification } from '../../contexts/NotificationContext';
 import { AvatarViewer } from '../../components/avatar/AvatarViewer.jsx';
 import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo — Text-to-Sign Primary Workspace (Cardless Redesign)
- * Master Specification Section 4.7:
- * - Visually dominant 3D avatar stage without enclosed box containers.
- * - Open input editor with manual typing, speech-to-text mic, live transcript, word/character count.
- * - AI processing area with sign grammar transformation & gesture sequence generation.
- * - Playback controls (play, pause, resume, replay, speed control, prev/next gesture).
- * - Open spatial composition with subtle 1px dividers.
+ * Hastivo — Text-to-Sign Primary Workspace
+ * 
+ * Features:
+ * - Robust speech recognition pipeline with live interim/final transcripts and auto-recovery.
+ * - Multi-sign ISL grammatical sequence generation (TSOV grammar rules).
+ * - Full chronological 3D avatar animation playback queue (signs + fingerspelling OOV).
+ * - Full interactive playback controls: Play, Pause, Resume, Replay, Reset Pose, Speed Adjustment.
  */
 export default function TextToSign() {
   const [inputText, setInputText] = useState('');
@@ -21,62 +22,81 @@ export default function TextToSign() {
   const [errorMessage, setErrorMessage] = useState('');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const [isListening, setIsListening] = useState(false);
+  const [speechStatus, setSpeechStatus] = useState('IDLE');
   const [selectedDialect, setSelectedDialect] = useState('standard');
 
   const avatarViewerRef = useRef(null);
-  const recognitionRef = useRef(null);
   const { notifyCoralError, notifySuccess } = useNotification();
 
-  // Setup Speech-to-Text Recognition
-  useEffect(() => {
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRec) {
-      const recognizer = new SpeechRec();
-      recognizer.continuous = false;
-      recognizer.interimResults = true;
-      recognizer.lang = 'en-US';
-
-      recognizer.onresult = (event) => {
-        const transcript = Array.from(event.results)
-          .map((res) => res[0].transcript)
-          .join('');
-        setInputText(transcript);
-      };
-
-      recognizer.onend = () => {
-        setIsListening(false);
-      };
-
-      recognizer.onerror = (err) => {
-        setIsListening(false);
-        notifyCoralError('Speech Input Error', err.error || 'Microphone error');
-      };
-
-      recognitionRef.current = recognizer;
-    }
-  }, [notifyCoralError]);
-
-  const toggleSpeechRecognition = () => {
-    if (!recognitionRef.current) {
-      notifyCoralError('Not Supported', 'Speech recognition is not supported in this browser.');
-      return;
-    }
-
+  // Speech Recognition integration via centralized speechService
+  const toggleSpeechRecognition = async () => {
     if (isListening) {
-      recognitionRef.current.stop();
+      speechService.stopListening();
       setIsListening(false);
+      setSpeechStatus('IDLE');
+      notifySuccess('Microphone Stopped', 'Dictation concluded.');
     } else {
-      try {
-        recognitionRef.current.start();
-        setIsListening(true);
-        notifySuccess('Listening...', 'Speak naturally to transcribe into Indian Sign Language.');
-      } catch (e) {
-        setIsListening(false);
-        notifyCoralError('Microphone Access Error', e.message || 'Could not start microphone');
+      const perm = await speechService.checkMicrophonePermission();
+      if (!perm.supported) {
+        notifyCoralError('Audio Unavailable', perm.error || 'Microphone not supported in this browser.');
+        return;
       }
+
+      setIsListening(true);
+      await speechService.startListening({
+        continuous: false,
+        lang: 'en-US',
+        onStatusChange: (status) => setSpeechStatus(status),
+        onTranscript: ({ transcript, isFinal }) => {
+          if (transcript) {
+            setInputText(transcript);
+          }
+          if (isFinal) {
+            setIsListening(false);
+            setSpeechStatus('IDLE');
+          }
+        },
+        onError: (err) => {
+          setIsListening(false);
+          setSpeechStatus('ERROR');
+          notifyCoralError('Speech Input Notice', err);
+        }
+      });
+      notifySuccess('Listening...', 'Speak naturally to dictate your sentence.');
     }
+  };
+
+  // Compile local fallback ISL grammar if backend service is unreachable
+  const compileLocalISLSequence = (text) => {
+    const rawTokens = text.toUpperCase().replace(/[^\w\s]/g, '').trim().split(/\s+/);
+    const timeWords = new Set(['TODAY', 'TOMORROW', 'YESTERDAY', 'NOW', 'MORNING', 'NIGHT']);
+    const questionWords = new Set(['WHERE', 'WHAT', 'WHEN', 'WHY', 'HOW', 'WHO']);
+    const negationWords = new Set(['NOT', 'NO', 'NEVER']);
+
+    const times = [];
+    const questions = [];
+    const negations = [];
+    const core = [];
+
+    rawTokens.forEach((t) => {
+      if (timeWords.has(t)) times.push(t);
+      else if (questionWords.has(t)) questions.push(t);
+      else if (negationWords.has(t)) negations.push('NO');
+      else core.push(t);
+    });
+
+    // ISL SOV reordering: Subject + Object + Verb
+    if (core.length >= 3 && ['WANT', 'NEED', 'LEARN', 'LIKE', 'GO'].includes(core[1])) {
+      const subj = core[0];
+      const verb = core[1];
+      const objs = core.slice(2);
+      core.splice(0, core.length, subj, ...objs, verb);
+    }
+
+    return [...times, ...core, ...negations, ...questions];
   };
 
   const handleTranslate = async (e) => {
@@ -89,42 +109,35 @@ export default function TextToSign() {
     setErrorMessage('');
     setIsTranslating(true);
     setTranslationResult(null);
+    setIsPaused(false);
 
     try {
-      const res = await translationService.translateTextToSign(inputText, selectedDialect);
-      setTranslationResult(res);
-
-      const words = inputText.trim().toUpperCase().split(/\s+/);
-      const recognizedSign = words.find((w) =>
-        ['NAMASTE', 'HELLO', 'THANK', 'THANKS', 'WELCOME', 'YES', 'NO', 'PLEASE', 'HELP', 'LEARN', 'COMMUNICATE', 'SIGN'].includes(w)
-      );
-
-      if (recognizedSign) {
-        const signMap = {
-          NAMASTE: 'NAMASTE',
-          HELLO: 'HELLO',
-          THANK: 'THANK_YOU',
-          THANKS: 'THANK_YOU',
-          WELCOME: 'WELCOME',
-          YES: 'YES',
-          NO: 'NO',
-          PLEASE: 'PLEASE',
-          HELP: 'HELP',
-          LEARN: 'LEARN',
-          COMMUNICATE: 'COMMUNICATE',
-          SIGN: 'SIGN',
+      let result = null;
+      try {
+        result = await translationService.translateTextToSign(inputText, selectedDialect);
+      } catch {
+        // Transparent local linguistic compiler fallback
+        const islTokens = compileLocalISLSequence(inputText);
+        result = {
+          success: true,
+          sourceText: inputText,
+          islGlossSequence: islTokens,
+          animationSequence: islTokens.map((t, idx) => ({ sequenceIndex: idx, gloss: t }))
         };
-        avatarViewerRef.current?.playSign(signMap[recognizedSign]);
-        notifySuccess('Sign Found', `Playing ISL gesture for "${recognizedSign}"`);
-      } else {
-        avatarViewerRef.current?.playFingerspelling(words.join(' '));
-        notifySuccess('Fingerspelling Active', `Signing: "${words.join(' ')}"`);
       }
 
-      if (res?.sequence && res.sequence.length > 0) {
-        startPlayback(res.sequence);
-      } else {
-        startPlayback(words);
+      setTranslationResult(result);
+
+      // Extract sequence of signs to play
+      const sequenceTokens = result.islGlossSequence ||
+        (result.animationSequence ? result.animationSequence.map(a => a.gloss || a.letter) : null) ||
+        compileLocalISLSequence(inputText);
+
+      // Play continuous synchronized sequence on 3D avatar
+      if (avatarViewerRef.current && sequenceTokens.length > 0) {
+        avatarViewerRef.current.playSequence(sequenceTokens);
+        notifySuccess('Synthesizing Signs', `Articulating ${sequenceTokens.length} ISL signs in sequence.`);
+        startPlaybackProgress(sequenceTokens);
       }
     } catch (err) {
       setErrorMessage(err.message || 'Translation request failed.');
@@ -134,13 +147,16 @@ export default function TextToSign() {
     }
   };
 
-  const startPlayback = (sequence) => {
+  const startPlaybackProgress = (sequence) => {
     setIsPlaying(true);
+    setIsPaused(false);
     let index = 0;
     setActiveWordIndex(0);
 
-    const intervalTime = Math.max(500, Math.round(1200 / playbackSpeed));
+    const intervalTime = Math.max(500, Math.round(1150 / playbackSpeed));
     const interval = setInterval(() => {
+      if (isPaused) return;
+
       index++;
       if (index < sequence.length) {
         setActiveWordIndex(index);
@@ -152,9 +168,25 @@ export default function TextToSign() {
     }, intervalTime);
   };
 
+  const handleTogglePause = () => {
+    if (isPaused) {
+      avatarViewerRef.current?.resume?.();
+      setIsPaused(false);
+      notifySuccess('Playback Resumed', 'Avatar signing resumed.');
+    } else {
+      avatarViewerRef.current?.pause?.();
+      setIsPaused(true);
+      notifySuccess('Playback Paused', 'Avatar signing paused.');
+    }
+  };
+
+  const handleSpeedChange = (speed) => {
+    setPlaybackSpeed(speed);
+    avatarViewerRef.current?.setPlaybackSpeed?.(speed);
+  };
+
   const words = inputText.trim() ? inputText.trim().split(/\s+/) : [];
-  const charCount = inputText.length;
-  const wordCount = words.length;
+  const sequenceTokens = translationResult?.islGlossSequence || words;
 
   return (
     <div className="page-wrapper">
@@ -173,170 +205,194 @@ export default function TextToSign() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <CardlessBadge color="coral" icon="🤖">3D Humanoid Engine</CardlessBadge>
-            <CardlessBadge color="blue" icon="⚡">Sub-60ms Synthesizer</CardlessBadge>
+            <CardlessBadge color="blue" icon="⚡">ISL TSOV Grammar</CardlessBadge>
           </div>
         </div>
 
         <AvatarGuide
           featureName="Text-to-Sign Workspace"
-          description="Type text or click the microphone to speak. The procedural avatar articulates fingers, wrists, and gestures in synchronized real-time."
-          pose="present"
+          guideSummary="Type a sentence or use your microphone to dictate. Hastivo's linguistic engine parses the text into Indian Sign Language (ISL) grammar and commands the 3D avatar to articulate the signs sequentially."
+          capabilities={[
+            'Browser-native speech recognition with live transcription',
+            'ISL Subject-Object-Verb (SOV) grammatical compilation',
+            'Full sequential multi-sign animation queues with fingerspelling fallback',
+            'Interactive playback controls (Play, Pause, Resume, Replay, Speed adjustment)'
+          ]}
         />
 
         <SectionDivider spacing="24px" />
 
-        {/* ── 2-Column Open Spatial Workspace ── */}
+        {/* 2-Column Split Composition (55% Avatar Stage / 45% Text Input & Sequence Editor) */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(340px, 1fr) minmax(420px, 1.35fr)',
-            gap: 'clamp(32px, 5vw, 60px)',
+            gridTemplateColumns: 'minmax(0, 1.25fr) minmax(0, 1fr)',
+            gap: '32px',
             alignItems: 'start',
-            marginTop: '28px',
           }}
+          className="text-to-sign-grid"
         >
-          {/* Left Column: Input Area & AI Processing Grammar */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* Input Section Header */}
+          {/* Column A: 3D Avatar Interactive Stage */}
+          <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)' }}>
-                Sentence or Voice Input
+              <span style={{ fontSize: '0.84rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)' }}>
+                3D Sign Language Avatar Stage
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                  Dialect:
-                </span>
-                <select
-                  value={selectedDialect}
-                  onChange={(e) => setSelectedDialect(e.target.value)}
-                  style={{
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    fontSize: '0.78rem',
-                    background: 'var(--surface-elevated, var(--bg-secondary))',
-                    color: 'var(--text-primary)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <option value="standard">Standard ISL</option>
-                  <option value="northern">Northern ISL</option>
-                  <option value="southern">Southern ISL</option>
-                </select>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                  {charCount} chars &bull; {wordCount} words
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {isPlaying && (
+                  <CardlessBadge color={isPaused ? 'amber' : 'coral'}>
+                    {isPaused ? '⏸ Paused' : '▶ Articulating Signs'}
+                  </CardlessBadge>
+                )}
+                <CardlessBadge color="grey">65-Bone Rig</CardlessBadge>
               </div>
             </div>
 
-            {/* Open Input Editor */}
-            <form onSubmit={handleTranslate} style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ position: 'relative' }}>
-                <textarea
-                  rows="5"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  placeholder="Type a sentence or click the microphone (e.g. 'Namaste, thank you for learning sign language with Hastivo')..."
-                  style={{
-                    width: '100%',
-                    padding: '16px 18px',
-                    fontSize: '1.05rem',
-                    lineHeight: 1.6,
-                    background: 'var(--surface-elevated, var(--bg-secondary))',
-                    border: '1px solid var(--border-subtle, var(--border))',
-                    borderRadius: 'var(--radius-control)',
-                    color: 'var(--text-primary)',
-                    fontFamily: 'inherit',
-                    outline: 'none',
-                    resize: 'vertical',
-                    boxSizing: 'border-box',
-                    transition: 'border-color 0.2s ease',
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--color-blue)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'var(--border-subtle, var(--border))')}
-                />
+            <AvatarViewer
+              ref={avatarViewerRef}
+              height="580px"
+              showControls={true}
+              cameraMode="conversation"
+              showQuickPhrases={true}
+            />
+          </div>
 
-                {/* Speech Dictation Mic Overlay Trigger */}
-                <button
-                  type="button"
-                  onClick={toggleSpeechRecognition}
-                  title={isListening ? 'Stop Speech Recognition' : 'Dictate with Microphone'}
-                  style={{
-                    position: 'absolute',
-                    bottom: '14px',
-                    right: '14px',
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    background: isListening ? 'var(--color-coral)' : 'var(--surface, var(--bg-primary))',
-                    color: isListening ? '#fff' : 'var(--text-primary)',
-                    border: '1px solid var(--border)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: isListening ? '0 0 14px var(--color-coral)' : 'none',
-                    transition: 'all 0.2s ease',
-                  }}
+          {/* Column B: Open Input Editor & ISL Sequence Timeline */}
+          <div>
+            <form onSubmit={handleTranslate} style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <label
+                  htmlFor="tts-input"
+                  style={{ fontSize: '0.84rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)' }}
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                    <line x1="12" y1="19" x2="12" y2="23" />
-                    <line x1="8" y1="23" x2="16" y2="23" />
-                  </svg>
-                </button>
+                  Sentence / Speech Input
+                </label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Dialect:</span>
+                  <select
+                    value={selectedDialect}
+                    onChange={(e) => setSelectedDialect(e.target.value)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      background: 'var(--bg-secondary)',
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--border)',
+                      fontSize: '0.78rem',
+                      outline: 'none',
+                    }}
+                  >
+                    <option value="standard">Standard ISL</option>
+                    <option value="northern">Northern ISL</option>
+                    <option value="southern">Southern ISL</option>
+                  </select>
+                </div>
               </div>
 
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
-                <CardlessButton
-                  variant="primary"
-                  size="md"
-                  disabled={isTranslating || !inputText.trim()}
-                  onClick={handleTranslate}
-                  style={{ flex: 1 }}
-                >
-                  {isTranslating ? 'Synthesizing Signs...' : 'Translate & Play 3D Signs →'}
-                </CardlessButton>
-
-                <CardlessButton
-                  variant="ghost"
-                  size="md"
-                  onClick={() => {
-                    setInputText('');
-                    setTranslationResult(null);
-                    setErrorMessage('');
-                    avatarViewerRef.current?.resetPose();
+              {/* Textarea Input */}
+              <div style={{ position: 'relative' }}>
+                <textarea
+                  id="tts-input"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Type or speak a sentence (e.g., 'Hello, where is the train station?' or 'I need water please')..."
+                  rows={4}
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px',
+                    borderRadius: 'var(--radius-control)',
+                    border: '1px solid var(--border)',
+                    background: 'var(--surface-sunken, var(--bg-secondary))',
+                    color: 'var(--text-primary)',
+                    fontSize: '1rem',
+                    lineHeight: '1.5',
+                    resize: 'vertical',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    fontFamily: 'inherit',
+                    transition: 'border-color 0.2s ease',
                   }}
-                >
-                  Clear
-                </CardlessButton>
+                  onFocus={(e) => (e.target.style.borderColor = 'var(--color-coral)')}
+                  onBlur={(e) => (e.target.style.borderColor = 'var(--border)')}
+                />
+              </div>
+
+              {/* Input Meta & Microphone Dictation Button */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '10px',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ fontSize: '0.80rem', color: 'var(--text-secondary)' }}>
+                    {words.length} words &bull; {inputText.length} characters
+                  </span>
+                  {speechStatus === 'LISTENING' && (
+                    <span style={{ fontSize: '0.80rem', color: 'var(--color-coral)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-coral)', display: 'inline-block' }} />
+                      Listening to speech...
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <CardlessButton
+                    type="button"
+                    variant={isListening ? 'primary' : 'ghost'}
+                    size="sm"
+                    onClick={toggleSpeechRecognition}
+                    style={{
+                      borderColor: isListening ? 'var(--color-coral)' : 'var(--border)',
+                      color: isListening ? '#FFFFFF' : 'var(--text-primary)',
+                      background: isListening ? 'var(--color-coral)' : 'transparent',
+                    }}
+                  >
+                    {isListening ? '🛑 Stop Dictation' : '🎙️ Microphone'}
+                  </CardlessButton>
+
+                  <CardlessButton
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    disabled={isTranslating || !inputText.trim()}
+                  >
+                    {isTranslating ? 'Compiling ISL...' : 'Synthesize Signs ▶'}
+                  </CardlessButton>
+                </div>
               </div>
             </form>
 
-            {/* Quick Preset Signs */}
-            <div style={{ marginTop: '20px' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                Quick ISL Lexicon Triggers:
+            {/* Quick Vocabulary Presets */}
+            <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-subtle, var(--border))' }}>
+              <div style={{ fontSize: '0.80rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                Preset Examples:
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {['Namaste', 'Thank You', 'Welcome', 'Please', 'Help', 'Learn', 'Yes', 'No'].map((preset) => (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {[
+                  'Hello, welcome!',
+                  'Please help me',
+                  'I want water',
+                  'Where is the doctor?',
+                  'Thank you very much'
+                ].map((preset) => (
                   <button
                     key={preset}
                     type="button"
                     onClick={() => {
                       setInputText(preset);
-                      const key = preset.toUpperCase().replace(' ', '_');
-                      avatarViewerRef.current?.playSign(key);
-                      notifySuccess('Gesture Triggered', `Avatar signing: ${preset}`);
                     }}
                     style={{
-                      background: 'transparent',
+                      padding: '4px 10px',
+                      borderRadius: 'var(--radius-control)',
+                      background: 'var(--bg-secondary)',
                       border: '1px solid var(--border)',
-                      color: 'var(--text-primary)',
-                      padding: '5px 12px',
-                      borderRadius: '999px',
-                      fontSize: '0.80rem',
+                      color: 'var(--text-secondary)',
+                      fontSize: '0.78rem',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
                     }}
@@ -367,10 +423,10 @@ export default function TextToSign() {
             )}
 
             {/* AI Grammar & Gesture Sequence Timeline */}
-            <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid var(--border-subtle, var(--border))' }}>
+            <div style={{ marginTop: '24px', paddingTop: '18px', borderTop: '1px solid var(--border-subtle, var(--border))' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                 <span style={{ fontSize: '0.84rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)' }}>
-                  Sign Grammar & Sequence Tokens
+                  ISL Grammar Tokens ({sequenceTokens.length})
                 </span>
                 {isPlaying && (
                   <CardlessBadge color="amber">Playing Sequence</CardlessBadge>
@@ -379,18 +435,18 @@ export default function TextToSign() {
 
               {translationResult && (
                 <div style={{ marginBottom: '12px', fontSize: '0.82rem', color: 'var(--color-blue)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontWeight: 600 }}>ISL Grammar:</span>
-                  <span>{translationResult.islGlossSequence?.join(' ') || (translationResult.tokens ? translationResult.tokens.map(t => t.gloss).join(' ') : 'Synthesized')}</span>
+                  <span style={{ fontWeight: 600 }}>ISL Sequence:</span>
+                  <span>{sequenceTokens.join(' ')}</span>
                 </div>
               )}
 
-              {words.length === 0 ? (
+              {sequenceTokens.length === 0 ? (
                 <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', margin: 0 }}>
                   Enter text to view the generated word-by-word sign translation sequence.
                 </p>
               ) : (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {words.map((word, idx) => {
+                  {sequenceTokens.map((token, idx) => {
                     const isActive = idx === activeWordIndex;
                     return (
                       <span
@@ -407,7 +463,7 @@ export default function TextToSign() {
                           boxShadow: isActive ? '0 0 16px rgba(255, 193, 7, 0.5)' : 'none',
                         }}
                       >
-                        {word}
+                        {typeof token === 'object' ? (token.gloss || token.letter) : token}
                       </span>
                     );
                   })}
@@ -424,7 +480,7 @@ export default function TextToSign() {
                     <button
                       key={spd}
                       type="button"
-                      onClick={() => setPlaybackSpeed(spd)}
+                      onClick={() => handleSpeedChange(spd)}
                       style={{
                         padding: '3px 8px',
                         borderRadius: '4px',
@@ -442,6 +498,15 @@ export default function TextToSign() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {isPlaying && (
+                    <CardlessButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleTogglePause}
+                    >
+                      {isPaused ? '▶ Resume' : '⏸ Pause'}
+                    </CardlessButton>
+                  )}
                   <CardlessButton
                     variant="ghost"
                     size="sm"
@@ -458,39 +523,6 @@ export default function TextToSign() {
                   </CardlessButton>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Right Column: Visually Dominant 3D Humanoid Avatar Presentation */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display, Outfit, sans-serif)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-                  3D Sign Language Avatar
-                </h3>
-                <span style={{ fontSize: '0.80rem', color: 'var(--text-secondary)' }}>
-                  Procedural X-Bot (♀) & Y-Bot (♂) ISL Kinematics Rig
-                </span>
-              </div>
-              <CardlessBadge color="blue">WebGL Three.js</CardlessBadge>
-            </div>
-
-            {/* Procedural Avatar Viewport (Open Canvas without Card Enclosure) */}
-            <div
-              style={{
-                width: '100%',
-                borderRadius: 'var(--radius-control)',
-                overflow: 'hidden',
-                background: 'transparent',
-                position: 'relative',
-              }}
-            >
-              <AvatarViewer
-                ref={avatarViewerRef}
-                height="560px"
-                showControls={true}
-                showCaptions={true}
-              />
             </div>
           </div>
         </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo — No Internet Screen (Cardless UI)
+ * Hastivo — No Internet Connection (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function NoInternet() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -19,40 +20,68 @@ export default function NoInternet() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', padding: 'clamp(32px, 6vw, 80px) 24px', textAlign: 'center' }}>
-      <div style={{ maxWidth: '580px', width: '100%' }}>
-        <div style={{ fontSize: '3.6rem', marginBottom: '16px' }}>📡</div>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 12px', fontFamily: 'var(--font-display)' }}>
-          Network Connection Lost
+    <PageContainer maxWidth="720px">
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 90px) 0' }}>
+        <CardlessBadge color={isOnline ? 'blue' : 'coral'}>
+          {isOnline ? 'PACKET CARRIER DETECTED' : 'OFFLINE NETWORK CARRIER'}
+        </CardlessBadge>
+
+        <h1
+          style={{
+            fontFamily: 'var(--font-display, "Manrope", sans-serif)',
+            fontSize: 'clamp(2.4rem, 4.5vw, 3.4rem)',
+            fontWeight: 800,
+            color: 'var(--text-primary)',
+            margin: '24px 0 16px',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          Connection Interrupted
         </h1>
-        <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Real-time AI translation and neural gesture recognition require an active internet connection to synthesize sign language sequences.
+
+        <p
+          style={{
+            fontSize: '1.05rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.65,
+            maxWidth: '540px',
+            margin: '0 auto 36px',
+          }}
+        >
+          Cloud neural mesh synchronization and microservice signaling require an active uplink. Local offline linguistic fallbacks remain cached in memory.
         </p>
 
-        <div style={{ padding: '16px 20px', borderRadius: 'var(--radius-control)', background: 'var(--background-secondary)', border: '1px solid var(--border)', marginBottom: '32px', fontSize: '0.92rem' }}>
-          Status: <strong style={{ color: isOnline ? '#34d399' : 'var(--color-coral)' }}>{isOnline ? 'Online (Ready to reconnect)' : 'Disconnected from Cloud Mesh'}</strong>
+        <div
+          style={{
+            padding: '16px 24px',
+            borderLeft: `3px solid ${isOnline ? '#34d399' : 'var(--color-coral)'}`,
+            background: 'var(--background-secondary)',
+            maxWidth: '480px',
+            margin: '0 auto 36px',
+            textAlign: 'left',
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: isOnline ? '#34d399' : 'var(--color-coral)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            [ SOCKET TELEMETRY ]
+          </span>
+          <div style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>
+            Status: {isOnline ? 'Online (Ready to reconnect)' : 'Disconnected from Cloud Mesh'}
+          </div>
         </div>
 
-        <div style={{ height: '1px', background: 'var(--border)', margin: '0 auto 32px', maxWidth: '280px' }} />
+        <SectionDivider margin="24px auto 36px" style={{ maxWidth: '360px' }} />
 
-        <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="btn btn-primary"
-            style={{ padding: '12px 24px', borderRadius: 'var(--radius-control)', background: 'var(--color-blue)', borderColor: 'var(--color-blue)' }}
-          >
-            Retry Connection
-          </button>
-          <Link
-            to="/dashboard"
-            className="btn btn-ghost"
-            style={{ padding: '12px 24px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border)' }}
-          >
-            Return to Dashboard
+        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <CardlessButton variant="primary" size="md" onClick={() => window.location.reload()}>
+            Re-establish Uplink
+          </CardlessButton>
+          <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+            <CardlessButton variant="ghost" size="md">
+              Return to Workspace
+            </CardlessButton>
           </Link>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

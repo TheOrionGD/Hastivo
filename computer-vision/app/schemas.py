@@ -33,3 +33,13 @@ class VisionResponse(BaseModel):
     recognizedSigns: List[RecognizedSignItem]
     hands: List[Dict[str, Any]]
     annotatedImageBase64: Optional[str] = None
+
+class ContinuousStreamFrameRequest(BaseModel):
+    sessionId: Optional[str] = "session-default"
+    hands: List[Dict[str, Any]]
+    timestampMs: Optional[int] = None
+
+class ContinuousSequenceRequest(BaseModel):
+    sessionId: Optional[str] = "session-default"
+    frameLandmarks: List[List[float]] = Field(..., description="List of 126-dimensional landmark vectors per frame")
+

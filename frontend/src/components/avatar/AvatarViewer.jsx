@@ -22,7 +22,7 @@ export const AvatarViewer = forwardRef(function AvatarViewer({
   onFinishedSign
 }, ref) {
   const canvasRef = useRef(null);
-  const [currentModel, setCurrentModel] = useState(initialModel || avatarService.getActiveModel() || 'x-bot');
+  const [currentModel, setCurrentModel] = useState(initialModel || avatarService.getActiveModel() || 'v-bot');
   const [currentCaption, setCurrentCaption] = useState('');
   const [activeLetter, setActiveLetter] = useState('');
   const [activeSignId, setActiveSignId] = useState('');
@@ -55,6 +55,8 @@ export const AvatarViewer = forwardRef(function AvatarViewer({
     setDefaultSide: (side) => canvasRef.current?.setDefaultSide(side),
     setOuterLayerCoating: (color, options) => canvasRef.current?.setOuterLayerCoating(color, options),
     setExpression: (expr) => canvasRef.current?.setExpression(expr),
+    pause: () => canvasRef.current?.pause?.(),
+    resume: () => canvasRef.current?.resume?.(),
     setPlaybackSpeed: (s) => {
       setSpeed(s);
       canvasRef.current?.setPlaybackSpeed(s);

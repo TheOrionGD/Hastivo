@@ -1,0 +1,173 @@
+[
+  {
+    "sample_id": "1",
+    "word": "ishbosheth",
+    "duration_sec": 1.758621,
+    "total_frames": 51,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1.json"
+  },
+  {
+    "sample_id": "10",
+    "word": "help (2)",
+    "duration_sec": 2.82,
+    "total_frames": 141,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\10.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\10.json"
+  },
+  {
+    "sample_id": "100",
+    "word": "humans",
+    "duration_sec": 2.68,
+    "total_frames": 134,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\100.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\100.json"
+  },
+  {
+    "sample_id": "1000",
+    "word": "andrew (his brother peter)",
+    "duration_sec": 4.14,
+    "total_frames": 206,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1000.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1000.json"
+  },
+  {
+    "sample_id": "1001",
+    "word": "agabus",
+    "duration_sec": 2.758621,
+    "total_frames": 80,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1001.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1001.json"
+  },
+  {
+    "sample_id": "1002",
+    "word": "rehoboam",
+    "duration_sec": 4.074,
+    "total_frames": 120,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1002.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1002.json"
+  },
+  {
+    "sample_id": "1003",
+    "word": "duty (1)",
+    "duration_sec": 3.32,
+    "total_frames": 166,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1003.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1003.json"
+  },
+  {
+    "sample_id": "1004",
+    "word": "confident",
+    "duration_sec": 2.42,
+    "total_frames": 121,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1004.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1004.json"
+  },
+  {
+    "sample_id": "1005",
+    "word": "manasseh",
+    "duration_sec": 3.76,
+    "total_frames": 188,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1005.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1005.json"
+  },
+  {
+    "sample_id": "1006",
+    "word": "fawns",
+    "duration_sec": 3.56,
+    "total_frames": 178,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1006.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1006.json"
+  },
+  {
+    "sample_id": "1007",
+    "word": "insulted",
+    "duration_sec": 2.42,
+    "total_frames": 121,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1007.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1007.json"
+  },
+  {
+    "sample_id": "1008",
+    "word": "barabbas",
+    "duration_sec": 2.76,
+    "total_frames": 138,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1008.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1008.json"
+  },
+  {
+    "sample_id": "1009",
+    "word": "joab",
+    "duration_sec": 2.986,
+    "total_frames": 88,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1009.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1009.json"
+  },
+  {
+    "sample_id": "101",
+    "word": "capernaum",
+    "duration_sec": 3.84,
+    "total_frames": 192,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\101.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\101.json"
+  },
+  {
+    "sample_id": "1010",
+    "word": "oh",
+    "duration_sec": 2.06,
+    "total_frames": 103,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1010.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1010.json"
+  },
+  {
+    "sample_id": "1011",
+    "word": "sopater",
+    "duration_sec": 6.84,
+    "total_frames": 342,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1011.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1011.json"
+  },
+  {
+    "sample_id": "1012",
+    "word": "bribes",
+    "duration_sec": 3.6,
+    "total_frames": 180,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1012.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1012.json"
+  },
+  {
+    "sample_id": "1013",
+    "word": "search (2)",
+    "duration_sec": 2.2,
+    "total_frames": 110,
+    "has_dwpose": true,
+    "npz_path": "o:/sign/data/bridgeconn_isl/samples\\1013.pose-dwpose.npz",
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1013.json"
+  },
+  {
+    "sample_id": "1014",
+    "word": "beg",
+    "duration_sec": 2.44,
+    "total_frames": 122,
+    "has_dwpose": false,
+    "npz_path": null,
+    "meta_path": "o:/sign/data/bridgeconn_isl/samples\\1014.json"
+  }
+]

@@ -1,35 +1,66 @@
 import React from 'react';
+import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo — Maintenance Screen (Cardless UI)
+ * Hastivo — Platform Maintenance (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function Maintenance() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', padding: 'clamp(32px, 6vw, 80px) 24px', textAlign: 'center' }}>
-      <div style={{ maxWidth: '580px', width: '100%' }}>
-        <div style={{ fontSize: '3.6rem', marginBottom: '16px' }}>🛠️</div>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 12px', fontFamily: 'var(--font-display)' }}>
-          Scheduled Platform Maintenance
+    <PageContainer maxWidth="720px">
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 90px) 0' }}>
+        <CardlessBadge color="amber">SCHEDULED DEPLOYMENT WINDOW</CardlessBadge>
+
+        <h1
+          style={{
+            fontFamily: 'var(--font-display, "Manrope", sans-serif)',
+            fontSize: 'clamp(2.4rem, 4.5vw, 3.4rem)',
+            fontWeight: 800,
+            color: 'var(--text-primary)',
+            margin: '24px 0 16px',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          System Maintenance
         </h1>
-        <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px' }}>
-          Hastivo is currently undergoing scheduled kinematic rig upgrades and lexicon database optimization.
+
+        <p
+          style={{
+            fontSize: '1.05rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.65,
+            maxWidth: '540px',
+            margin: '0 auto 36px',
+          }}
+        >
+          The distributed node cluster is currently receiving firmware upgrades to the 65-bone humanoid skeletal rigging and real-time lexicon vector databases.
         </p>
 
-        <div style={{ padding: '16px 20px', borderRadius: 'var(--radius-control)', background: 'rgba(255, 193, 7, 0.12)', border: '1px solid var(--color-amber)', marginBottom: '32px', fontSize: '0.92rem', color: 'var(--color-amber)', fontWeight: 600 }}>
-          Expected Availability: All systems online at 20:00 UTC
+        <div
+          style={{
+            padding: '16px 24px',
+            borderLeft: '3px solid var(--color-amber)',
+            background: 'var(--background-secondary)',
+            maxWidth: '480px',
+            margin: '0 auto 36px',
+            textAlign: 'left',
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--color-amber)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            [ WINDOW ESTIMATE ]
+          </span>
+          <div style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>
+            Expected Return: All nodes nominal at 20:00 UTC
+          </div>
         </div>
 
-        <div style={{ height: '1px', background: 'var(--border)', margin: '0 auto 32px', maxWidth: '280px' }} />
+        <SectionDivider margin="24px auto 36px" style={{ maxWidth: '360px' }} />
 
-        <button
-          type="button"
-          onClick={() => window.location.reload()}
-          className="btn btn-primary"
-          style={{ padding: '12px 28px', borderRadius: 'var(--radius-control)', margin: '0 auto', background: 'var(--color-coral)', borderColor: 'var(--color-coral)' }}
-        >
-          Check System Status
-        </button>
+        <div>
+          <CardlessButton variant="primary" size="md" onClick={() => window.location.reload()}>
+            Refresh Node Status
+          </CardlessButton>
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

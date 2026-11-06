@@ -8,16 +8,24 @@ import numpy as np
 import uvicorn
 
 from .config import vision_settings
-from .schemas import DetectFrameRequest, ClassifyLandmarksRequest, VisionResponse, RecognizedSignItem
+from .schemas import (
+    DetectFrameRequest,
+    ClassifyLandmarksRequest,
+    VisionResponse,
+    RecognizedSignItem,
+    ContinuousStreamFrameRequest,
+    ContinuousSequenceRequest
+)
 from .modules.hand_tracker import HandTracker, MP_AVAILABLE
 from .modules.gesture_classifier import classify_hand_gesture
+from .modules.continuous_recognition import ContinuousSignRecognizer
 from .modules.visualizer import draw_hand_skeleton_and_labels
 from .modules import isl_dataset_service
 
 app = FastAPI(
     title=vision_settings.SERVICE_NAME,
     version=vision_settings.API_VERSION,
-    description="Real-Time MediaPipe Hand Landmark Tracking and Gesture Recognition Service",
+    description="Real-Time MediaPipe Hand Landmark Tracking, Continuous Gesture Recognition and Temporal BiLSTM Service",
 )
 
 app.add_middleware(
@@ -35,6 +43,9 @@ tracker = HandTracker(
     max_num_hands=vision_settings.MAX_NUM_HANDS
 )
 
+# Global Continuous Sign Recognizer Instance
+continuous_recognizer = ContinuousSignRecognizer(window_size=30, stride=5)
+
 @app.get("/health")
 def health_check():
     return {
@@ -46,6 +57,35 @@ def health_check():
         "maxHands": vision_settings.MAX_NUM_HANDS,
         "minConfidence": vision_settings.MIN_DETECTION_CONFIDENCE,
         "islDatasetConfigured": isl_dataset_service.get_dataset_status()["isAvailable"],
+        "continuousRecognitionPipeline": "ONLINE",
+        "continuousVocabSize": len(continuous_recognizer.model.classifier[-1].weight),
+    }
+
+@app.post("/api/v1/vision/continuous-frame")
+def api_continuous_frame(req: ContinuousStreamFrameRequest):
+    """
+    Ingests continuous live stream hand detections frame-by-frame,
+    evaluates sliding window trajectory, motion kinetic energy, and pauses.
+    """
+    feat = ContinuousSignRecognizer.extract_frame_feature(req.hands)
+    res = continuous_recognizer.add_frame(feat)
+    return {
+        "status": "success",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "result": res or {"detected": False, "motionEnergy": 0.0, "isPause": True}
+    }
+
+@app.post("/api/v1/vision/continuous-sequence")
+def api_continuous_sequence(req: ContinuousSequenceRequest):
+    """
+    Decodes full dynamic multi-frame continuous sequence into ordered recognized sign sequence.
+    """
+    tokens = continuous_recognizer.process_continuous_sequence(req.frameLandmarks)
+    return {
+        "status": "success",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "count": len(tokens),
+        "recognizedTokens": tokens
     }
 
 @app.get("/api/v1/vision/dataset/info")
@@ -166,11 +206,18 @@ async def websocket_vision_stream(websocket: WebSocket):
                 lms = payload["landmarks"]
                 finger_states = tracker.calculate_finger_extensions(lms)
                 gesture = classify_hand_gesture(lms, finger_states)
+
+                # Feed into continuous temporal engine
+                hands_payload = [{"handedness": payload.get("handedness", "Right"), "landmarks": lms}]
+                feat = ContinuousSignRecognizer.extract_frame_feature(hands_payload)
+                cont_res = continuous_recognizer.add_frame(feat)
+
                 await websocket.send_json({
                     "status": "success",
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                     "gesture": gesture,
                     "fingerExtensions": finger_states,
+                    "continuous": cont_res,
                 })
             elif "image" in payload:
                 # Base64 image frame processing

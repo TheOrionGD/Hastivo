@@ -648,3 +648,90 @@ export function SwissTable({ headers = [], children, className = '', style = {} 
     </div>
   );
 }
+
+// 12. SpatialFloatingPill (Apple Vision Pro-style contextual floating pill)
+export function SpatialFloatingPill({
+  children,
+  className = '',
+  style = {},
+  ...props
+}) {
+  return (
+    <div
+      className={`spatial-floating-pill ${className}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '6px 14px',
+        background: 'var(--surface-elevated, rgba(30, 34, 41, 0.9))',
+        border: '1px solid var(--border-subtle, rgba(255, 255, 255, 0.15))',
+        borderRadius: '24px',
+        color: 'var(--text-primary)',
+        fontFamily: 'var(--font-sans)',
+        fontSize: '0.85rem',
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+// 13. HorizontalDataBand (Full-width minimal band for high-impact metric presentation)
+export function HorizontalDataBand({
+  kicker,
+  title,
+  value,
+  subtext,
+  action,
+  accent = 'var(--color-blue)',
+  style = {},
+}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '24px',
+        padding: 'clamp(20px, 3vw, 36px) 0',
+        borderBottom: '1px solid var(--border-subtle, var(--border))',
+        ...style,
+      }}
+    >
+      <div>
+        {kicker && (
+          <span
+            style={{
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: accent,
+              display: 'block',
+              marginBottom: '6px',
+            }}
+          >
+            [ {kicker} ]
+          </span>
+        )}
+        <h4 style={{ margin: 0, fontSize: 'clamp(1.2rem, 1.8vw, 1.6rem)', fontWeight: 700, color: 'var(--text-primary)' }}>
+          {title}
+        </h4>
+        {subtext && <p style={{ margin: '4px 0 0', fontSize: '0.875rem', color: 'var(--text-muted)' }}>{subtext}</p>}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        {value && (
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: 'clamp(1.8rem, 2.8vw, 2.4rem)', fontWeight: 800, color: accent }}>
+            {value}
+          </span>
+        )}
+        {action}
+      </div>
+    </div>
+  );
+}

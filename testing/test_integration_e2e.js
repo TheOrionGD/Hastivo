@@ -80,6 +80,20 @@ try {
   );
   assertTest(s2tOutputRaw.includes('platform three'), 'Sign-to-Text engine reconstructs natural English sentence from ISL glosses');
 
+  // Test Continuous BiLSTM Sequence Recognition
+  const contOutputRaw = execSync(
+    'python -c "from app.modules.continuous_recognition import ContinuousSignRecognizer; r = ContinuousSignRecognizer(); tokens = r.process_continuous_sequence([[0.5]*126]*35); print(type(tokens))"',
+    { cwd: path.join(rootDir, 'computer-vision'), encoding: 'utf8', shell: powershellPath }
+  );
+  assertTest(contOutputRaw.includes('list'), 'Continuous BiLSTM recognizer evaluates multi-frame sequence and returns structured token list');
+
+  // Test Multi-Source Dataset Suite Introspection
+  const dsOutputRaw = execSync(
+    'python -c "from app.modules.isl_dataset_service import get_dataset_status; s = get_dataset_status(); print(\'islTranslate\' in str(s))"',
+    { cwd: path.join(rootDir, 'computer-vision'), encoding: 'utf8', shell: powershellPath }
+  );
+  assertTest(dsOutputRaw.includes('True'), 'Dataset service connects multi-source ISL datasets (Parquet + GitHub ISLTranslate + BridgeConn)');
+
   // Test AI Safety Moderation
   const modOutputRaw = execSync(
     'python -c "from app.modules.moderation import moderate_content; res = moderate_content(\'GESTURE_OFFENSIVE_FINGER\', \'gesture\'); print(res[\'flagged\'])"',

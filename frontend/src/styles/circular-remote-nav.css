@@ -489,3 +489,47 @@
     padding: 4px 10px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME ADAPTATIONS FOR REMOTE NAV
+   ══════════════════════════════════════════════════════════════════════════ */
+[data-theme='light'] .fab-remote-trigger {
+  background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F5F6F8 100%);
+  color: var(--text-primary, #2E2E2E);
+  border: 1.5px solid var(--border);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 0 20px rgba(255, 111, 97, 0.2),
+    0 0 35px rgba(111, 163, 239, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='light'] .fab-remote-trigger:hover {
+  border-color: var(--color-blue);
+  color: var(--text-primary, #2E2E2E);
+}
+
+[data-theme='light'] .remote-outer-chassis {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+  color: var(--text-primary, #2E2E2E);
+}
+
+[data-theme='light'] .remote-dpad-center-btn {
+  background: #F5F6F8;
+  color: var(--text-primary, #2E2E2E);
+  border: 1px solid var(--border);
+}
+
+[data-theme='light'] .remote-target-display-title {
+  color: var(--text-primary, #2E2E2E);
+}
+
+[data-theme='light'] .remote-target-display-subtitle {
+  color: var(--text-secondary, #62666D);
+}
+
+[data-theme='light'] .remote-modal-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}

@@ -14,48 +14,44 @@ import { HAND_POSTURES, FINGERSPELLING_POSTURES, NUMBER_POSTURES } from './HandC
 
 // Exact kinematic arm poses calibrated with upright hand/palm presentation
 export const UPLOADED_IMAGE_ARM_POSES = {
-  // Right Arm elevated vertical signing posture: Elbow at natural height, forearm & wrist angle hand UPWARD facing camera
+  // Right Arm elevated vertical signing posture: Elbow flexed forward naturally along local Z, wrist oriented facing camera
   R: {
-    upperX: 0.42,
-    upperY: -0.08,
-    upperZ: -0.18,
-    elbowX: -1.45,
-    forearmY: 0.22,
-    wristX: 1.28,
-    wristY: -0.16,
-    wristRoll: -0.12
+    upperX: 0.40,
+    upperY: 0.0,
+    upperZ: -0.50,
+    elbowZ: -1.40,
+    wristX: 1.583,
+    wristY: 0.340,
+    wristZ: -2.449
   },
   // Left Arm mirrored elevated vertical signing posture
   L: {
-    upperX: 0.42,
-    upperY: 0.08,
-    upperZ: 0.18,
-    elbowX: -1.45,
-    forearmY: -0.22,
-    wristX: 1.28,
-    wristY: 0.16,
-    wristRoll: 0.12
+    upperX: 0.40,
+    upperY: 0.0,
+    upperZ: 0.50,
+    elbowZ: 1.40,
+    wristX: -1.551,
+    wristY: 0.332,
+    wristZ: 0.690
   },
-  // Conversational Ready Stance (Image 2)
+  // Conversational Attention Resting Pose
   READY_R: {
-    upperX: 0.42,
-    upperY: -0.10,
-    upperZ: 0.22,
-    elbowX: -1.05,
-    forearmY: 0.35,
-    wristX: 0.10,
-    wristY: -0.10,
-    wristRoll: 0.0
+    upperX: 1.35,
+    upperY: 0.05,
+    upperZ: -0.15,
+    elbowZ: -0.08,
+    wristX: 0.0,
+    wristY: 0.0,
+    wristZ: 0.0
   },
   READY_L: {
-    upperX: 0.42,
-    upperY: 0.10,
-    upperZ: -0.22,
-    elbowX: -1.05,
-    forearmY: -0.35,
-    wristX: 0.10,
-    wristY: 0.10,
-    wristRoll: 0.0
+    upperX: 1.35,
+    upperY: -0.05,
+    upperZ: 0.15,
+    elbowZ: 0.08,
+    wristX: 0.0,
+    wristY: 0.0,
+    wristZ: 0.0
   }
 };
 
@@ -480,10 +476,10 @@ export class SigningEngine {
 
     // Resting transforms for natural ISL ready posture matching reference image 2
     this.restPose = {
-      rightUpperArm: { x: 0.42, y: -0.10, z: 0.22 },
-      rightElbow: { x: -1.05, y: 0.0, z: 0.0 },
-      leftUpperArm: { x: 0.42, y: 0.10, z: -0.22 },
-      leftElbow: { x: -1.05, y: 0.0, z: 0.0 }
+      rightUpperArm: { x: 1.35, y: 0.05, z: -0.15 },
+      rightElbow: { x: 0.0, y: 0.0, z: -0.08 },
+      leftUpperArm: { x: 1.35, y: -0.05, z: 0.15 },
+      leftElbow: { x: 0.0, y: 0.0, z: 0.08 }
     };
 
     // Events callback for UI feedback
@@ -580,18 +576,110 @@ export class SigningEngine {
     }
   }
 
-  playSequence(signIds) {
+  playSequence(signIds, options = {}) {
     this.stop();
 
-    if (!Array.isArray(signIds)) return;
-    this.queue = signIds.map(id => {
-      const upper = String(id).toUpperCase().trim();
-      return ISL_DICTIONARY[upper] ? JSON.parse(JSON.stringify(ISL_DICTIONARY[upper])) : null;
-    }).filter(Boolean);
+    if (!Array.isArray(signIds) || signIds.length === 0) return;
 
-    if (this.queue.length > 0) {
+    const sequenceQueue = [];
+    const side = options.side || this.defaultSide;
+
+    signIds.forEach((item) => {
+      if (!item) return;
+
+      // Case A: Structured Animation Item from text-to-sign API
+      if (typeof item === 'object' && item.keyframes) {
+        sequenceQueue.push(JSON.parse(JSON.stringify(item)));
+        return;
+      }
+
+      const glossStr = String(typeof item === 'object' ? (item.gloss || item.label || item.id) : item).toUpperCase().trim();
+
+      // Case B: Direct ISL Dictionary Lexical Sign
+      if (ISL_DICTIONARY[glossStr]) {
+        sequenceQueue.push(JSON.parse(JSON.stringify(ISL_DICTIONARY[glossStr])));
+        return;
+      }
+
+      // Case C: Single Digit
+      if (/^[0-9]$/.test(glossStr)) {
+        const numGestures = this._buildNumberGestures(parseInt(glossStr, 10), side);
+        sequenceQueue.push(...numGestures);
+        return;
+      }
+
+      // Case D: Single Alphabet Letter Fingerspelling
+      if (/^[A-Z]$/.test(glossStr)) {
+        const letterKf = FINGERSPELLING_POSTURES[glossStr] || HAND_POSTURES.IMAGE_POINT_SIGN;
+        sequenceQueue.push({
+          signId: `LETTER_${glossStr}`,
+          label: `Letter ${glossStr}`,
+          letter: glossStr,
+          duration: 1.1,
+          face: 'concentrating',
+          keyframes: [
+            this._buildSigningArmKf(0.0, letterKf, side),
+            this._buildSigningArmKf(1.1, letterKf, side)
+          ]
+        });
+        return;
+      }
+
+      // Case E: Word not in dictionary -> generate smooth fingerspelled sequence
+      const cleanWord = glossStr.replace(/[^A-Z0-9]/g, '');
+      if (cleanWord.length > 0) {
+        cleanWord.split('').forEach((char) => {
+          const charPost = FINGERSPELLING_POSTURES[char] || NUMBER_POSTURES[char] || HAND_POSTURES.IMAGE_POINT_SIGN;
+          sequenceQueue.push({
+            signId: `CHAR_${char}`,
+            label: `Spelling: ${char}`,
+            letter: char,
+            duration: 0.75,
+            face: 'concentrating',
+            keyframes: [
+              this._buildSigningArmKf(0.0, charPost, side),
+              this._buildSigningArmKf(0.75, charPost, side)
+            ]
+          });
+        });
+      }
+    });
+
+    if (sequenceQueue.length > 0) {
+      // Add natural gentle return-to-rest at conclusion of full sequence
+      const lastItem = sequenceQueue[sequenceQueue.length - 1];
+      const endingSide = lastItem?.keyframes?.[0]?.leftArm ? 'both' : side;
+      sequenceQueue.push({
+        signId: 'FINAL_RETURN_REST',
+        label: 'Ready Stance',
+        letter: '',
+        duration: 0.5,
+        face: 'neutral',
+        keyframes: [
+          this._buildSigningArmKf(0.0, HAND_POSTURES.RELAXED_REST, endingSide),
+          this._buildRestArmKf(0.5)
+        ]
+      });
+
+      this.queue = sequenceQueue;
+      this.totalSequenceCount = sequenceQueue.length;
+      this.currentSequenceIndex = 0;
       this._startNextInQueue();
     }
+  }
+
+  pause() {
+    this.isPaused = true;
+  }
+
+  resume() {
+    if (this.isPaused) {
+      this.isPaused = false;
+    }
+  }
+
+  setSpeed(speed = 1.0) {
+    this.playbackSpeed = Math.max(0.25, Math.min(3.0, Number(speed) || 1.0));
   }
 
   playFingerspelling(text, secondsPerLetter = 0.85, side = this.defaultSide) {
@@ -776,17 +864,15 @@ export class SigningEngine {
       this.avatar.setUpperBodyGhosted(false);
     }
 
-    // Reset direct bone rotations to natural ISL ready posture
+    // Reset direct bone rotations to natural attention posture
     const bones = this.avatar.bones;
     if (bones) {
-      if (bones['RightUpperArm']) bones['RightUpperArm'].rotation.set(0.42, -0.10, 0.28);
-      if (bones['RightElbow']) bones['RightElbow'].rotation.x = -0.92;
-      if (bones['RightForearm']) bones['RightForearm'].rotation.y = 0.35;
-      if (bones['LeftUpperArm']) bones['LeftUpperArm'].rotation.set(0.42, 0.10, -0.28);
-      if (bones['LeftElbow']) bones['LeftElbow'].rotation.x = -0.92;
-      if (bones['LeftForearm']) bones['LeftForearm'].rotation.y = -0.35;
-      if (bones['RightWrist']) bones['RightWrist'].rotation.set(0.10, 0.18, -0.12);
-      if (bones['LeftWrist']) bones['LeftWrist'].rotation.set(0.10, -0.18, 0.12);
+      if (bones['RightUpperArm']) bones['RightUpperArm'].rotation.set(1.35, 0.05, -0.15);
+      if (bones['RightElbow']) bones['RightElbow'].rotation.set(0, 0, -0.08);
+      if (bones['LeftUpperArm']) bones['LeftUpperArm'].rotation.set(1.35, -0.05, 0.15);
+      if (bones['LeftElbow']) bones['LeftElbow'].rotation.set(0, 0, 0.08);
+      if (bones['RightWrist']) bones['RightWrist'].rotation.set(0, 0, 0);
+      if (bones['LeftWrist']) bones['LeftWrist'].rotation.set(0, 0, 0);
     }
 
     // Reset animation controller and restore idle breathing
@@ -812,7 +898,7 @@ export class SigningEngine {
   }
 
   update(delta) {
-    if (!this.isPlaying || !this.currentSign) return;
+    if (!this.isPlaying || !this.currentSign || this.isPaused) return;
 
     const dt = delta * this.playbackSpeed;
     this.signElapsedTime += dt;
@@ -877,29 +963,31 @@ export class SigningEngine {
       const ux = THREE.MathUtils.lerp(armA.upperX, armB.upperX, ease);
       const uy = THREE.MathUtils.lerp(armA.upperY || 0, armB.upperY || 0, ease);
       const uz = THREE.MathUtils.lerp(armA.upperZ, armB.upperZ, ease);
-      const el = THREE.MathUtils.lerp(armA.elbowX, armB.elbowX, ease);
-      const roll = (armA.wristRoll !== undefined && armB.wristRoll !== undefined)
-        ? THREE.MathUtils.lerp(armA.wristRoll, armB.wristRoll, ease)
-        : 0;
+      const elZ = (armA.elbowZ !== undefined && armB.elbowZ !== undefined)
+        ? THREE.MathUtils.lerp(armA.elbowZ, armB.elbowZ, ease)
+        : (armA.elbowX !== undefined ? THREE.MathUtils.lerp(armA.elbowX, armB.elbowX, ease) : -0.08);
 
       // Apply directly to bones
       const rUpper = this.avatar.bones['RightUpperArm'];
       if (rUpper) rUpper.rotation.set(ux, uy, uz);
 
       const rElbow = this.avatar.bones['RightElbow'];
-      if (rElbow) rElbow.rotation.x = el;
+      if (rElbow) {
+        rElbow.rotation.z = elZ;
+        if (armA.elbowY !== undefined && armB.elbowY !== undefined) {
+          rElbow.rotation.y = THREE.MathUtils.lerp(armA.elbowY, armB.elbowY, ease);
+        }
+      }
 
       if (armA.wristX !== undefined && armB.wristX !== undefined) {
         const wx = THREE.MathUtils.lerp(armA.wristX, armB.wristX, ease);
         const wy = THREE.MathUtils.lerp(armA.wristY || 0, armB.wristY || 0, ease);
-        const wz = THREE.MathUtils.lerp(armA.wristRoll ?? armA.wristZ ?? 0, armB.wristRoll ?? armB.wristZ ?? 0, ease);
+        const wz = THREE.MathUtils.lerp(armA.wristZ ?? armA.wristRoll ?? 0, armB.wristZ ?? armB.wristRoll ?? 0, ease);
         const rWrist = this.avatar.bones['RightWrist'];
         if (rWrist) rWrist.rotation.set(wx, wy, wz);
         if (this.avatar.rightHandController) {
           this.avatar.rightHandController.wristControlEnabled = false;
         }
-      } else if (this.avatar.rightHandController) {
-        this.avatar.rightHandController.setWristAngles(0, 0, roll);
       }
 
       // Sync animationController targetRotations
@@ -907,7 +995,7 @@ export class SigningEngine {
         this.animationController.targetRotations['RightUpperArm'].set(ux, uy, uz);
       }
       if (this.animationController?.targetRotations['RightElbow']) {
-        this.animationController.targetRotations['RightElbow'].x = el;
+        this.animationController.targetRotations['RightElbow'].z = elZ;
       }
     }
 
@@ -918,35 +1006,37 @@ export class SigningEngine {
       const ux = THREE.MathUtils.lerp(armA.upperX, armB.upperX, ease);
       const uy = THREE.MathUtils.lerp(armA.upperY || 0, armB.upperY || 0, ease);
       const uz = THREE.MathUtils.lerp(armA.upperZ, armB.upperZ, ease);
-      const el = THREE.MathUtils.lerp(armA.elbowX, armB.elbowX, ease);
-      const roll = (armA.wristRoll !== undefined && armB.wristRoll !== undefined)
-        ? THREE.MathUtils.lerp(armA.wristRoll, armB.wristRoll, ease)
-        : 0;
+      const elZ = (armA.elbowZ !== undefined && armB.elbowZ !== undefined)
+        ? THREE.MathUtils.lerp(armA.elbowZ, armB.elbowZ, ease)
+        : (armA.elbowX !== undefined ? THREE.MathUtils.lerp(-armA.elbowX, -armB.elbowX, ease) : 0.08);
 
       const lUpper = this.avatar.bones['LeftUpperArm'];
       if (lUpper) lUpper.rotation.set(ux, uy, uz);
 
       const lElbow = this.avatar.bones['LeftElbow'];
-      if (lElbow) lElbow.rotation.x = el;
+      if (lElbow) {
+        lElbow.rotation.z = elZ;
+        if (armA.elbowY !== undefined && armB.elbowY !== undefined) {
+          lElbow.rotation.y = THREE.MathUtils.lerp(armA.elbowY, armB.elbowY, ease);
+        }
+      }
 
       if (armA.wristX !== undefined && armB.wristX !== undefined) {
         const wx = THREE.MathUtils.lerp(armA.wristX, armB.wristX, ease);
         const wy = THREE.MathUtils.lerp(armA.wristY || 0, armB.wristY || 0, ease);
-        const wz = THREE.MathUtils.lerp(armA.wristRoll ?? armA.wristZ ?? 0, armB.wristRoll ?? armB.wristZ ?? 0, ease);
+        const wz = THREE.MathUtils.lerp(armA.wristZ ?? armA.wristRoll ?? 0, armB.wristZ ?? armB.wristRoll ?? 0, ease);
         const lWrist = this.avatar.bones['LeftWrist'];
         if (lWrist) lWrist.rotation.set(wx, wy, wz);
         if (this.avatar.leftHandController) {
           this.avatar.leftHandController.wristControlEnabled = false;
         }
-      } else if (this.avatar.leftHandController) {
-        this.avatar.leftHandController.setWristAngles(0, 0, roll);
       }
 
       if (this.animationController?.targetRotations['LeftUpperArm']) {
         this.animationController.targetRotations['LeftUpperArm'].set(ux, uy, uz);
       }
       if (this.animationController?.targetRotations['LeftElbow']) {
-        this.animationController.targetRotations['LeftElbow'].x = el;
+        this.animationController.targetRotations['LeftElbow'].z = elZ;
       }
     }
 

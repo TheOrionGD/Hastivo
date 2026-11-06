@@ -48,57 +48,48 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setAuthError(null);
 
-    // Attempt genuine backend API authentication first
     try {
       const res = await apiFetch(API_ENDPOINTS.AUTH.LOGIN, {
         method: 'POST',
         body: JSON.stringify({ email: identifier, password }),
-        timeout: config.apiTimeout || 5000,
+        timeout: config.apiTimeout || 6000,
       });
 
-      if (res.ok && res.data) {
+      if (res.ok && res.data?.success) {
         const data = res.data;
         const userRole = data.user?.role === 'admin' || data.role === 'admin' ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-        const sessionToken = data.token || 'hastivo-tok-' + Date.now();
+        const sessionToken = data.token;
 
         setUser({
-          email: data.user?.email || data.email || identifier,
-          name: data.user?.displayName || data.name || identifier.split('@')[0],
+          id: data.user?.id,
+          email: data.user?.email || identifier,
+          name: data.user?.displayName || identifier.split('@')[0],
+          username: data.user?.username || identifier.split('@')[0],
           role: userRole,
+          status: data.user?.status || 'active',
+          isGuest: false,
         });
         setRole(userRole);
         setToken(sessionToken);
 
         sessionStorage.setItem('hastivo_auth_token', sessionToken);
         sessionStorage.setItem('hastivo_auth_role', userRole);
-        sessionStorage.setItem('hastivo_auth_email', identifier);
+        sessionStorage.setItem('hastivo_auth_email', data.user?.email || identifier);
+        sessionStorage.removeItem('hastivo_is_guest');
 
         setLoading(false);
         return { success: true, role: userRole };
+      } else {
+        const errMsg = res.data?.message || res.error || 'Authentication failed. Please verify credentials.';
+        setAuthError(errMsg);
+        setLoading(false);
+        throw new Error(errMsg);
       }
     } catch (err) {
-      console.warn('Backend auth endpoint unreachable, falling back to local session:', err);
+      setAuthError(err.message);
+      setLoading(false);
+      throw err;
     }
-
-    // Local / Sandboxed Authenticated Session for immediate testing and resilience
-    const isAdminUser = identifier.toLowerCase().includes('admin');
-    const userRole = isAdminUser ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-    const sessionToken = 'hastivo-tok-' + Date.now();
-
-    setUser({
-      email: identifier.includes('@') ? identifier : `${identifier}@hastivo.isl`,
-      name: identifier.split('@')[0],
-      username: identifier.replace(/@.*$/, ''),
-    });
-    setRole(userRole);
-    setToken(sessionToken);
-
-    sessionStorage.setItem('hastivo_auth_token', sessionToken);
-    sessionStorage.setItem('hastivo_auth_role', userRole);
-    sessionStorage.setItem('hastivo_auth_email', identifier);
-
-    setLoading(false);
-    return { success: true, role: userRole };
   };
 
   const signInAnonymous = async () => {
@@ -205,54 +196,49 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setAuthError(null);
 
-    // Attempt genuine backend API registration
     try {
       const res = await apiFetch(API_ENDPOINTS.AUTH.REGISTER, {
         method: 'POST',
         body: JSON.stringify({ email, password, displayName, role: selectedRole, phone, username }),
-        timeout: config.apiTimeout || 5000,
+        timeout: config.apiTimeout || 6000,
       });
 
-      if (res.ok && res.data) {
+      if (res.ok && res.data?.success) {
         const data = res.data;
         const userRole = selectedRole === 'admin' ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-        const sessionToken = data.token || 'hastivo-reg-' + Date.now();
+        const sessionToken = data.token;
 
-        setUser({ email: data.user?.email || email, name: displayName, username, phone, role: userRole });
+        setUser({
+          id: data.user?.id,
+          email: data.user?.email || email,
+          name: data.user?.displayName || displayName,
+          username: data.user?.username || username || email.split('@')[0],
+          phone: data.user?.phone || phone,
+          role: userRole,
+          status: data.user?.status || 'active',
+          isGuest: false,
+        });
         setRole(userRole);
         setToken(sessionToken);
 
         sessionStorage.setItem('hastivo_auth_token', sessionToken);
         sessionStorage.setItem('hastivo_auth_role', userRole);
         sessionStorage.setItem('hastivo_auth_email', email);
+        sessionStorage.removeItem('hastivo_is_guest');
 
         setLoading(false);
         return { success: true, role: userRole };
+      } else {
+        const errMsg = res.data?.message || res.error || 'Registration failed.';
+        setAuthError(errMsg);
+        setLoading(false);
+        throw new Error(errMsg);
       }
     } catch (err) {
-      console.warn('Backend registration endpoint unreachable, falling back to local session:', err);
+      setAuthError(err.message);
+      setLoading(false);
+      throw err;
     }
-
-    // Local / Sandboxed Registered Session
-    const userRole = selectedRole === 'admin' ? USER_ROLES.ADMIN : USER_ROLES.CITIZEN;
-    const sessionToken = 'reg-tok-' + Date.now();
-
-    setUser({
-      email,
-      name: displayName,
-      username: username || email.split('@')[0],
-      phone,
-      role: userRole,
-    });
-    setRole(userRole);
-    setToken(sessionToken);
-
-    sessionStorage.setItem('hastivo_auth_token', sessionToken);
-    sessionStorage.setItem('hastivo_auth_role', userRole);
-    sessionStorage.setItem('hastivo_auth_email', email);
-
-    setLoading(false);
-    return { success: true, role: userRole };
   };
 
   const signOut = () => {

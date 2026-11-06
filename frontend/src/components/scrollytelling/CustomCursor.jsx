@@ -79,7 +79,7 @@ export default function CustomCursor() {
         target.closest('a') ||
         target.closest('.lexicon-chip') ||
         target.closest('.interactive-trigger') ||
-        target.closest('.skeuo-btn') ||
+        target.closest('.swiss-action-btn') ||
         target.closest('[role="button"]') ||
         target.closest('input') ||
         target.closest('select')

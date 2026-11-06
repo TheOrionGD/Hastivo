@@ -165,11 +165,11 @@ const fragmentShader = `
   }
 `;
 
-export const CinematicParticleCanvas = () => {
+export const CinematicParticleCanvas = ({ forceEnable = false }) => {
   const location = useLocation();
   const containerRef = useRef(null);
 
-  const isSplash = location.pathname === '/' || location.pathname === '/splash';
+  const isSplash = !forceEnable && (location.pathname === '/' || location.pathname === '/splash');
 
   useEffect(() => {
     if (isSplash) return;
@@ -380,7 +380,7 @@ export const CinematicParticleCanvas = () => {
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [isSplash]);
 
   if (isSplash) {
     return null;

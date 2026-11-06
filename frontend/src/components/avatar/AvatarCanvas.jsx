@@ -7,12 +7,14 @@ import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react
 import { AvatarScene } from '../../avatar/scene/AvatarScene.js';
 
 export const AvatarCanvas = forwardRef(function AvatarCanvas({
-  avatarModel = 'x-bot',
+  avatarModel = 'v-bot',
   theme = 'dark',
   wireframe = false,
   transparent = false,
   hideStage = false,
   cameraMode,
+  initialAnimation,
+  rimLightColor,
   onSignProgress,
   onModelChange,
   className = '',
@@ -20,18 +22,20 @@ export const AvatarCanvas = forwardRef(function AvatarCanvas({
 }, ref) {
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
-  const initialPropsRef = useRef({ avatarModel, wireframe, transparent, hideStage, cameraMode, onModelChange, onSignProgress, theme });
+  const initialPropsRef = useRef({ avatarModel, wireframe, transparent, hideStage, cameraMode, initialAnimation, rimLightColor, onModelChange, onSignProgress, theme });
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
     const initial = initialPropsRef.current;
-    // Instantiate Three.js avatar scene with avatarModel ('x-bot', 'y-bot', or 'procedural')
+    // Instantiate Three.js avatar scene with avatarModel ('v-bot')
     const sceneInstance = new AvatarScene(canvasRef.current, {
       avatarModel: initial.avatarModel,
       wireframe: initial.wireframe,
       transparent: initial.transparent,
       hideStage: initial.hideStage,
+      initialAnimation: initial.initialAnimation,
+      rimLightColor: initial.rimLightColor,
       onModelChange: initial.onModelChange,
       onSignProgress: initial.onSignProgress
     });
@@ -188,9 +192,11 @@ export const AvatarCanvas = forwardRef(function AvatarCanvas({
         sceneRef.current.avatar.facialController.setExpression(expression);
       }
     },
+
     setPlaybackSpeed: (speed) => {
       if (sceneRef.current?.signingEngine) {
         sceneRef.current.signingEngine.playbackSpeed = speed;
+        sceneRef.current.signingEngine.setSpeed?.(speed);
       }
       if (sceneRef.current?.animationController) {
         sceneRef.current.animationController.playbackSpeed = speed;
@@ -225,9 +231,11 @@ export const AvatarCanvas = forwardRef(function AvatarCanvas({
     },
     pause: () => {
       sceneRef.current?.pause?.();
+      sceneRef.current?.signingEngine?.pause?.();
     },
     resume: () => {
       sceneRef.current?.resume?.();
+      sceneRef.current?.signingEngine?.resume?.();
     },
     getAvatar: () => sceneRef.current?.avatar,
     getScene: () => sceneRef.current

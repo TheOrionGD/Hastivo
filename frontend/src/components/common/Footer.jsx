@@ -90,7 +90,7 @@ export default function Footer({ className = '', style = {} }) {
                 letterSpacing: '0.02em',
               }}
             >
-              Vibrant Connections Through Language Colors
+              Every Gesture Deserves to Be Heard.
             </p>
 
             <p

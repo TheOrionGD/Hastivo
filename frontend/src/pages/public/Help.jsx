@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNotification } from '../../contexts/NotificationContext';
+import { PageContainer, EditorialHeader, SectionDivider, SwissGrid, SwissCol, CardlessButton, CardlessBadge } from '../../components/cardless/CardlessComponents';
 
 /**
- * Hastivo — Help & Support Screen (Cardless UI)
+ * Hastivo — Help & Support (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function Help() {
   const { notifySuccess } = useNotification();
@@ -21,130 +22,221 @@ export default function Help() {
   const FAQS = [
     {
       q: 'How does Text-to-Sign work?',
-      a: 'Enter written text or click the microphone to speak. The AI processes grammar and syntax into an Indian Sign Language (ISL) sequence, which the 3D humanoid avatar performs in real time.',
+      a: 'Enter written text or click the microphone to speak. The AI compiles grammar into an Indian Sign Language (ISL) sequence, which the 3D humanoid avatar animates procedurally in real time.',
+      tag: 'SYNTHESIS',
     },
     {
       q: 'How does Sign-to-Text gesture recognition work?',
-      a: 'Position your upper body and hands in front of your camera. MediaPipe detects 21 skeletal landmarks per hand and sends feature vectors to the recognition model to generate sequential captions and AI sentences.',
+      a: 'Position your upper body and hands in front of your camera. MediaPipe detects 21 skeletal landmarks per hand and classifies feature vectors to generate sequential captions and synthesized voice playback.',
+      tag: 'VISION',
     },
     {
       q: 'Why is my camera not activating?',
-      a: 'Ensure you have granted camera permission in your browser. Check for other apps (such as Zoom or Teams) that may be locking the webcam.',
+      a: 'Ensure you have granted camera permission in your browser settings. Check that no other background application (e.g. Zoom, Teams) has locked the webcam stream.',
+      tag: 'HARDWARE',
     },
     {
-      q: 'Are video feeds recorded on the server?',
-      a: 'No. Hastivo enforces zero biometric retention. All camera frames are parsed inside your local browser memory and are discarded immediately.',
+      q: 'Are video feeds recorded or stored on any server?',
+      a: 'No. Hastivo strictly enforces zero biometric retention. All camera frames are parsed inside your local browser memory and discarded immediately frame-by-frame.',
+      tag: 'PRIVACY',
     },
   ];
 
   return (
-    <div className="page-wrapper">
-      <main className="container" style={{ padding: 'clamp(40px, 6vw, 80px) 20px', maxWidth: '860px', margin: '0 auto', paddingBottom: '120px' }}>
-        <Link to="/dashboard" style={{ color: 'var(--color-blue)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600 }}>
-          ← Back to Workspace
+    <PageContainer maxWidth="1100px">
+      <div style={{ marginBottom: '24px' }}>
+        <Link
+          to="/dashboard"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: 'var(--color-blue)',
+            textDecoration: 'none',
+            fontSize: '0.85rem',
+            fontFamily: 'var(--font-mono, monospace)',
+            letterSpacing: '0.04em',
+          }}
+        >
+          &larr; [ BACK TO WORKSPACE ]
         </Link>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--text-primary)', margin: '20px 0 8px', letterSpacing: '-0.03em' }}>
-          Help & Support Center
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '40px' }}>
-          Troubleshooting, feature guides, and assistance for Hastivo
-        </p>
+      </div>
 
-        <div style={{ height: '1px', background: 'var(--border)', marginBottom: '48px' }} />
+      <EditorialHeader
+        eyebrow="DOCUMENTATION & SUPPORT"
+        title="Help & Knowledge Base"
+        subtitle="Troubleshooting, hardware permissions, and operational guides for the Hastivo spatial platform."
+        meta={<CardlessBadge color="coral">ASSISTANCE 24/7</CardlessBadge>}
+      />
 
-        {/* FAQ Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '56px' }}>
-          <h2 style={{ fontSize: 'var(--text-h2)', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', margin: '0 0 8px' }}>
-            Frequently Asked Questions
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {FAQS.map((faq, i) => (
-              <div key={i} style={{ padding: '24px 0', borderBottom: '1px solid var(--border)' }}>
-                <h4 style={{ color: 'var(--color-blue)', margin: '0 0 10px', fontSize: '1.1rem', fontFamily: 'var(--font-display)' }}>
-                  {faq.q}
-                </h4>
-                <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.94rem', lineHeight: 1.65 }}>
-                  {faq.a}
-                </p>
-              </div>
-            ))}
+      <SectionDivider index="01" label="FREQUENTLY ASKED QUESTIONS" />
+
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '48px' }}>
+        {FAQS.map((faq, i) => (
+          <div
+            key={i}
+            style={{
+              padding: '24px 0',
+              borderBottom: '1px solid var(--border-subtle, var(--border))',
+              display: 'grid',
+              gridTemplateColumns: 'clamp(50px, 6vw, 80px) 1.2fr 2fr',
+              gap: '24px',
+              alignItems: 'baseline',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-mono, monospace)',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                color: 'var(--color-blue)',
+              }}
+            >
+              0{i + 1}
+            </span>
+            <div>
+              <h4 style={{ margin: '0 0 6px', fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                {faq.q}
+              </h4>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono, monospace)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.1em',
+                  color: 'var(--color-blue)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                [ {faq.tag} ]
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--text-secondary)' }}>
+              {faq.a}
+            </p>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div style={{ height: '1px', background: 'var(--border)', marginBottom: '48px' }} />
+      <SectionDivider index="02" label="DIRECT SUPPORT INQUIRY" />
 
-        {/* Feedback Form */}
-        <div style={{ padding: '24px 0' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>
-            Send Feedback or Inquiries
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', marginBottom: '28px' }}>
-            Encountered a bug or have a suggestion? Our accessibility team reviews all submissions.
+      <SwissGrid columns={12} gap="40px">
+        <SwissCol span={5}>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: '0.6875rem',
+              color: 'var(--color-coral)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
+            [ DIRECT DESK ]
+          </span>
+          <h3 style={{ margin: '0 0 12px', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            Send Feedback or Report an Issue
+          </h3>
+          <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-muted)' }}>
+            Our engineering team reviews all telemetries and user feedback to expand vocabulary datasets and improve camera stability.
           </p>
+        </SwissCol>
 
+        <SwissCol span={7}>
           {submitted ? (
-            <div style={{ padding: '20px', borderRadius: 'var(--radius-control)', background: 'rgba(52,211,153,0.12)', border: '1px solid #34d399', color: '#34d399', fontWeight: 700 }}>
-              ✓ Feedback submitted successfully. Thank you for contributing to communication accessibility!
+            <div style={{ padding: '32px 0' }}>
+              <CardlessBadge color="blue">DISPATCHED</CardlessBadge>
+              <h4 style={{ margin: '12px 0 6px', fontSize: '1.2rem', color: 'var(--text-primary)' }}>
+                Feedback Dispatched Successfully
+              </h4>
+              <p style={{ margin: '0 0 20px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                Thank you for contributing to Hastivo’s continuous refinement.
+              </p>
+              <CardlessButton variant="ghost" size="sm" onClick={() => setSubmitted(false)}>
+                Send Another Note
+              </CardlessButton>
             </div>
           ) : (
             <form onSubmit={handleFeedbackSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                  Email Address (Optional)
+                <label
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.08em',
+                    color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Your Email Address (Optional)
                 </label>
                 <input
                   type="email"
                   value={feedbackEmail}
                   onChange={(e) => setFeedbackEmail(e.target.value)}
-                  placeholder="citizen@hastivo.org"
+                  placeholder="contact@domain.org"
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: 'var(--radius-control)',
-                    border: '1px solid var(--border)',
+                    padding: '12px 14px',
                     background: 'var(--background-secondary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '4px',
                     color: 'var(--text-primary)',
-                    fontSize: '0.94rem',
+                    fontFamily: 'inherit',
+                    fontSize: '0.92rem',
+                    boxSizing: 'border-box',
+                    outline: 'none',
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                  Your Message or Issue Description
+                <label
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.08em',
+                    color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Diagnostic Message / Feedback
                 </label>
                 <textarea
                   rows={4}
+                  required
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Describe the issue, requested feature, or feedback..."
-                  required
+                  placeholder="Describe your suggestion, landmark recognition bug, or device specifications..."
                   style={{
                     width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: 'var(--radius-control)',
-                    border: '1px solid var(--border)',
+                    padding: '12px 14px',
                     background: 'var(--background-secondary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '4px',
                     color: 'var(--text-primary)',
-                    fontSize: '0.94rem',
+                    fontFamily: 'inherit',
+                    fontSize: '0.92rem',
+                    boxSizing: 'border-box',
                     resize: 'vertical',
+                    outline: 'none',
                   }}
                 />
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ padding: '12px 28px', borderRadius: 'var(--radius-control)', background: 'var(--color-coral)', borderColor: 'var(--color-coral)' }}
-                >
-                  Submit Feedback
-                </button>
+                <CardlessButton variant="primary" size="md" type="submit">
+                  Dispatch Feedback Note
+                </CardlessButton>
               </div>
             </form>
           )}
-        </div>
-      </main>
-    </div>
+        </SwissCol>
+      </SwissGrid>
+    </PageContainer>
   );
 }

@@ -59,7 +59,7 @@ export default function Navbar() {
               color: 'var(--text-primary)',
             }}
           >
-            Sign<span style={{ color: 'var(--color-coral)' }}>ora</span>
+            Hasti<span style={{ color: 'var(--color-coral)' }}>vo</span>
           </span>
         </Link>
 

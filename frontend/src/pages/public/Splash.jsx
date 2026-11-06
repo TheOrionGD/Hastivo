@@ -4,20 +4,21 @@ import config from '../../config/env';
 import { API_ENDPOINTS, apiFetch } from '../../config/apiEndpoints';
 import { avatarService } from '../../services/avatarService';
 import SplashAvatarStage from '../../components/splash/SplashAvatarStage';
+import CinematicParticleCanvas from '../../components/common/CinematicParticleCanvas';
 
 /**
  * HASTIVO — Exact Reference UI Reconstruction
  * Visual Specification: media_1793688240579_fafea2bd.jpg
  *
  * Architectural Matrix:
- * - Top Header: "SYSTEM INITIALIZATION | ISL PROTOCOL" (left) and "● X-Bot | ○ Y-Bot" (right)
+ * - Top Header: "SYSTEM INITIALIZATION | ISL PROTOCOL" (left) and "✦ V-Bot Official Model" (right)
  * - Horizontal Grid Line 1: Full-width 1px technical rule beneath header
  * - Index "01": Sits cleanly below Line 1 on the left
  * - Horizontal Grid Line 2: Intersects beneath "01", running across the left column and behind the robot
  * - Vertical Grid Line 1: Left boundary of the avatar column with coral rim illumination
  * - Vertical Grid Line 2: Right boundary of the avatar column with cyan-blue rim illumination
  * - Left Content:
- *     - Oversized geometric wordmark "Hastivo" ("Sign" pure white #FFF, "ora" coral #FF6F61)
+ *     - Oversized geometric wordmark "Hastivo" ("Hast" pure white #FFF, "ivo" coral #FF6F61)
  *     - Uppercase tracked headline: "VIBRANT CONNECTIONS / THROUGH LANGUAGE COLORS"
  *     - Short accent line (32px)
  *     - 3-line descriptive summary
@@ -80,8 +81,8 @@ const SPLASH_STYLES = `
     padding: 0;
     white-space: nowrap;
   }
-  .splash-wordmark-sign { color: #FFFFFF; }
-  .splash-wordmark-ora  { color: var(--splash-coral); }
+  .splash-wordmark-hast { color: #FFFFFF; }
+  .splash-wordmark-ivo { color: var(--splash-coral); }
 
   .splash-header-text {
     font-family: var(--splash-font-mono);
@@ -262,7 +263,7 @@ export default function Splash() {
   const timerRef = useRef(null);
   const isMountedRef = useRef(true);
 
-  const [activeModel, setActiveModel] = useState('x-bot');
+  const [activeModel, setActiveModel] = useState('v-bot');
 
   const [checks, setChecks] = useState({
     environment: { id: '01', label: 'Environment & Config', status: 'CONFIGURED',       detail: 'Mode: development' },
@@ -283,11 +284,7 @@ export default function Splash() {
     if (!isMountedRef.current || hasStartedTransition) return;
     setHasStartedTransition(true);
     if (timerRef.current) clearTimeout(timerRef.current);
-    const token = sessionStorage.getItem('hastivo_auth_token');
-    const onboardingCompleted = localStorage.getItem('hastivo_onboarding_completed') === 'true';
-    if (token) navigate('/dashboard');
-    else if (onboardingCompleted) navigate('/signin');
-    else navigate('/onboarding');
+    navigate('/onboarding');
   }, [navigate, hasStartedTransition]);
 
   const handleAvatarStatusChange = useCallback(() => {
@@ -331,7 +328,7 @@ export default function Splash() {
       }
 
       if (isMountedRef.current) {
-        const models = avatarService.getAvailableModels ? avatarService.getAvailableModels() : ['x-bot', 'y-bot'];
+        const models = avatarService.getAvailableModels ? avatarService.getAvailableModels() : ['v-bot'];
         setChecks((prev) => ({
           ...prev,
           avatarAsset: { ...prev.avatarAsset, status: 'AVAILABLE', detail: `${models.length || 3} Certified Avatar Models Ready` },
@@ -384,6 +381,57 @@ export default function Splash() {
           flexDirection: 'column',
         }}
       >
+        {/* CINEMATIC BACKGROUND VIDEO */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            src="/bg.mp4"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.38,
+              filter: "saturate(1.2) contrast(1.15)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "radial-gradient(ellipse at 50% 50%, rgba(17, 22, 31, 0.40) 0%, rgba(17, 22, 31, 0.86) 100%)",
+            }}
+          />
+        </div>
+
+        {/* CINEMATIC GPU PARTICLE EFFECT */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+            opacity: 0.85,
+          }}
+        >
+          <CinematicParticleCanvas forceEnable={true} />
+        </div>
+
         {/* ── CINEMATIC DUAL-TEMPERATURE LIGHTING (Exact Reference Match) ── */}
         <div
           aria-hidden="true"
@@ -403,7 +451,7 @@ export default function Splash() {
           }}
         />
 
-        {/* ── TOP HEADER BAR: SYSTEM INITIALIZATION | ISL PROTOCOL  ·  ● X-Bot | ○ Y-Bot ── */}
+        {/* ── TOP HEADER BAR: SYSTEM INITIALIZATION | ISL PROTOCOL  ·  ✦ V-Bot Official Model ── */}
         <header
           style={{
             width: '100%',
@@ -450,7 +498,7 @@ export default function Splash() {
                   fontWeight: activeModel === 'x-bot' ? 600 : 400,
                 }}
               >
-                X-Bot
+                V-Bot
               </span>
             </button>
 
@@ -479,7 +527,7 @@ export default function Splash() {
                   fontWeight: activeModel === 'y-bot' ? 600 : 400,
                 }}
               >
-                Y-Bot
+                V-Bot
               </span>
             </button>
           </div>
@@ -557,14 +605,14 @@ export default function Splash() {
 
               {/* Giant Hastivo Wordmark */}
               <h1 className="splash-wordmark" style={{ marginBottom: 'clamp(18px, 2.4vh, 28px)' }}>
-                <span className="splash-wordmark-sign">Sign</span>
-                <span className="splash-wordmark-ora">ora</span>
+                <span className="splash-wordmark-hast">Hast</span>
+                <span className="splash-wordmark-ivo">ivo</span>
               </h1>
 
               {/* Uppercase Tracked Two-Line Headline */}
               <p className="splash-headline" style={{ marginBottom: 'clamp(14px, 1.8vh, 20px)' }}>
-                VIBRANT CONNECTIONS<br />
-                THROUGH LANGUAGE COLORS
+                EVERY GESTURE<br />
+                DESERVES TO BE HEARD
               </p>
 
               {/* Short Accent Divider */}
@@ -722,7 +770,7 @@ export default function Splash() {
                 left: 0,
                 width: '1px',
                 backgroundColor: 'var(--splash-border)',
-                boxShadow: '1px 0 14px rgba(255, 111, 97, 0.35)',
+                boxShadow: '1px 0 14px rgba(111, 163, 239, 0.22)',
               }}
             />
 

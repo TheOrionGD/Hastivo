@@ -22,15 +22,15 @@ export default function AvatarTestingPage() {
             Hastivo 3D Avatar Diagnostics & Rig Testing Suite
           </h1>
           <p style={{ color: '#8E99A8', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
-            X-Bot (Female Bot) & Y-Bot (Male Bot) • Blender FBX 3D Rig • Mixamo 65-Bone Skeleton • 5-Finger Kinematics
+            V-Bot (Female Bot) & V-Bot (Male Bot) • Blender GLB 3D Rig • Mixamo 65-Bone Skeleton • 5-Finger Kinematics
           </p>
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ padding: '4px 10px', borderRadius: 'var(--radius-control, 4px)', background: 'rgba(255, 111, 97, 0.12)', border: '1px solid #FF6F61', color: '#FF6F61', fontFamily: 'var(--font-mono, monospace)', fontSize: '0.74rem', fontWeight: 700 }}>
-            ♀️ X-Bot (Female Bot)
+            ♀️ V-Bot (Female Bot)
           </span>
           <span style={{ padding: '4px 10px', borderRadius: 'var(--radius-control, 4px)', background: 'rgba(111, 163, 239, 0.12)', border: '1px solid #6FA3EF', color: '#6FA3EF', fontFamily: 'var(--font-mono, monospace)', fontSize: '0.74rem', fontWeight: 700 }}>
-            ♂️ Y-Bot (Male Bot)
+            ♂️ V-Bot (Male Bot)
           </span>
           <span style={{ padding: '4px 10px', borderRadius: 'var(--radius-control, 4px)', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid #10B981', color: '#10B981', fontFamily: 'var(--font-mono, monospace)', fontSize: '0.74rem', fontWeight: 600 }}>
             Blender Assets Verified

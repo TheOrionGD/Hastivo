@@ -162,11 +162,11 @@ export class AvatarAnimationController {
     this.targetRotations['Head'].x = this.restRotations['Head'].x - breath * 0.012;
     this.targetRotations['Head'].y = -microSway * 0.8;
 
-    // Natural ready posture micro-drift
-    this.targetRotations['LeftUpperArm'].x = this.restRotations['LeftUpperArm'].x + breath * 0.012;
-    this.targetRotations['RightUpperArm'].x = this.restRotations['RightUpperArm'].x + breath * 0.012;
-    this.targetRotations['LeftElbow'].x = this.restRotations['LeftElbow'].x + breath * 0.008;
-    this.targetRotations['RightElbow'].x = this.restRotations['RightElbow'].x + breath * 0.008;
+    // Natural resting posture micro-drift without arm flaring
+    this.targetRotations['LeftUpperArm'].x = this.restRotations['LeftUpperArm'].x + breath * 0.005;
+    this.targetRotations['RightUpperArm'].x = this.restRotations['RightUpperArm'].x + breath * 0.005;
+    this.targetRotations['LeftElbow'].z = this.restRotations['LeftElbow'].z + breath * 0.004;
+    this.targetRotations['RightElbow'].z = this.restRotations['RightElbow'].z - breath * 0.004;
 
     if (this.avatar.leftHandController) {
       this.avatar.leftHandController.setPosture(HAND_POSTURES.RELAXED_REST);
@@ -193,8 +193,8 @@ export class AvatarAnimationController {
     // Subtle step sway
     const step = Math.sin(t * 6.0) * (1 - ease);
     this.targetRotations['Pelvis'].z = step * 0.05;
-    this.targetRotations['LeftUpperArm'].x = this.restRotations['LeftUpperArm'].x - step * 0.2;
-    this.targetRotations['RightUpperArm'].x = this.restRotations['RightUpperArm'].x + step * 0.2;
+    this.targetRotations['LeftUpperArm'].x = this.restRotations['LeftUpperArm'].x - step * 0.15;
+    this.targetRotations['RightUpperArm'].x = this.restRotations['RightUpperArm'].x + step * 0.15;
 
     if (progress >= 1.0) {
       this._animateIdleBreathing(t);
@@ -210,12 +210,9 @@ export class AvatarAnimationController {
       this.avatar.rightHandController.setHelloPose();
     }
 
-    // Left arm resting
+    // Left arm maintains natural attention resting pose
     this.targetRotations['LeftUpperArm'].copy(this.restRotations['LeftUpperArm']);
     this.targetRotations['LeftElbow'].copy(this.restRotations['LeftElbow']);
-    if (this.restRotations['LeftForearm']) {
-      this.targetRotations['LeftForearm'].copy(this.restRotations['LeftForearm']);
-    }
     if (this.restRotations['LeftWrist']) {
       this.targetRotations['LeftWrist'].copy(this.restRotations['LeftWrist']);
     }
@@ -225,11 +222,11 @@ export class AvatarAnimationController {
     const restElbow = this.restRotations['RightElbow'];
     const restWrist = this.restRotations['RightWrist'];
 
-    // Target greeting transforms (analytically calculated for palm facing viewer +Z and fingers pointing +Y)
-    const greetUpper = { x: 0.30, y: 0.0, z: -2.40 };
-    const greetElbow = -1.10;
-    const greetForearmY = -0.35;
-    const greetWrist = { x: 1.324, y: -0.201, z: -0.719 };
+    // Target greeting transforms:
+    // Analytically calibrated so fingers point UP (+Y_world) and palm faces directly FORWARD (+Z_world)
+    const greetUpper = { x: 0.20, y: 0.0, z: -0.40 };
+    const greetElbowZ = -1.50; // elbow flexion along local Z axis
+    const greetWrist = { x: 1.585, y: 0.337, z: -2.650 };
 
     if (t < raiseDuration) {
       // PHASE 1 — Raise: Smoothly elevate arm into greeting position
@@ -239,8 +236,11 @@ export class AvatarAnimationController {
         THREE.MathUtils.lerp(restUpper.y, greetUpper.y, p),
         THREE.MathUtils.lerp(restUpper.z, greetUpper.z, p)
       );
-      this.targetRotations['RightElbow'].x = THREE.MathUtils.lerp(restElbow.x, greetElbow, p);
-      this.targetRotations['RightForearm'].y = greetForearmY;
+      this.targetRotations['RightElbow'].set(
+        0,
+        0,
+        THREE.MathUtils.lerp(restElbow.z, greetElbowZ, p)
+      );
       this.targetRotations['RightWrist'].set(
         THREE.MathUtils.lerp(restWrist.x, greetWrist.x, p),
         THREE.MathUtils.lerp(restWrist.y, greetWrist.y, p),
@@ -249,83 +249,67 @@ export class AvatarAnimationController {
     } else if (t < raiseDuration + presentDuration) {
       // PHASE 2 — Present: Hold palm facing camera with distinct separated fingers and friendly nod
       this.targetRotations['RightUpperArm'].set(greetUpper.x, greetUpper.y, greetUpper.z);
-      this.targetRotations['RightElbow'].x = greetElbow;
-      this.targetRotations['RightForearm'].y = greetForearmY;
+      this.targetRotations['RightElbow'].set(0, 0, greetElbowZ);
       this.targetRotations['RightWrist'].set(greetWrist.x, greetWrist.y, greetWrist.z);
 
       const nodProgress = (t - raiseDuration) / presentDuration;
       this.targetRotations['Head'].x = this.restRotations['Head'].x + Math.sin(nodProgress * Math.PI) * 0.08;
     } else {
-      // PHASE 3 — Wave: Gentle side-to-side oscillation around viewing axis (+Z) without twisting palm
+      // PHASE 3 — Wave: Gentle side-to-side oscillation around viewing axis (+Z) at the wrist without twisting palm
       const waveT = t - (raiseDuration + presentDuration);
-      const waveCycle = Math.sin(waveT * 5.5) * 0.20;
+      const waveCycle = Math.sin(waveT * 5.0) * 0.18;
 
       this.targetRotations['RightUpperArm'].set(
         greetUpper.x,
         greetUpper.y,
-        greetUpper.z + waveCycle * 0.04
+        greetUpper.z + waveCycle * 0.03
       );
-      this.targetRotations['RightElbow'].x = greetElbow;
-      this.targetRotations['RightForearm'].y = greetForearmY;
+      this.targetRotations['RightElbow'].set(0, 0, greetElbowZ);
       this.targetRotations['RightWrist'].set(
         greetWrist.x,
-        greetWrist.y,
+        greetWrist.y + waveCycle * 0.1,
         greetWrist.z + waveCycle
       );
 
       // Subtle friendly head tilt accompanying wave
-      this.targetRotations['Head'].z = this.restRotations['Head'].z + waveCycle * 0.05;
+      this.targetRotations['Head'].z = this.restRotations['Head'].z + waveCycle * 0.04;
     }
   }
 
   _animatePresent(t) {
     const breathe = Math.sin(t * 1.5) * 0.02;
-    // Both arms open gracefully forward
-    this.targetRotations['LeftUpperArm'].x = 0.55 + breathe;
-    this.targetRotations['LeftUpperArm'].z = 0.45;
-    this.targetRotations['LeftElbow'].x = -0.85;
+    // Both arms open gracefully forward with forearms bent
+    this.targetRotations['LeftUpperArm'].set(0.65 + breathe, -0.15, 0.35);
+    this.targetRotations['LeftElbow'].set(0, 0, 1.15);
 
-    this.targetRotations['RightUpperArm'].x = 0.55 + breathe;
-    this.targetRotations['RightUpperArm'].z = -0.45;
-    this.targetRotations['RightElbow'].x = -0.85;
+    this.targetRotations['RightUpperArm'].set(0.65 + breathe, 0.15, -0.35);
+    this.targetRotations['RightElbow'].set(0, 0, -1.15);
 
     if (this.avatar.leftHandController) {
       this.avatar.leftHandController.setPosture(HAND_POSTURES.OPEN_PALM);
-      this.avatar.leftHandController.setWristAngles(0.2, 0, 0.4);
     }
     if (this.avatar.rightHandController) {
       this.avatar.rightHandController.setPosture(HAND_POSTURES.OPEN_PALM);
-      this.avatar.rightHandController.setWristAngles(0.2, 0, -0.4);
     }
   }
 
   _animatePoint(t) {
     const subtleSway = Math.sin(t * 2.0) * 0.015;
-    // Upright signing posture:
-    // Right arm in signing space with elbow at natural height, forearm & wrist angled UPWARD facing camera
-    this.targetRotations['RightUpperArm'].x = 0.42 + subtleSway;
-    this.targetRotations['RightUpperArm'].y = -0.08;
-    this.targetRotations['RightUpperArm'].z = -0.18;
-    this.targetRotations['RightElbow'].x = -1.45;
-    if (this.targetRotations['RightForearm']) {
-      this.targetRotations['RightForearm'].y = 0.22;
-    }
-    this.targetRotations['RightWrist'].x = 1.28;
-    this.targetRotations['RightWrist'].y = -0.16;
-    this.targetRotations['RightWrist'].z = -0.12;
+    // Right arm elevated into signing workspace
+    this.targetRotations['RightUpperArm'].set(0.40 + subtleSway, 0.0, -0.50);
+    this.targetRotations['RightElbow'].set(0, 0, -1.40);
+    this.targetRotations['RightWrist'].set(1.583, 0.340, -2.449);
 
     if (this.avatar.rightHandController) {
       this.avatar.rightHandController.wristControlEnabled = false;
       this.avatar.rightHandController.setPosture(HAND_POSTURES.IMAGE_POINT_SIGN);
     }
 
-    // Left arm in conversational signing ready rest (Image 2)
-    this.targetRotations['LeftUpperArm'].x = 0.42;
-    this.targetRotations['LeftUpperArm'].y = 0.10;
-    this.targetRotations['LeftUpperArm'].z = -0.22;
-    this.targetRotations['LeftElbow'].x = -1.05;
-    if (this.targetRotations['LeftForearm']) {
-      this.targetRotations['LeftForearm'].y = -0.35;
+    // Left arm resting comfortably in neutral attention posture
+    this.targetRotations['LeftUpperArm'].copy(this.restRotations['LeftUpperArm']);
+    this.targetRotations['LeftElbow'].copy(this.restRotations['LeftElbow']);
+    if (this.restRotations['LeftWrist']) {
+      this.targetRotations['LeftWrist'].copy(this.restRotations['LeftWrist']);
     }
     if (this.avatar.leftHandController) {
       this.avatar.leftHandController.setPosture(HAND_POSTURES.RELAXED_REST);
@@ -338,11 +322,9 @@ export class AvatarAnimationController {
 
   _animateThumbsUp(t) {
     // Right arm bends forward, wrist oriented upright
-    this.targetRotations['RightUpperArm'].x = 0.55;
-    this.targetRotations['RightUpperArm'].z = -0.20;
-    this.targetRotations['RightElbow'].x = -1.35;
-    this.targetRotations['RightWrist'].x = 1.20;
-    this.targetRotations['RightWrist'].z = -0.10;
+    this.targetRotations['RightUpperArm'].set(0.45, 0.0, -0.40);
+    this.targetRotations['RightElbow'].set(0, 0, -1.35);
+    this.targetRotations['RightWrist'].set(1.58, 0.34, -2.50);
 
     if (this.avatar.rightHandController) {
       this.avatar.rightHandController.setPosture(HAND_POSTURES.THUMBS_UP);
@@ -356,18 +338,20 @@ export class AvatarAnimationController {
   _animateShrug(t) {
     const pulse = Math.min(1.0, Math.sin(Math.min(Math.PI, t * 1.5)));
 
-    // Shoulders elevated
-    this.targetRotations['LeftShoulder'].y = 0.15 * pulse;
-    this.targetRotations['RightShoulder'].y = -0.15 * pulse;
+    // Forearms bent forward with open palms
+    this.targetRotations['LeftUpperArm'].set(
+      THREE.MathUtils.lerp(this.restRotations['LeftUpperArm'].x, 0.65, pulse),
+      0,
+      THREE.MathUtils.lerp(this.restRotations['LeftUpperArm'].z, 0.35, pulse)
+    );
+    this.targetRotations['LeftElbow'].set(0, 0, pulse * 1.10);
 
-    // Forearms bent with open palms facing up
-    this.targetRotations['LeftUpperArm'].x = 0.35 * pulse;
-    this.targetRotations['LeftUpperArm'].z = 0.45 * pulse;
-    this.targetRotations['LeftElbow'].x = -0.95 * pulse;
-
-    this.targetRotations['RightUpperArm'].x = 0.35 * pulse;
-    this.targetRotations['RightUpperArm'].z = -0.45 * pulse;
-    this.targetRotations['RightElbow'].x = -0.95 * pulse;
+    this.targetRotations['RightUpperArm'].set(
+      THREE.MathUtils.lerp(this.restRotations['RightUpperArm'].x, 0.65, pulse),
+      0,
+      THREE.MathUtils.lerp(this.restRotations['RightUpperArm'].z, -0.35, pulse)
+    );
+    this.targetRotations['RightElbow'].set(0, 0, -pulse * 1.10);
 
     this.targetRotations['Head'].z = 0.12 * pulse; // Inquisitive head tilt
 
@@ -382,11 +366,9 @@ export class AvatarAnimationController {
   _animateThinking(t) {
     const contemplationCycle = Math.sin(t * 1.2) * 0.02;
     // Right hand up to chin
-    this.targetRotations['RightUpperArm'].x = 0.85;
-    this.targetRotations['RightUpperArm'].z = -0.3;
-    this.targetRotations['RightElbow'].x = -1.8;
-    this.targetRotations['RightWrist'].x = 0.4;
-    this.targetRotations['RightWrist'].z = -0.2;
+    this.targetRotations['RightUpperArm'].set(0.35, 0.0, -0.65);
+    this.targetRotations['RightElbow'].set(0, 0, -1.95);
+    this.targetRotations['RightWrist'].set(1.20, 0.20, -2.20);
 
     this.targetRotations['Head'].z = 0.14 + contemplationCycle;
     this.targetRotations['Head'].y = -0.1;
@@ -411,18 +393,7 @@ export class AvatarAnimationController {
     this.targetRotations['Spine'].x = 0.05 + Math.max(0, cycle) * 0.08;
     this.targetRotations['Head'].x = 0.04 + Math.max(0, cycle) * 0.12;
 
-    // Both hands gracefully near lower chest
-    this.targetRotations['LeftUpperArm'].x = 0.3;
-    this.targetRotations['RightUpperArm'].x = 0.3;
-    this.targetRotations['LeftElbow'].x = -0.7;
-    this.targetRotations['RightElbow'].x = -0.7;
-
-    if (this.avatar.leftHandController) {
-      this.avatar.leftHandController.setPosture(HAND_POSTURES.FLAT_CLOSED);
-    }
-    if (this.avatar.rightHandController) {
-      this.avatar.rightHandController.setPosture(HAND_POSTURES.FLAT_CLOSED);
-    }
+    this._animateIdleBreathing(t);
   }
 
   _animateErrorReaction(t) {
@@ -430,9 +401,8 @@ export class AvatarAnimationController {
     this.targetRotations['Head'].y = shake; // Head shake "no / error"
     this.targetRotations['Head'].x = -0.05;
 
-    this.targetRotations['RightUpperArm'].x = 0.4;
-    this.targetRotations['RightElbow'].x = -0.8;
-    this.targetRotations['RightWrist'].x = -0.2;
+    this.targetRotations['RightUpperArm'].set(0.50, 0, -0.30);
+    this.targetRotations['RightElbow'].set(0, 0, -0.8);
 
     if (this.avatar.rightHandController) {
       this.avatar.rightHandController.setPosture(HAND_POSTURES.OPEN_PALM);

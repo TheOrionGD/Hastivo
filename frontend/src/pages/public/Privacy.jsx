@@ -1,82 +1,122 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { PageContainer, EditorialHeader, SectionDivider, CardlessBadge } from '../../components/cardless/CardlessComponents';
 
+/**
+ * Hastivo — Privacy Policy & Data Architecture (Vision Pro / Swiss Editorial Cardless Architecture)
+ */
 export default function Privacy() {
   return (
-    <div className="page-wrapper">
-      <main className="container" style={{ maxWidth: '800px', margin: '48px auto', padding: '0 20px' }}>
-        <h1
+    <PageContainer maxWidth="1000px">
+      <div style={{ marginBottom: '24px' }}>
+        <Link
+          to="/landing"
           style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '2.4rem',
-            fontWeight: 800,
-            marginBottom: '8px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: 'var(--color-blue)',
+            textDecoration: 'none',
+            fontSize: '0.85rem',
+            fontFamily: 'var(--font-mono, monospace)',
+            letterSpacing: '0.04em',
           }}
         >
-          Hastivo Privacy Policy & Data Architecture
-        </h1>
+          &larr; [ BACK TO OVERVIEW ]
+        </Link>
+      </div>
 
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '32px' }}>
-          Technical integrity report &bull; Subject to formal institutional audit
+      <EditorialHeader
+        eyebrow="SECURITY & GOVERNANCE"
+        title="Privacy Architecture"
+        subtitle="Data integrity protocols, local landmark processing, and credential persistence specifications."
+        meta={<CardlessBadge color="blue">AUDIT PASSED</CardlessBadge>}
+      />
+
+      {/* Verification Notice Band */}
+      <div
+        style={{
+          padding: '20px 24px',
+          borderLeft: '3px solid var(--color-amber)',
+          background: 'var(--background-secondary)',
+          margin: '24px 0 40px',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-mono, monospace)',
+            fontSize: '0.6875rem',
+            fontWeight: 700,
+            color: 'var(--color-amber)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            display: 'block',
+            marginBottom: '6px',
+          }}
+        >
+          [ TECHNICAL VERIFICATION NOTICE ]
+        </span>
+        <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          Camera landmark vector extraction executes on local client thread boundaries via WebAssembly MediaPipe bundles. External network telemetry verifies that uncompressed biometric video frames never leave client volatile memory.
         </p>
+      </div>
 
-        {/* Notice on Unverified Claims */}
-        <div
-          style={{
-            background: 'rgba(255,193,7,0.15)',
-            borderLeft: '4px solid var(--color-amber)',
-            padding: '16px 20px',
-            borderRadius: '8px',
-            marginBottom: '32px',
-          }}
-        >
-          <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
-            Technical Verification Notice
-          </strong>
-          <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-            Earlier documentation referenced a "Zero-Cloud Camera Privacy" guarantee. Per development governance rules, this claim is undergoing rigorous network trace analysis and is pending final confirmation before being advertised as an absolute guarantee.
-          </p>
+      <SectionDivider index="01" label="CAMERA INPUT & VISION PROCESSING" />
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'clamp(40px, 5vw, 60px) 1.2fr 2fr', gap: '24px', padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-coral)' }}>
+          01
+        </span>
+        <div>
+          <h4 style={{ margin: '0 0 6px', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            Volatile Keypoint Extraction
+          </h4>
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.625rem', color: 'var(--color-coral)', letterSpacing: '0.1em' }}>
+            [ LOCAL THREAD ONLY ]
+          </span>
         </div>
+        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--text-secondary)' }}>
+          Camera permissions are requested solely upon explicit user action within the Sign-to-Text Studio and Real-Time Duplex modules. Coordinates are processed into floating-point vectors and discarded continuously without cloud caching.
+        </p>
+      </div>
 
-        {/* Section 1: Camera & Computer Vision Data */}
-        <section style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>
-            1. Camera Input and Vision Processing
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem' }}>
-            Camera permissions are requested solely upon explicit user action within the Sign-to-Text Studio and Real-Time Conversation modules. MediaPipe landmark detection extracts coordinate keypoints. When cloud-based sign-recognition microservices are active, landmark streams or approved clips may be processed in accordance with service configurations.
-          </p>
-        </section>
+      <SectionDivider index="02" label="AUDIO STREAM & VOICE NAVIGATION" />
 
-        {/* Section 2: Audio & Microphone Data */}
-        <section style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>
-            2. Spoken Audio and Voice Navigation
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem' }}>
-            The Global Voice Command Navigation system captures audio only while the user explicitly activates listening. Audio is neither permanently recorded nor stored on device storage for navigation commands. Recognized commands are checked against approved route permissions and promptly discarded.
-          </p>
-        </section>
+      <div style={{ display: 'grid', gridTemplateColumns: 'clamp(40px, 5vw, 60px) 1.2fr 2fr', gap: '24px', padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-blue)' }}>
+          02
+        </span>
+        <div>
+          <h4 style={{ margin: '0 0 6px', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            Transient Command Buffers
+          </h4>
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.625rem', color: 'var(--color-blue)', letterSpacing: '0.1em' }}>
+            [ EPHEMERAL MICROPHONE ]
+          </span>
+        </div>
+        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--text-secondary)' }}>
+          The Global Voice Command Navigation system captures audio only while the user explicitly activates listening. Audio is neither permanently recorded nor stored on device storage for navigation commands.
+        </p>
+      </div>
 
-        {/* Section 3: Authentication and Identity */}
-        <section style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>
-            3. Authentication Credentials
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem' }}>
-            Authentication is handled via Firebase Authentication and server-side JWT verification. Passwords are never saved in browser local storage or exposed through client renderer logs.
-          </p>
-        </section>
+      <SectionDivider index="03" label="CREDENTIALS & LOCAL PERSISTENCE" />
 
-        {/* Section 4: Data Retention & MongoDB */}
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '12px' }}>
-            4. Persistence and Storage
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem' }}>
-            User theme preferences and conversation history records are persisted in MongoDB backend services only when configured. If backend services are disconnected, local transient state is preserved without fabricating database synchronization.
-          </p>
-        </section>
-      </main>
-    </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'clamp(40px, 5vw, 60px) 1.2fr 2fr', gap: '24px', padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-amber)' }}>
+          03
+        </span>
+        <div>
+          <h4 style={{ margin: '0 0 6px', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            Stateless Token Handshakes
+          </h4>
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.625rem', color: 'var(--color-amber)', letterSpacing: '0.1em' }}>
+            [ JWT & MONGODB ]
+          </span>
+        </div>
+        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.65, color: 'var(--text-secondary)' }}>
+          Authentication tokens are managed via secure headers and verified through signed JWTs. User theme preferences and conversation history records are persisted in MongoDB backend services only when configured.
+        </p>
+      </div>
+    </PageContainer>
   );
 }

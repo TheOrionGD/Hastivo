@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AvatarCanvas } from '../avatar/AvatarCanvas.jsx';
 
 /**
  * SplashAvatarStage
  * Large humanoid robot presentation matching Image 2 reference.
  * 
- * - Seamless cinematic backdrop with coral and blue rim lighting
- * - Live Three.js humanoid avatar with camera framed for upper body & thighs/legs
- * - Interactive model switching (X-Bot / Y-Bot)
+ * - Seamless cinematic backdrop with soft cool rim lighting
+ * - Live Three.js humanoid avatar waving/performing dynamic welcome action
+ * - Interactive model switching (V-Bot)
  */
-export default function SplashAvatarStage({ activeModel = 'x-bot', onAvatarStatusChange }) {
+export default function SplashAvatarStage({
+  activeModel = 'v-bot',
+  initialAnimation = 'wave',
+  onAvatarStatusChange
+}) {
   const avatarCanvasRef = useRef(null);
-  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     if (avatarCanvasRef.current && activeModel) {
@@ -50,6 +53,8 @@ export default function SplashAvatarStage({ activeModel = 'x-bot', onAvatarStatu
           ref={avatarCanvasRef}
           avatarModel={activeModel}
           cameraMode="splash"
+          initialAnimation={initialAnimation}
+          rimLightColor={0x7CA4D8}
           transparent={true}
           hideStage={true}
           theme="dark"

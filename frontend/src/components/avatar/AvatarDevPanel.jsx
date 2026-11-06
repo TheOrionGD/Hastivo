@@ -15,8 +15,8 @@ import { avatarService, AVATAR_MODELS } from '../../services/avatarService.js';
 export function AvatarDevPanel({ onSignChange }) {
   const canvasRef = useRef(null);
 
-  // Active Model: 'x-bot' (Female) | 'y-bot' (Male) | 'procedural'
-  const [selectedModel, setSelectedModel] = useState(avatarService.getActiveModel() || 'x-bot');
+  // Active Model: 'v-bot' (Female) | 'v-bot' (Male) | 'procedural'
+  const [selectedModel, setSelectedModel] = useState(avatarService.getActiveModel() || 'v-bot');
 
   // Layout View Mode: 'split' | 'viewport' | 'controls'
   const [viewMode, setViewMode] = useState('split');
@@ -534,7 +534,7 @@ export function AvatarDevPanel({ onSignChange }) {
                 <span>Draw Calls: <strong>{drawCalls}</strong></span>
                 <span>Speed: <strong>{speed}x</strong></span>
                 <span>Rig: <strong style={{ color: selectedModel === 'procedural' ? '#FFC107' : '#6FA3EF' }}>
-                  {selectedModel === 'x-bot' ? 'Mixamo 65-Bone FBX (♀)' : selectedModel === 'y-bot' ? 'Mixamo 65-Bone FBX (♂)' : 'Procedural Three.js'}
+                  {selectedModel === 'v-bot' ? 'Mixamo 65-Bone FBX (♀)' : selectedModel === 'v-bot' ? 'Mixamo 65-Bone FBX (♂)' : 'Procedural Three.js'}
                 </strong></span>
               </div>
 
@@ -758,7 +758,7 @@ export function AvatarDevPanel({ onSignChange }) {
                 </div>
                 <p style={{ fontSize: '0.78rem', color: '#8E99A8', margin: '0 0 12px 0', lineHeight: 1.45 }}>
                   Authentic Mixamo / Blender rigged characters with 65 bones and complete 5-finger kinematic articulation:
-                  <strong style={{ color: '#FF6F61' }}> X-Bot = Female Bot</strong>, <strong style={{ color: '#6FA3EF' }}>Y-Bot = Male Bot</strong>.
+                  <strong style={{ color: '#FF6F61' }}> V-Bot = Unified Avatar Model</strong>.
                 </p>
 
                 {/* Model Selector Cards */}
@@ -832,7 +832,7 @@ export function AvatarDevPanel({ onSignChange }) {
               {/* Active Asset Specs & Verification */}
               <div style={{ background: 'transparent', padding: '16px 0', borderBottom: '1px solid var(--border)' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '0.84rem', color: '#6FA3EF' }}>
-                  Live Rig & Asset Telemetry: {selectedModel === 'x-bot' ? 'X-Bot (Female Bot)' : selectedModel === 'y-bot' ? 'Y-Bot (Male Bot)' : 'Hastivo Procedural'}
+                  Live Rig & Asset Telemetry: 'V-Bot (Unified Official Model)'
                 </h4>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.76rem' }}>

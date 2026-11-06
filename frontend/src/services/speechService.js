@@ -1,7 +1,8 @@
 /**
  * Hastivo — Speech Recognition Service Adapter
- * Real speech recognition via Web Speech API or supported platform runtime.
- * Never fabricates speech transcripts or simulates listening.
+ * Real browser-native speech recognition via Web Speech API.
+ * Supports continuous listening, live interim transcripts, error recovery,
+ * language configuration, and clean microphone resource management.
  */
 
 export const SpeechServiceStatus = {
@@ -23,6 +24,8 @@ class SpeechService {
     this.onErrorCallback = null;
     this.onStatusChangeCallback = null;
     this.activeStream = null;
+    this.lang = 'en-US';
+    this.shouldAutoRestart = false;
 
     this.isSupported =
       typeof window !== 'undefined' &&
@@ -33,6 +36,13 @@ class SpeechService {
     this.status = newStatus;
     if (this.onStatusChangeCallback) {
       this.onStatusChangeCallback(newStatus, detail);
+    }
+  }
+
+  setLanguage(langCode) {
+    this.lang = langCode || 'en-US';
+    if (this.recognition) {
+      this.recognition.lang = this.lang;
     }
   }
 
@@ -55,10 +65,12 @@ class SpeechService {
     }
   }
 
-  async startListening({ onTranscript, onError, onStatusChange }) {
+  async startListening({ onTranscript, onError, onStatusChange, continuous = true, lang = 'en-US' }) {
     this.onTranscriptCallback = onTranscript;
     this.onErrorCallback = onError;
     this.onStatusChangeCallback = onStatusChange;
+    this.lang = lang || this.lang;
+    this.shouldAutoRestart = continuous;
 
     if (!this.isSupported) {
       const err = 'Speech recognition is not supported in this browser or desktop runtime.';
@@ -76,25 +88,34 @@ class SpeechService {
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       this.recognition = new SpeechRecognition();
-      this.recognition.continuous = false;
+      this.recognition.continuous = continuous;
       this.recognition.interimResults = true;
-      this.recognition.lang = 'en-US';
+      this.recognition.lang = this.lang;
 
       this.recognition.onstart = () => {
         this.setStatus(SpeechServiceStatus.LISTENING);
       };
 
       this.recognition.onresult = (event) => {
-        let transcript = '';
-        let isFinal = false;
+        let interimTranscript = '';
+        let finalTranscript = '';
+
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-          transcript += event.results[i][0].transcript;
+          const part = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            isFinal = true;
+            finalTranscript += part;
+          } else {
+            interimTranscript += part;
           }
         }
+
         if (this.onTranscriptCallback) {
-          this.onTranscriptCallback({ transcript, isFinal });
+          this.onTranscriptCallback({
+            transcript: finalTranscript || interimTranscript,
+            finalTranscript,
+            interimTranscript,
+            isFinal: Boolean(finalTranscript)
+          });
         }
       };
 
@@ -102,20 +123,28 @@ class SpeechService {
         let errorMsg = 'Speech recognition error: ' + event.error;
         if (event.error === 'not-allowed') {
           errorMsg = 'Microphone permission denied by user or system.';
+          this.shouldAutoRestart = false;
         } else if (event.error === 'no-speech') {
-          errorMsg = 'No speech detected. Please try speaking again.';
+          // Normal timeout when silence occurs; handled by auto-restart if active
+          errorMsg = 'No speech detected.';
         } else if (event.error === 'network') {
           errorMsg = 'Speech service network connection failure.';
         }
-        this.setStatus(SpeechServiceStatus.ERROR, errorMsg);
-        if (this.onErrorCallback) this.onErrorCallback(errorMsg);
-        this.stopListening();
+
+        if (event.error !== 'no-speech') {
+          this.setStatus(SpeechServiceStatus.ERROR, errorMsg);
+          if (this.onErrorCallback) this.onErrorCallback(errorMsg);
+        }
       };
 
       this.recognition.onend = () => {
-        if (this.status === SpeechServiceStatus.LISTENING) {
-          this.setStatus(SpeechServiceStatus.IDLE);
+        if (this.shouldAutoRestart && this.status === SpeechServiceStatus.LISTENING) {
+          try {
+            this.recognition.start();
+            return;
+          } catch { }
         }
+        this.setStatus(SpeechServiceStatus.IDLE);
         this.cleanupMicrophone();
       };
 
@@ -129,6 +158,7 @@ class SpeechService {
       } else {
         message = err.message || message;
       }
+      this.shouldAutoRestart = false;
       this.setStatus(SpeechServiceStatus.ERROR, message);
       if (this.onErrorCallback) this.onErrorCallback(message);
       this.cleanupMicrophone();
@@ -136,16 +166,15 @@ class SpeechService {
   }
 
   stopListening() {
+    this.shouldAutoRestart = false;
     if (this.recognition) {
       try {
         this.recognition.stop();
-      } catch {
-        // Ignored
-      }
+      } catch { }
       this.recognition = null;
     }
-    this.cleanupMicrophone();
     this.setStatus(SpeechServiceStatus.IDLE);
+    this.cleanupMicrophone();
   }
 
   cleanupMicrophone() {

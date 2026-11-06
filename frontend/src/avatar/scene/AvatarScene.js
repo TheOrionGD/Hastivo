@@ -93,8 +93,8 @@ export class AvatarScene {
     this.currentLookTarget = new THREE.Vector3(0, 1.35, 0);
     this.targetFov = 36;
 
-    // Avatar model configuration: 'x-bot' (Female), 'y-bot' (Male), or 'procedural'
-    this.currentModelType = options.avatarModel || options.model || 'x-bot';
+    // Avatar model configuration: 'v-bot' (Female), 'y-bot' (Male), or 'procedural'
+    this.currentModelType = options.avatarModel || options.model || 'v-bot';
     this.wireframe = options.wireframe || false;
     this.coatingColor = options.coatingColor || null;
     this.coatingOptions = options.coatingOptions || {};
@@ -169,7 +169,8 @@ export class AvatarScene {
     this.scene.add(this.fillLight);
 
     // 4. Rim Light (Back-Top)
-    this.rimLight = new THREE.DirectionalLight(0xFF8A7D, 1.30);
+    const rimColor = this.options.rimLightColor !== undefined ? this.options.rimLightColor : 0x7CA4D8;
+    this.rimLight = new THREE.DirectionalLight(rimColor, 1.15);
     this.rimLight.position.set(0.0, 2.8, -2.2);
     this.scene.add(this.rimLight);
   }
@@ -205,7 +206,7 @@ export class AvatarScene {
     this.switchAvatar(this.currentModelType);
   }
 
-  async switchAvatar(modelType = 'x-bot') {
+  async switchAvatar(modelType = 'v-bot') {
     if (this.avatar && this.currentModelType === modelType && this.avatar.isLoaded !== false) {
       return this.avatar;
     }
@@ -228,7 +229,7 @@ export class AvatarScene {
     }
 
     try {
-      if (modelType === 'x-bot' || modelType === 'y-bot') {
+      if (modelType === 'v-bot' || modelType === 'x-bot' || modelType === 'y-bot') {
         const mixamoAvatar = new MixamoBotAvatar(modelType, {
           wireframe: this.wireframe,
           coatingColor: this.coatingColor,
@@ -257,8 +258,9 @@ export class AvatarScene {
       this.signingEngine.playbackSpeed = prevSpeed;
       this.animationController.playbackSpeed = prevSpeed;
 
-      // Start with friendly idle breathing
-      this.animationController.playAnimation('idleBreathing');
+      // Start with specified initial animation or fallback to friendly idle breathing
+      const initialAnim = this.options.initialAnimation || 'wave';
+      this.animationController.playAnimation(initialAnim);
 
       if (typeof this.options.onModelChange === 'function') {
         this.options.onModelChange(modelType, this.avatar);

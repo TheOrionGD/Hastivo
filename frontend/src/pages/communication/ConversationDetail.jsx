@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useNotification } from '../../contexts/NotificationContext';
 import { AvatarCanvas } from '../../components/avatar/AvatarCanvas';
-import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
+import { PageContainer, EditorialHeader, CardlessBadge, CardlessButton, SectionDivider, SwissGrid, SwissCol } from '../../components/cardless/CardlessComponents';
 import config from '../../config/env';
 
 /**
- * Hastivo — Conversation Detail Screen (Cardless Redesign)
- * Master Specification Section 4.9 & SRS Section 12.6:
- * - Original input, recognized content, AI-generated sentence.
- * - Translation direction, language metadata, timestamp.
- * - 3D avatar gesture replay controls.
- * - Speech audio replay controls.
- * - Cardless conversation timeline stream.
- * - Delete record action with confirmation.
+ * Hastivo — Conversation Detail (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function ConversationDetail() {
   const { conversationId } = useParams();
@@ -93,220 +86,195 @@ export default function ConversationDetail() {
 
   if (isLoading) {
     return (
-      <div className="page-wrapper">
-        <PageContainer>
-          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '64px 0' }}>
-            Loading verified conversation records...
-          </p>
-        </PageContainer>
-      </div>
+      <PageContainer>
+        <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '64px 0', fontFamily: 'var(--font-mono, monospace)' }}>
+          [ ACCESSING VERIFIED TRANSACTION LEDGER... ]
+        </p>
+      </PageContainer>
     );
   }
 
   if (!record) {
     return (
-      <div className="page-wrapper">
-        <PageContainer>
-          <div style={{ textAlign: 'center', padding: '64px 0' }}>
-            <h2 className="cardless-title">Conversation Not Found</h2>
-            <Link to="/history" className="btn btn-primary btn-sm" style={{ marginTop: '16px' }}>
+      <PageContainer>
+        <div style={{ textAlign: 'center', padding: '64px 0' }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-primary)' }}>Conversation Record Not Found</h2>
+          <Link to="/history" style={{ textDecoration: 'none', marginTop: '16px', display: 'inline-block' }}>
+            <CardlessButton variant="primary" size="sm">
               &larr; Return to Conversation History
-            </Link>
-          </div>
-        </PageContainer>
-      </div>
+            </CardlessButton>
+          </Link>
+        </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="page-wrapper">
-      <PageContainer maxWidth="1280px">
-        {/* Breadcrumb & Header */}
-        <div style={{ marginBottom: '28px' }}>
-          <Link
-            to="/history"
-            style={{
-              color: 'var(--color-blue)',
-              textDecoration: 'none',
-              fontSize: '0.86rem',
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              marginBottom: '12px',
-            }}
-          >
-            &larr; Return to Conversation History
-          </Link>
-
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <CardlessBadge color="coral">{record.direction || 'ISL Translation'}</CardlessBadge>
-                {formattedDate && (
-                  <span style={{ fontSize: '0.80rem', color: 'var(--text-secondary)' }}>
-                    Recorded on {formattedDate}
-                  </span>
-                )}
-              </div>
-              <h1 className="cardless-title" style={{ margin: 0 }}>
-                {record.title}
-              </h1>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <CardlessButton variant="danger" size="sm" onClick={handleDelete}>
-                🗑️ Delete Record
-              </CardlessButton>
-            </div>
-          </div>
-        </div>
-
-        <SectionDivider spacing="24px" />
-
-        {/* ── 2-Column Split: Left Metadata & Text, Right 3D Avatar Replay & Messages ── */}
-        <div
+    <PageContainer maxWidth="1300px">
+      <div style={{ marginBottom: '24px' }}>
+        <Link
+          to="/history"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-            gap: 'clamp(32px, 5vw, 60px)',
-            alignItems: 'start',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: 'var(--color-blue)',
+            textDecoration: 'none',
+            fontSize: '0.85rem',
+            fontFamily: 'var(--font-mono, monospace)',
+            letterSpacing: '0.04em',
           }}
         >
-          {/* Left Column: Metadata & Transcripts */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* Session Metadata Key-Value List */}
-            <div style={{ paddingBottom: '20px', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: '0 0 14px', color: 'var(--text-primary)' }}>
-                Session Metadata
-              </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.88rem' }}>
-                <div>
-                  <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.78rem' }}>Translation Mode:</span>
-                  <strong style={{ color: 'var(--text-primary)' }}>{record.direction || record.type}</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.78rem' }}>Duration:</span>
-                  <strong style={{ color: 'var(--text-primary)' }}>{record.duration || 'N/A'}</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.78rem' }}>Source Language:</span>
-                  <strong style={{ color: 'var(--text-primary)' }}>{record.sourceLanguage || 'English'}</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.78rem' }}>Target Language:</span>
-                  <strong style={{ color: 'var(--color-blue)' }}>{record.targetSignLanguage || 'ISL'}</strong>
-                </div>
+          &larr; [ RETURN TO HISTORY LEDGER ]
+        </Link>
+      </div>
+
+      <EditorialHeader
+        eyebrow="SESSION ARTIFACT"
+        title={record.title || `Session #${record.id}`}
+        subtitle={`Recorded on ${formattedDate || 'Audit Window'}`}
+        meta={<CardlessBadge color="coral">{record.direction || 'ISL Duplex Translation'}</CardlessBadge>}
+        actions={
+          <CardlessButton variant="danger" size="sm" onClick={handleDelete}>
+            🗑️ Delete Record
+          </CardlessButton>
+        }
+      />
+
+      <SectionDivider index="01" label="TRANSCRIPT & METADATA" />
+
+      {/* 2-Column Swiss Asymmetric Grid */}
+      <SwissGrid columns={12} gap="clamp(28px, 4vw, 56px)">
+        {/* Left Column: Metadata & Transcripts (6 cols) */}
+        <SwissCol span={6}>
+          <div style={{ paddingBottom: '20px', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--color-coral)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              [ RUNTIME TELEMETRY ]
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '12px' }}>
+              <div>
+                <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>TRANSLATION MODE:</span>
+                <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>{record.direction || record.type}</div>
               </div>
-            </div>
-
-            {/* Original Input */}
-            <div style={{ padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
-                Original Input Transcript
-              </span>
-              <p style={{ margin: 0, fontSize: '0.96rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                {record.originalInput || 'Original input captured during two-way session.'}
-              </p>
-            </div>
-
-            {/* AI-Generated Output & Speech Replay */}
-            <div style={{ padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
-                AI-Generated Output & Captions
-              </span>
-              <p style={{ margin: '0 0 16px', fontSize: '1.05rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
-                {record.aiGeneratedSentence || 'AI translation generated.'}
-              </p>
-
-              <CardlessButton
-                variant="secondary"
-                size="md"
-                disabled={isPlayingAudio}
-                onClick={handlePlaySpeech}
-              >
-                {isPlayingAudio ? '🔊 Playing Audio...' : '▶ Replay Synthesized Audio'}
-              </CardlessButton>
+              <div>
+                <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>SESSION DURATION:</span>
+                <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>{record.duration || 'N/A'}</div>
+              </div>
+              <div>
+                <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>SOURCE INGEST:</span>
+                <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>{record.sourceLanguage || 'English'}</div>
+              </div>
+              <div>
+                <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>TARGET SYNTHESIS:</span>
+                <div style={{ fontWeight: 600, color: 'var(--color-blue)', marginTop: '2px' }}>{record.targetSignLanguage || 'ISL'}</div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: 3D Avatar Replay Stage & Message Sequence */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* 3D Avatar Replay Viewport */}
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-primary)' }}>
-                  3D Sign Avatar Playback
-                </span>
-                <CardlessBadge color="coral">Kinematic Replay</CardlessBadge>
-              </div>
+          {/* Original Input */}
+          <div style={{ padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '8px' }}>
+              [ ORIGINAL SOURCE INGEST ]
+            </span>
+            <p style={{ margin: 0, fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+              {record.originalInput || 'Original acoustic or gesture stream captured during duplex session.'}
+            </p>
+          </div>
 
-              <div
-                style={{
-                  height: '320px',
-                  position: 'relative',
-                  background: 'transparent',
-                  borderRadius: 'var(--radius-control)',
-                  overflow: 'hidden',
-                  border: '1px solid var(--border-subtle, var(--border))',
-                }}
-              >
-                <AvatarCanvas animName={isPlayingAvatar ? 'defaultSign' : 'idle'} />
-              </div>
+          {/* AI-Generated Output & Speech Replay */}
+          <div style={{ padding: '24px 0', borderBottom: '1px solid var(--border-subtle, var(--border))' }}>
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--color-blue)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '8px' }}>
+              [ SYNTHESIZED CAPTIONS & GRAMMAR ]
+            </span>
+            <p style={{ margin: '0 0 20px', fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.6 }}>
+              {record.aiGeneratedSentence || 'AI translation generated.'}
+            </p>
 
-              <div style={{ marginTop: '12px' }}>
-                <CardlessButton
-                  variant="primary"
-                  size="md"
-                  onClick={() => setIsPlayingAvatar(!isPlayingAvatar)}
-                  style={{ width: '100%' }}
-                >
-                  {isPlayingAvatar ? '⏸ Pause Avatar Gestures' : '▶ Replay 3D Avatar Sign Sequence'}
-                </CardlessButton>
-              </div>
-            </div>
+            <CardlessButton
+              variant="secondary"
+              size="md"
+              disabled={isPlayingAudio}
+              onClick={handlePlaySpeech}
+            >
+              {isPlayingAudio ? '🔊 Transmitting Audio...' : '▶ Replay Synthesized Audio'}
+            </CardlessButton>
+          </div>
+        </SwissCol>
 
-            {/* Conversation Sequence Timeline */}
-            {record.messages && record.messages.length > 0 && (
-              <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid var(--border-subtle, var(--border))' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: '0 0 16px', color: 'var(--text-primary)' }}>
-                  Sequential Conversation Timeline
-                </h3>
+        {/* Right Column: 3D Avatar Stage & Sequential Timeline (6 cols) */}
+        <SwissCol span={6}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--color-coral)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              [ 3D AVATAR KINEMATICS ]
+            </span>
+            <CardlessBadge color="coral">60 FPS PROCEDURAL</CardlessBadge>
+          </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {record.messages.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        padding: '12px 0',
-                        borderBottom: '1px solid var(--border-subtle, var(--border))',
-                      }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <span
-                          style={{
-                            fontSize: '0.78rem',
-                            fontWeight: 700,
-                            color: msg.sender === 'user' ? 'var(--color-blue)' : 'var(--color-coral)',
-                          }}
-                        >
-                          {msg.sender === 'user' ? 'Participant A (Speech / Text)' : 'Participant B (Avatar / Sign)'}
-                        </span>
-                        <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                          {msg.time}
-                        </span>
-                      </div>
-                      <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
-                        {msg.text}
-                      </p>
+          <div
+            style={{
+              height: '340px',
+              position: 'relative',
+              background: 'var(--background-secondary)',
+              borderRadius: '4px',
+              overflow: 'hidden',
+              border: '1px solid var(--border-subtle, var(--border))',
+            }}
+          >
+            <AvatarCanvas animName={isPlayingAvatar ? 'defaultSign' : 'idle'} />
+          </div>
+
+          <div style={{ marginTop: '14px' }}>
+            <CardlessButton
+              variant="primary"
+              size="md"
+              onClick={() => setIsPlayingAvatar(!isPlayingAvatar)}
+              style={{ width: '100%' }}
+            >
+              {isPlayingAvatar ? '⏸ Pause Avatar Gestures' : '▶ Replay 3D Avatar Sign Sequence'}
+            </CardlessButton>
+          </div>
+
+          {/* Conversation Sequence Timeline */}
+          {record.messages && record.messages.length > 0 && (
+            <div style={{ marginTop: '36px', paddingTop: '24px', borderTop: '1px solid var(--border-subtle, var(--border))' }}>
+              <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                [ CHRONOLOGICAL MESSAGE SEQUENCING ]
+              </span>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '14px' }}>
+                {record.messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: '12px 0',
+                      borderBottom: '1px solid var(--border-subtle, var(--border))',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono, monospace)',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          color: msg.sender === 'user' ? 'var(--color-blue)' : 'var(--color-coral)',
+                        }}
+                      >
+                        {msg.sender === 'user' ? 'Participant A (Voice/Text)' : 'Participant B (Avatar/Sign)'}
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                        {msg.time}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                      {msg.text}
+                    </p>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-        </div>
-      </PageContainer>
-    </div>
+            </div>
+          )}
+        </SwissCol>
+      </SwissGrid>
+    </PageContainer>
   );
 }

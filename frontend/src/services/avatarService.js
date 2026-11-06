@@ -2,62 +2,27 @@
  * Hastivo — Avatar Service
  * Handles avatar asset resolution, active model preference, and asset verification.
  * 
- * Supports:
- * - X-Bot: Female Bot (/models/x-bot.fbx)
- * - Y-Bot: Male Bot (/models/y-bot.fbx)
- * - Procedural: Hastivo Procedural Robot
+ * Uses exclusively:
+ * - V-Bot: Unified Avatar Model (/models/v-bot_x_y-bot.glb)
  */
 
 export const AVATAR_MODELS = [
   {
-    id: 'x-bot',
-    name: 'X-Bot',
-    label: 'X-Bot (Female)',
-    gender: 'female',
-    genderSymbol: '♀',
-    badge: 'Female Bot',
-    format: 'Blender FBX',
-    path: '/models/x-bot.fbx',
-    fallbackPath: '/models/X Bot.fbx',
-    description: 'Sleek female humanoid robot assistant with 65-bone Mixamo rig and PBR armor shell.',
-    polycount: '84,816 surface verts + 62,520 joint verts',
+    id: 'v-bot',
+    name: 'V-Bot',
+    label: 'V-Bot (Official)',
+    gender: 'neutral',
+    genderSymbol: '✦',
+    badge: 'Official Model',
+    format: 'GLTF/GLB',
+    path: '/models/v-bot_x_y-bot.glb',
+    fallbackPath: '/models/v-bot_x_y-bot.glb',
+    description: 'Unified high-fidelity humanoid robot assistant with full 80-bone kinematic rig and PBR armor shell.',
+    polycount: '28 skinned meshes, 80 bones',
     accentColor: '#FF6F61',
     defaultCoating: '#E2E6EC',
-    rig: 'Mixamo 65-Bone Humanoid',
+    rig: 'Mixamo 80-Bone Humanoid',
     digits: '5-Digit Kinematic Articulation'
-  },
-  {
-    id: 'y-bot',
-    name: 'Y-Bot',
-    label: 'Y-Bot (Male)',
-    gender: 'male',
-    genderSymbol: '♂',
-    badge: 'Male Bot',
-    format: 'Blender FBX',
-    path: '/models/y-bot.fbx',
-    fallbackPath: '/models/Y Bot.fbx',
-    description: 'Athletic male humanoid robot assistant with 65-bone Mixamo rig and PBR armor shell.',
-    polycount: '103,440 surface verts + 62,520 joint verts',
-    accentColor: '#6FA3EF',
-    defaultCoating: '#DFE4EB',
-    rig: 'Mixamo 65-Bone Humanoid',
-    digits: '5-Digit Kinematic Articulation'
-  },
-  {
-    id: 'procedural',
-    name: 'Hastivo Procedural',
-    label: 'Hastivo (Procedural)',
-    gender: 'neutral',
-    genderSymbol: '🤖',
-    badge: 'Procedural Rig',
-    format: 'Three.js Direct',
-    path: null,
-    description: '100% Procedural Three.js non-humanoid robot assistant with glowing digital visor expressions.',
-    polycount: 'Procedural geometries & morph targets',
-    accentColor: '#FFC107',
-    defaultCoating: '#DFE3E8',
-    rig: 'Custom Kinematic Skeleton',
-    digits: 'Procedural 5-Finger Knuckles'
   }
 ];
 
@@ -66,52 +31,33 @@ export const avatarService = {
     return AVATAR_MODELS;
   },
 
-  getModelConfig(modelId = 'x-bot') {
-    return AVATAR_MODELS.find(m => m.id === modelId) || AVATAR_MODELS[0];
+  getModelConfig(_modelId = 'v-bot') {
+    return AVATAR_MODELS[0];
   },
 
   getActiveModel() {
-    try {
-      const stored = localStorage.getItem('hastivo_active_avatar');
-      if (stored && AVATAR_MODELS.some(m => m.id === stored)) {
-        return stored;
-      }
-    } catch {
-      // LocalStorage might be disabled
-    }
-    return 'x-bot'; // Default to X-Bot (Female)
+    return 'v-bot';
   },
 
-  setActiveModel(modelId) {
+  setActiveModel(_modelId) {
     try {
-      localStorage.setItem('hastivo_active_avatar', modelId);
+      localStorage.setItem('hastivo_active_avatar', 'v-bot');
     } catch {
       // LocalStorage might be disabled
     }
   },
 
-  async checkModelAvailable(modelId = 'x-bot') {
-    const config = this.getModelConfig(modelId);
-    if (!config.path) return true; // Procedural is always available
-
+  async checkModelAvailable(_modelId = 'v-bot') {
     try {
-      const res = await fetch(config.path, { method: 'HEAD' });
-      if (res.ok) return true;
-      if (config.fallbackPath) {
-        const fallbackRes = await fetch(config.fallbackPath, { method: 'HEAD' });
-        return fallbackRes.ok;
-      }
-      return false;
+      const res = await fetch('/models/v-bot_x_y-bot.glb', { method: 'HEAD' });
+      return res.ok;
     } catch {
       return false;
     }
   },
 
   async checkAvatarAssetAvailable() {
-    // Check both X-Bot and Y-Bot assets
-    const xOk = await this.checkModelAvailable('x-bot');
-    const yOk = await this.checkModelAvailable('y-bot');
-    return xOk && yOk;
+    return this.checkModelAvailable('v-bot');
   },
 
   getApprovedPoses() {

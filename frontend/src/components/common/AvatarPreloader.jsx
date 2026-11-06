@@ -3,8 +3,8 @@ import { preloadAvatarModels, areAvatarModelsPreloaded } from '../../avatar/core
 
 /**
  * AvatarPreloader
- * Luxury Cybernetic Preloader that preloads both 3D humanoid avatar FBX models
- * into high-speed memory cache before the user explores the 8 landing page sections.
+ * Luxury Cybernetic Preloader that preloads the unified 3D humanoid avatar V-Bot model
+ * into high-speed memory cache before the user explores the application.
  *
  * @param {Object} props
  * @param {() => void} [props.onComplete] Callback when preloading completes or is dismissed
@@ -14,12 +14,11 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
   const alreadyLoaded = typeof window !== 'undefined' && areAvatarModelsPreloaded();
   const [percent, setPercent] = useState(() => (alreadyLoaded ? 100 : 0));
   const [statusText, setStatusText] = useState(() =>
-    alreadyLoaded ? 'All 3D humanoid avatar models loaded in cache.' : 'Initiating 3D Kinematic Transceiver...'
+    alreadyLoaded ? 'V-Bot 3D humanoid avatar model loaded in cache.' : 'Initiating 3D Kinematic Transceiver...'
   );
-  const [xBotReady, setXBotReady] = useState(() => alreadyLoaded);
-  const [yBotReady, setYBotReady] = useState(() => alreadyLoaded);
-  const [loadedMb, setLoadedMb] = useState(() => (alreadyLoaded ? '3.7' : '0.0'));
-  const [totalMb, setTotalMb] = useState('3.7');
+  const [vBotReady, setVBotReady] = useState(() => alreadyLoaded);
+  const [loadedMb, setLoadedMb] = useState(() => (alreadyLoaded ? '4.7' : '0.0'));
+  const [totalMb, setTotalMb] = useState('4.7');
   const [isDone, setIsDone] = useState(() => alreadyLoaded);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
@@ -35,7 +34,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
   }, [onComplete]);
 
   useEffect(() => {
-    // If already preloaded into memory cache, brief 200ms verification then pass
     if (alreadyLoaded) {
       const timer = setTimeout(() => {
         handleDismiss();
@@ -45,50 +43,40 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
 
     let active = true;
 
-    preloadAvatarModels((fraction, modelId, status, details) => {
+    preloadAvatarModels((fraction, _modelId, status, details) => {
       if (!active) return;
       const pct = Math.min(100, Math.round(fraction * 100));
       setPercent(pct);
       setStatusText(status);
 
       if (details) {
-        if (details.xBotReady) setXBotReady(true);
-        if (details.yBotReady) setYBotReady(true);
+        if (details.vBotReady || fraction >= 1.0) setVBotReady(true);
         if (details.loadedBytes) setLoadedMb((details.loadedBytes / 1048576).toFixed(1));
         if (details.totalBytes) setTotalMb((details.totalBytes / 1048576).toFixed(1));
       }
-    })
-      .then(() => {
-        if (!active) return;
-        setPercent(100);
-        setXBotReady(true);
-        setYBotReady(true);
-        setStatusText('3D Kinematic Humanoid Rig Synchronized');
-        setIsDone(true);
 
+      if (fraction >= 1.0) {
+        setIsDone(true);
         if (autoDismiss) {
           setTimeout(() => {
             if (active) handleDismiss();
           }, 650);
         }
-      })
-      .catch((err) => {
-        console.warn('Avatar preloader notice:', err);
-        if (active) {
-          setIsDone(true);
-          setTimeout(() => {
-            if (active) handleDismiss();
-          }, 800);
-        }
-      });
+      }
+    }).then(() => {
+      if (active) {
+        setIsDone(true);
+        setVBotReady(true);
+        setPercent(100);
+      }
+    });
 
     return () => {
       active = false;
     };
   }, [alreadyLoaded, autoDismiss, handleDismiss]);
 
-  // SVG Circle geometry
-  const radius = 68;
+  const radius = 62;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percent / 100) * circumference;
 
@@ -98,53 +86,26 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 99999,
-        background: 'radial-gradient(ellipse at 50% 40%, rgba(13, 19, 33, 0.98) 0%, rgba(5, 7, 12, 0.99) 100%)',
-        backdropFilter: 'blur(20px)',
+        zIndex: 9999,
+        background: 'radial-gradient(ellipse at 50% 40%, #0d131f 0%, #05070c 80%, #020306 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#f8fafc',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
         opacity: isFadingOut ? 0 : 1,
-        transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
         pointerEvents: isFadingOut ? 'none' : 'auto',
-        overflow: 'hidden',
-        userSelect: 'none',
+        transition: 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+        backdropFilter: 'blur(20px)',
       }}
     >
-      {/* Background Cyber Grid Lines */}
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(111, 163, 239, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(111, 163, 239, 0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '48px 48px',
-          maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Main Holographic Container */}
-      <div
-        style={{
-          position: 'relative',
+          width: '92%',
+          maxWidth: '460px',
+          textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          maxWidth: '520px',
-          padding: '36px 20px',
-          borderRadius: 'var(--radius-overlay)',
-          background: 'transparent',
-          border: 'none',
-          boxShadow: 'none',
-          textAlign: 'center',
-          zIndex: 2,
         }}
       >
         {/* Top Header Tag */}
@@ -185,7 +146,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
 
         {/* Central Circular Hologram Gauge */}
         <div style={{ position: 'relative', width: '180px', height: '180px', margin: '0 auto 24px' }}>
-          {/* Ambient Glow */}
           <div
             style={{
               position: 'absolute',
@@ -198,7 +158,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
           />
 
           <svg width="180" height="180" viewBox="0 0 180 180" style={{ transform: 'rotate(-90deg)' }}>
-            {/* Background Track */}
             <circle
               cx="90"
               cy="90"
@@ -207,7 +166,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
               strokeWidth="7"
               fill="none"
             />
-            {/* Secondary Segment Glow */}
             <circle
               cx="90"
               cy="90"
@@ -217,7 +175,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
               strokeDasharray="4 6"
               fill="none"
             />
-            {/* Primary Gradient Animated Progress */}
             <circle
               cx="90"
               cy="90"
@@ -242,7 +199,6 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
             </defs>
           </svg>
 
-          {/* Center Digital Percentage Counter */}
           <div
             style={{
               position: 'absolute',
@@ -294,23 +250,19 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
           {statusText}
         </div>
 
-        {/* Dual Model Readiness Indicators */}
+        {/* Unified V-Bot Readiness Indicator */}
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '12px',
             width: '100%',
             marginBottom: '22px',
           }}
         >
-          {/* Female Model Badge */}
           <div
             style={{
-              padding: '10px 14px',
+              padding: '12px 18px',
               borderRadius: '16px',
-              background: xBotReady ? 'rgba(255, 111, 97, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-              border: `1px solid ${xBotReady ? 'rgba(255, 111, 97, 0.5)' : 'rgba(255, 255, 255, 0.08)'}`,
+              background: vBotReady ? 'rgba(255, 111, 97, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+              border: `1px solid ${vBotReady ? 'rgba(255, 111, 97, 0.5)' : 'rgba(255, 255, 255, 0.08)'}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -318,53 +270,21 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
             }}
           >
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#FF8F84' }}>♀ X-Bot (Female)</div>
-              <div style={{ fontSize: '0.65rem', color: '#94a3b8' }}>Cyber Visor & Bodice</div>
+              <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#FF8F84' }}>✦ V-Bot Official Model</div>
+              <div style={{ fontSize: '0.70rem', color: '#94a3b8' }}>80-Bone Rig • 5-Finger Kinematics • PBR Armor</div>
             </div>
             <span
               style={{
-                fontSize: '0.66rem',
+                fontSize: '0.70rem',
                 fontWeight: 800,
-                padding: '3px 8px',
+                padding: '4px 10px',
                 borderRadius: '99px',
-                background: xBotReady ? '#FF6F61' : 'rgba(255,255,255,0.1)',
-                color: xBotReady ? '#ffffff' : '#64748b',
-                boxShadow: xBotReady ? '0 0 10px rgba(255, 111, 97, 0.6)' : 'none',
+                background: vBotReady ? '#FF6F61' : 'rgba(255,255,255,0.1)',
+                color: vBotReady ? '#ffffff' : '#64748b',
+                boxShadow: vBotReady ? '0 0 10px rgba(255, 111, 97, 0.6)' : 'none',
               }}
             >
-              {xBotReady ? 'READY' : 'STREAM'}
-            </span>
-          </div>
-
-          {/* Male Model Badge */}
-          <div
-            style={{
-              padding: '10px 14px',
-              borderRadius: '16px',
-              background: yBotReady ? 'rgba(111, 163, 239, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-              border: `1px solid ${yBotReady ? 'rgba(111, 163, 239, 0.5)' : 'rgba(255, 255, 255, 0.08)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              transition: 'all 0.3s ease',
-            }}
-          >
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#93C5FD' }}>♂ Y-Bot (Male)</div>
-              <div style={{ fontSize: '0.65rem', color: '#94a3b8' }}>Tactical Armor & Vest</div>
-            </div>
-            <span
-              style={{
-                fontSize: '0.66rem',
-                fontWeight: 800,
-                padding: '3px 8px',
-                borderRadius: '99px',
-                background: yBotReady ? '#6FA3EF' : 'rgba(255,255,255,0.1)',
-                color: yBotReady ? '#ffffff' : '#64748b',
-                boxShadow: yBotReady ? '0 0 10px rgba(111, 163, 239, 0.6)' : 'none',
-              }}
-            >
-              {yBotReady ? 'READY' : 'STREAM'}
+              {vBotReady ? 'READY' : 'STREAM'}
             </span>
           </div>
         </div>
@@ -382,7 +302,7 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
           }}
         >
           <span>Memory Buffer: <strong style={{ color: '#cbd5e1' }}>{loadedMb} MB / {totalMb} MB</strong></span>
-          <span>Kinematic Rig: <strong style={{ color: '#34d399' }}>27-DOF Calibrated</strong></span>
+          <span>Kinematic Rig: <strong style={{ color: '#34d399' }}>80-Bone Calibrated</strong></span>
         </div>
 
         {/* Action Button: Skip / Enter */}
@@ -412,7 +332,7 @@ export default function AvatarPreloader({ onComplete, autoDismiss = true }) {
             if (!isDone) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
           }}
         >
-          {isDone ? 'Explore 8 Chapters →' : 'Skip Preloader →'}
+          {isDone ? 'Explore Application →' : 'Skip Preloader →'}
         </button>
       </div>
 

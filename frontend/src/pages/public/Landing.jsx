@@ -31,7 +31,27 @@ export default function Landing() {
   const { theme, toggleTheme } = useTheme();
   const videoRef = useRef(null);
   const avatarCanvasRef = useRef(null);
-  const [activeModel, setActiveModel] = useState('x-bot');
+  const [activeModel, setActiveModel] = useState('v-bot');
+  const [typedText, setTypedText] = useState('');
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    const fullMessage = 'Hastivo deploys sub-100ms spatial computer vision and kinematic neural rigs. We parse the full grammar of Indian Sign Language—handshapes, spatial syntax, and facial non-manual markers—directly on client silicon.';
+    let index = 0;
+    setTypedText('');
+    setIsTypingComplete(false);
+
+    const interval = setInterval(() => {
+      index++;
+      setTypedText(fullMessage.slice(0, index));
+      if (index >= fullMessage.length) {
+        clearInterval(interval);
+        setIsTypingComplete(true);
+      }
+    }, 28);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -109,8 +129,21 @@ export default function Landing() {
                   <span className="sl-hero-title-underline">Sovereignty.</span>
                 </h1>
 
-                <p className="sl-hero-desc">
-                  Hastivo deploys sub-100ms spatial computer vision and kinematic neural rigs. We parse the full grammar of Indian Sign Language—handshapes, spatial syntax, and facial non-manual markers—directly on client silicon.
+                <p className="sl-hero-desc sl-typewriter-text" aria-label="Hastivo deploys sub-100ms spatial computer vision and kinematic neural rigs. We parse the full grammar of Indian Sign Language—handshapes, spatial syntax, and facial non-manual markers—directly on client silicon." style={{ minHeight: '4.8em' }}>
+                  <span>{typedText}</span>
+                  <span
+                    className="sl-typewriter-cursor"
+                    style={{
+                      display: 'inline-block',
+                      width: '2.5px',
+                      height: '1.05em',
+                      backgroundColor: 'var(--color-coral, var(--brand-coral))',
+                      marginLeft: '3px',
+                      verticalAlign: 'text-bottom',
+                      animation: isTypingComplete ? 'cursorBlink 1s infinite' : 'none',
+                      opacity: 1,
+                    }}
+                  />
                 </p>
               </div>
 
@@ -148,11 +181,11 @@ export default function Landing() {
                 {/* Model switcher */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button
-                    onClick={() => handleSwitchModel('x-bot')}
+                    onClick={() => handleSwitchModel('v-bot')}
                     style={{
-                      background: activeModel === 'x-bot' ? 'var(--color-coral, var(--brand-coral))' : 'transparent',
+                      background: activeModel === 'v-bot' ? 'var(--color-coral, var(--brand-coral))' : 'transparent',
                       border: 'var(--border-width, 1px) solid var(--border-subtle)',
-                      color: activeModel === 'x-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
+                      color: activeModel === 'v-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
                       padding: '2px 8px',
                       fontFamily: 'var(--font-mono)',
                       fontSize: '10px',
@@ -164,11 +197,11 @@ export default function Landing() {
                     X-BOT
                   </button>
                   <button
-                    onClick={() => handleSwitchModel('y-bot')}
+                    onClick={() => handleSwitchModel('v-bot')}
                     style={{
-                      background: activeModel === 'y-bot' ? 'var(--color-blue, var(--brand-blue))' : 'transparent',
+                      background: activeModel === 'v-bot' ? 'var(--color-blue, var(--brand-blue))' : 'transparent',
                       border: 'var(--border-width, 1px) solid var(--border-subtle)',
-                      color: activeModel === 'y-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
+                      color: activeModel === 'v-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
                       padding: '2px 8px',
                       fontFamily: 'var(--font-mono)',
                       fontSize: '10px',

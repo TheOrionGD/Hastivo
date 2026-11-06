@@ -23,6 +23,13 @@ GLOSS_PATTERNS = [
     (["ME", "UNDERSTAND", "NO"], "I do not understand."),
     (["NAME", "YOU", "WHAT"], "What is your name?"),
     (["TODAY", "TRAIN", "TIME", "WHAT"], "What time is the train scheduled for today?"),
+    (["GOOD", "MORNING"], "Good morning!"),
+    (["HELLO", "FRIEND"], "Hello, my friend!"),
+    (["HOW", "YOU"], "How are you?"),
+    (["ME", "FINE"], "I am fine, thank you."),
+    (["WELCOME"], "You are warmly welcome."),
+    (["ME", "DOCTOR", "WANT"], "I need to see a doctor immediately."),
+    (["HOSPITAL", "WHERE"], "Where is the nearest hospital?"),
 ]
 
 def synthesize_grammatical_sentence(glosses: List[str]) -> str:
@@ -46,6 +53,11 @@ def synthesize_grammatical_sentence(glosses: List[str]) -> str:
         return "I need drinking water, please."
     if "HELP" in upper_glosses:
         return "Please provide assistance."
+
+    # 1. Fingerspelling assembly (when sequence is individual letters like H, E, L, L, O -> Hello)
+    if all(len(t) == 1 and t.isalpha() for t in upper_glosses):
+        word = ''.join(upper_glosses)
+        return word.capitalize() + '.'
 
     # Heuristic English sentence reconstruction from ISL SOV
     words = []
@@ -112,7 +124,11 @@ def process_sign_to_text(signs: List[Dict[str, Any]]) -> Dict[str, Any]:
         if not smoothed_glosses or smoothed_glosses[-1] != g:
             smoothed_glosses.append(g)
 
-    synthesized_sentence = synthesize_grammatical_sentence(smoothed_glosses)
+    # If all inputs are single letters (fingerspelling a word), retain double letters (e.g. H-E-L-L-O -> HELLO)
+    if all(len(g) == 1 and g.isalpha() for g in raw_glosses):
+        synthesized_sentence = ''.join(raw_glosses).capitalize() + '.'
+    else:
+        synthesized_sentence = synthesize_grammatical_sentence(smoothed_glosses)
     avg_confidence = round(sum(confidences) / len(confidences), 3) if confidences else 0.95
 
     return {

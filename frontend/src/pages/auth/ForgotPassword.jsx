@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNotification } from '../../contexts/NotificationContext';
+import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 import config from '../../config/env';
-import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Hastivo — Forgot Password Screen (SRS Section 7.3)
- * UI:
- * - Email address input
- * - Send Reset Link action
- * - Back to Login action
- * - Privacy-preserving confirmation response (does not disclose account existence)
- * - Rate-limiting feedback
+ * Hastivo — Forgot Password (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -56,118 +50,116 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="trench-auth-viewport">
-      <div className="trench-auth-card" style={{ maxWidth: '480px', margin: 'auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div
-            style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '20px',
-              background: 'rgba(255, 111, 97, 0.15)',
-              border: '1.5px solid var(--color-coral)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-              fontSize: '1.8rem',
-            }}
-          >
-            🔑
-          </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px' }}>
-            Forgot Password?
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
-            Enter your registered email address. We will send you instructions to securely reset your password.
-          </p>
-        </div>
+    <PageContainer maxWidth="640px">
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 90px) 0' }}>
+        <CardlessBadge color="coral">CREDENTIAL RECOVERY</CardlessBadge>
+
+        <h1
+          style={{
+            fontFamily: 'var(--font-display, "Manrope", sans-serif)',
+            fontSize: 'clamp(2.2rem, 4vw, 3rem)',
+            fontWeight: 800,
+            color: 'var(--text-primary)',
+            margin: '24px 0 14px',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          Password Recovery
+        </h1>
+
+        <p
+          style={{
+            fontSize: '1rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.6,
+            maxWidth: '520px',
+            margin: '0 auto 36px',
+          }}
+        >
+          Enter the verified email address linked to your Hastivo account. We will dispatch a single-use cryptographic reset link.
+        </p>
 
         {submitted ? (
           <div
             style={{
-              padding: '20px',
-              borderRadius: 'var(--radius-control)',
-              background: 'rgba(52, 211, 153, 0.12)',
-              border: '1px solid rgba(52, 211, 153, 0.35)',
-              textAlign: 'center',
-              marginBottom: '24px',
+              padding: '24px',
+              borderLeft: '3px solid #34d399',
+              background: 'var(--background-secondary)',
+              maxWidth: '480px',
+              margin: '0 auto 36px',
+              textAlign: 'left',
             }}
           >
-            <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📬</div>
-            <h4 style={{ color: '#34d399', margin: '0 0 6px', fontWeight: 700 }}>Instructions Dispatched</h4>
-            <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', margin: '0 0 16px', lineHeight: 1.5 }}>
-              If an account with <strong style={{ color: 'var(--text-primary)' }}>{email}</strong> exists, you will receive a secure reset link shortly.
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: '#34d399', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              [ RECOVERY INSTRUCTIONS DISPATCHED ]
+            </span>
+            <p style={{ margin: '8px 0 14px', fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+              If an account is associated with <strong>{email}</strong>, a secure reset token has been transmitted.
             </p>
-            <button
-              type="button"
-              disabled={cooldown > 0}
-              onClick={handleSubmit}
-              className="soft-pill-btn"
-              style={{
-                fontSize: '0.82rem',
-                padding: '8px 18px',
-                opacity: cooldown > 0 ? 0.6 : 1,
-                cursor: cooldown > 0 ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {cooldown > 0 ? `Resend Available in ${cooldown}s` : 'Resend Email'}
-            </button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <CardlessButton variant="primary" size="sm">
+                  Return to Sign In
+                </CardlessButton>
+              </Link>
+            </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                Registered Email Address
+          <form onSubmit={handleSubmit} style={{ maxWidth: '440px', margin: '0 auto 36px', textAlign: 'left' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-mono, monospace)',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.08em',
+                  color: 'var(--text-secondary)',
+                  textTransform: 'uppercase',
+                  marginBottom: '8px',
+                }}
+              >
+                Account Email Address
               </label>
               <input
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                required
-                className="input-field"
-                style={{ width: '100%', padding: '12px 16px', fontSize: '0.95rem' }}
+                placeholder="citizen@domain.org"
+                style={{
+                  width: '100%',
+                  padding: '12px 14px',
+                  background: 'var(--background-secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '4px',
+                  color: 'var(--text-primary)',
+                  fontFamily: 'inherit',
+                  fontSize: '0.95rem',
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="soft-pill-btn"
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                padding: '13px',
-                fontSize: '0.96rem',
-                background: 'var(--color-coral)',
-                borderColor: 'var(--color-coral)',
-                color: '#ffffff',
-                fontWeight: 700,
-              }}
-            >
-              {isSubmitting ? 'Sending Request...' : 'Send Password Reset Link'}
-            </button>
+            <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <CardlessButton variant="primary" size="md" type="submit" disabled={isSubmitting || cooldown > 0}>
+                {isSubmitting ? 'Transmitting...' : cooldown > 0 ? `Wait ${cooldown}s` : 'Transmit Reset Link'}
+              </CardlessButton>
+              <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <CardlessButton variant="ghost" size="md">
+                  Cancel
+                </CardlessButton>
+              </Link>
+            </div>
           </form>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '24px', borderTop: '1px solid var(--border)', paddingTop: '18px' }}>
-          <Link
-            to="/signin"
-            style={{
-              fontSize: '0.88rem',
-              color: 'var(--color-blue)',
-              textDecoration: 'none',
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            ← Back to Sign In
-          </Link>
-        </div>
+        <SectionDivider margin="24px auto 36px" style={{ maxWidth: '360px' }} />
+
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          [ ZERO INFORMATION DISCLOSURE PRIVACY GUARANTEE ]
+        </span>
       </div>
-    </div>
+    </PageContainer>
   );
 }

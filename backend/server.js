@@ -32,11 +32,13 @@ import { execFileSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
+
+// Load environment variables from backend/.env or root .env
+dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config();
 const aiDir = path.join(rootDir, 'ai-service');
 const cvDir = path.join(rootDir, 'computer-vision');
 
@@ -303,41 +305,38 @@ app.post('/api/v1/auth/login', (req, res) => {
     }
   }
 
+  // Registered User / Admin Login
   if (!user) {
-    const isAdmin = cleanEmail.includes('admin');
-    user = {
-      id: 'usr_' + Math.random().toString(36).substring(2, 9),
-      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@hastivo.isl`,
-      displayName: cleanEmail.split('@')[0],
-      username: cleanEmail.replace(/@.*$/, ''),
-      passwordHash: bcrypt.hashSync(password, 10),
-      role: isAdmin ? 'admin' : 'citizen',
-      status: 'active',
-      warningCount: 0,
-      restrictions: [],
-      restrictionExpiresAt: null,
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-    };
-    usersDatabase.set(user.email, user);
-  } else {
-    // Check password if hash exists
-    if (user.passwordHash && !bcrypt.compareSync(password, user.passwordHash)) {
-      recordAuditLog({
-        actor: cleanEmail,
-        role: 'unknown',
-        action: 'AUTH_FAILED_PASSWORD',
-        target: user.id,
-        severity: 'warning',
-        details: 'Failed login attempt due to invalid password.',
-      });
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid email/username or password.',
-      });
-    }
-    user.lastActive = new Date().toISOString();
+    recordAuditLog({
+      actor: cleanEmail,
+      role: 'unknown',
+      action: 'AUTH_FAILED_USER_NOT_FOUND',
+      target: cleanEmail,
+      severity: 'warning',
+      details: 'Failed login attempt: account does not exist.',
+    });
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid email/username or password.',
+    });
   }
+
+  // Verify password against stored bcrypt hash
+  if (!user.passwordHash || !bcrypt.compareSync(password, user.passwordHash)) {
+    recordAuditLog({
+      actor: cleanEmail,
+      role: 'unknown',
+      action: 'AUTH_FAILED_PASSWORD',
+      target: user.id,
+      severity: 'warning',
+      details: 'Failed login attempt due to invalid password.',
+    });
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid email/username or password.',
+    });
+  }
+  user.lastActive = new Date().toISOString();
 
   // Check restriction and auto-expiry
   checkAndRestoreRestrictions(user);
@@ -367,10 +366,13 @@ app.post('/api/v1/auth/login', (req, res) => {
     details: `User logged in with role [${user.role}].`,
   });
 
+  const safeUser = { ...user };
+  delete safeUser.passwordHash;
+
   return res.json({
     success: true,
     token,
-    user,
+    user: safeUser,
     role: user.role,
     message: 'Authentication successful.',
   });
@@ -429,10 +431,13 @@ app.post('/api/v1/auth/register', (req, res) => {
     details: `New account registered as ${assignedRole}.`,
   });
 
+  const safeNewUser = { ...newUser };
+  delete safeNewUser.passwordHash;
+
   return res.status(201).json({
     success: true,
     token,
-    user: newUser,
+    user: safeNewUser,
     role: assignedRole,
     message: 'Account registered successfully.',
   });
@@ -443,7 +448,9 @@ app.get('/api/v1/auth/me', (req, res) => {
   if (!user) {
     return res.status(401).json({ success: false, message: 'Invalid, expired, or missing session token.' });
   }
-  return res.json({ success: true, user });
+  const safeUser = { ...user };
+  delete safeUser.passwordHash;
+  return res.json({ success: true, user: safeUser });
 });
 
 app.post('/api/v1/auth/logout', (req, res) => {
@@ -755,6 +762,106 @@ app.post(['/api/v1/translation/text-to-sign', '/api/v1/translate/text-to-sign'],
     inputText: text,
     retryAfterSeconds: 5,
   });
+});
+
+// Computer Vision Frame Detection Proxy
+app.post('/api/v1/vision/detect-frame', async (req, res) => {
+  try {
+    const cvRes = await fetch(CV_SERVICE_URL + '/api/v1/vision/detect-frame', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {}),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!cvRes.ok) {
+      return res.status(cvRes.status).json({ error: 'CV service error' });
+    }
+    const data = await cvRes.json();
+    return res.json(data);
+  } catch (err) {
+    return res.status(502).json({ error: 'Failed to contact Computer Vision engine', message: err.message });
+  }
+});
+
+// Continuous Sign Language Recognition Stream & Multi-Frame Sequence Endpoint
+app.post('/api/v1/translation/continuous-stream', async (req, res) => {
+  const { hands, frameLandmarks } = req.body || {};
+
+  try {
+    if (Array.isArray(frameLandmarks) && frameLandmarks.length > 0) {
+      // Full continuous sequence processing
+      const seqRes = await fetch(`${CV_SERVICE_URL}/api/v1/vision/continuous-sequence`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ frameLandmarks }),
+        signal: AbortSignal.timeout(4000),
+      });
+
+      if (seqRes.ok) {
+        const seqData = await seqRes.json();
+        const recognizedTokens = seqData.recognizedTokens || [];
+        
+        let translatedText = recognizedTokens.map(t => t.label).join(' ');
+        if (recognizedTokens.length > 0) {
+          try {
+            const aiRes = await fetch(`${AI_SERVICE_URL}/api/v1/ai/sign-to-text`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ signs: recognizedTokens }),
+              signal: AbortSignal.timeout(3000),
+            });
+            if (aiRes.ok) {
+              const aiData = await aiRes.json();
+              translatedText = aiData.synthesizedSentence || translatedText;
+            }
+          } catch {}
+        }
+
+        return res.json({
+          success: true,
+          type: 'continuous-sequence',
+          tokens: recognizedTokens,
+          translatedText,
+          timestamp: new Date().toISOString(),
+          source: 'Hastivo-Continuous-BiLSTM-Sequence-Engine',
+        });
+      }
+    }
+
+    if (Array.isArray(hands)) {
+      // Single frame continuous ingestion
+      const frameRes = await fetch(`${CV_SERVICE_URL}/api/v1/vision/continuous-frame`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hands }),
+        signal: AbortSignal.timeout(3000),
+      });
+
+      if (frameRes.ok) {
+        const frameData = await frameRes.json();
+        return res.json({
+          success: true,
+          type: 'continuous-frame',
+          result: frameData.result,
+          timestamp: new Date().toISOString(),
+          source: 'Hastivo-Continuous-Stream-Engine',
+        });
+      }
+    }
+
+    return res.json({
+      success: true,
+      type: 'continuous-idle',
+      result: { detected: false, isPause: true, motionEnergy: 0.0 },
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    return res.status(502).json({
+      success: false,
+      error: 'Continuous recognition engine connection error',
+      message: err.message,
+    });
+  }
 });
 
 // Sign-to-Text Recognition Endpoints (Genuine Computer Vision & AI Service Bridge)

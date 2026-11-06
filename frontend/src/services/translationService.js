@@ -34,6 +34,25 @@ export const translationService = {
     }
   },
 
+  async detectFrameVision(imageBase64, returnAnnotated = false) {
+    if (!this.isConfigured()) {
+      throw new Error('Sign recognition service is not configured.');
+    }
+    try {
+      const response = await fetch(config.apiBaseUrl + '/api/v1/vision/detect-frame', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64, returnAnnotatedImage: returnAnnotated }),
+      });
+      if (!response.ok) {
+        throw new Error('Vision frame detection error: HTTP ' + response.status);
+      }
+      return await response.json();
+    } catch (err) {
+      throw new Error(err.message || 'Vision frame detection request failed.');
+    }
+  },
+
   async recognizeSignLandmarks(landmarks) {
     if (!this.isConfigured()) {
       throw new Error('Sign recognition service is not configured.');
@@ -72,6 +91,44 @@ export const translationService = {
       return await response.json();
     } catch (err) {
       throw new Error(err.message || 'Failed to synthesize sign gloss sequence.');
+    }
+  },
+
+  async streamContinuousSignFrame(hands) {
+    if (!this.isConfigured()) {
+      throw new Error('Continuous recognition service is not configured.');
+    }
+    try {
+      const response = await fetch(`${config.apiBaseUrl}/api/v1/translation/continuous-stream`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hands }),
+      });
+      if (!response.ok) {
+        throw new Error(`Continuous stream API error: HTTP ${response.status}`);
+      }
+      return await response.json();
+    } catch (err) {
+      throw new Error(err.message || 'Failed to send continuous stream frame.');
+    }
+  },
+
+  async decodeContinuousSequence(frameLandmarks) {
+    if (!this.isConfigured()) {
+      throw new Error('Continuous recognition service is not configured.');
+    }
+    try {
+      const response = await fetch(`${config.apiBaseUrl}/api/v1/translation/continuous-stream`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ frameLandmarks }),
+      });
+      if (!response.ok) {
+        throw new Error(`Continuous sequence API error: HTTP ${response.status}`);
+      }
+      return await response.json();
+    } catch (err) {
+      throw new Error(err.message || 'Failed to decode continuous gesture sequence.');
     }
   },
 };

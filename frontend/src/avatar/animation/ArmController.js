@@ -12,17 +12,17 @@ export class ArmController {
     this.enabled = false;
 
     this.current = {
-      L: { upperX: 0.12, upperY: 0, upperZ: -0.22, elbowBend: -0.35, forearmRoll: 0 },
-      R: { upperX: 0.12, upperY: 0, upperZ: 0.22, elbowBend: -0.35, forearmRoll: 0 }
+      L: { upperX: 1.35, upperY: -0.05, upperZ: 0.15, elbowBend: 0.08, forearmRoll: 0 },
+      R: { upperX: 1.35, upperY: 0.05, upperZ: -0.15, elbowBend: -0.08, forearmRoll: 0 }
     };
 
     this.target = {
-      L: { upperX: 0.12, upperY: 0, upperZ: -0.22, elbowBend: -0.35, forearmRoll: 0 },
-      R: { upperX: 0.12, upperY: 0, upperZ: 0.22, elbowBend: -0.35, forearmRoll: 0 }
+      L: { upperX: 1.35, upperY: -0.05, upperZ: 0.15, elbowBend: 0.08, forearmRoll: 0 },
+      R: { upperX: 1.35, upperY: 0.05, upperZ: -0.15, elbowBend: -0.08, forearmRoll: 0 }
     };
   }
 
-  setArmPose(side, { upperX = 0, upperY = 0, upperZ = 0, elbowBend = 0, forearmRoll = 0 } = {}) {
+  setArmPose(side, { upperX = 1.35, upperY = 0, upperZ = 0, elbowBend = 0, forearmRoll = 0 } = {}) {
     const s = side.toUpperCase();
     if (!this.target[s]) return;
 
@@ -30,18 +30,18 @@ export class ArmController {
     this.target[s].upperX = upperX;
     this.target[s].upperY = upperY;
     this.target[s].upperZ = upperZ;
-    this.target[s].elbowBend = THREE.MathUtils.clamp(elbowBend, -2.4, 0.1);
+    this.target[s].elbowBend = THREE.MathUtils.clamp(elbowBend, -2.4, 2.4);
     this.target[s].forearmRoll = forearmRoll;
   }
 
   resetArm(side) {
     const s = side.toUpperCase();
-    const sign = s === 'L' ? -1 : 1;
+    const sign = s === 'L' ? 1 : -1;
     this.setArmPose(s, {
-      upperX: 0.12,
-      upperY: 0,
-      upperZ: sign * 0.22,
-      elbowBend: -0.35,
+      upperX: 1.35,
+      upperY: sign * -0.05,
+      upperZ: sign * 0.15,
+      elbowBend: sign * 0.08,
       forearmRoll: 0
     });
   }
@@ -70,12 +70,9 @@ export class ArmController {
 
       const elbow = this.bones[`${sidePrefix}Elbow`];
       if (elbow) {
-        elbow.rotation.x = curr.elbowBend;
-      }
-
-      const forearm = this.bones[`${sidePrefix}Forearm`];
-      if (forearm) {
-        forearm.rotation.y = curr.forearmRoll;
+        // In Mixamo humanoid rig, elbow flexion hinges on local Z axis
+        elbow.rotation.z = curr.elbowBend;
+        elbow.rotation.y = curr.forearmRoll;
       }
     });
   }

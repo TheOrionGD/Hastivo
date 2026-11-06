@@ -99,9 +99,9 @@ const ONBOARDING_SLIDES = [
 export default function Onboarding() {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slideDirection, setSlideDirection] = useState(1);
+  const [_slideDirection, setSlideDirection] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [activeModel, setActiveModel] = useState('x-bot');
+  const [activeModel, setActiveModel] = useState('v-bot');
   const avatarRef = useRef(null);
 
   const handleComplete = useCallback(async () => {
@@ -109,7 +109,7 @@ export default function Onboarding() {
       localStorage.setItem('hastivo_onboarding_completed', 'true');
       localStorage.setItem('hastivo_onboarding_completed_at', new Date().toISOString());
       localStorage.setItem('hastivo_preferred_avatar_model', activeModel);
-    } catch (_) {
+    } catch {
       // Storage safety
     }
 
@@ -121,11 +121,11 @@ export default function Onboarding() {
           preferredAvatarModel: activeModel,
         }),
       });
-    } catch (_) {
+    } catch {
       // API sync fallback
     }
 
-    navigate('/signin');
+    navigate('/landing');
   }, [navigate, activeModel]);
 
   const handleNext = useCallback(() => {
@@ -505,11 +505,11 @@ export default function Onboarding() {
                 {/* Model switcher */}
                 <div style={{ display: 'flex', gap: '4px' }}>
                   <button
-                    onClick={() => handleSwitchModel('x-bot')}
+                    onClick={() => handleSwitchModel('v-bot')}
                     style={{
-                      background: activeModel === 'x-bot' ? 'var(--color-coral, var(--brand-coral))' : 'var(--surface)',
+                      background: activeModel === 'v-bot' ? 'var(--color-coral, var(--brand-coral))' : 'var(--surface)',
                       border: 'var(--border-width, 1px) solid var(--border)',
-                      color: activeModel === 'x-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
+                      color: activeModel === 'v-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
                       padding: '2px 8px',
                       fontFamily: 'var(--font-mono)',
                       fontSize: '10px',
@@ -521,11 +521,11 @@ export default function Onboarding() {
                     X-BOT
                   </button>
                   <button
-                    onClick={() => handleSwitchModel('y-bot')}
+                    onClick={() => handleSwitchModel('v-bot')}
                     style={{
-                      background: activeModel === 'y-bot' ? 'var(--color-blue, var(--brand-blue))' : 'var(--surface)',
+                      background: activeModel === 'v-bot' ? 'var(--color-blue, var(--brand-blue))' : 'var(--surface)',
                       border: 'var(--border-width, 1px) solid var(--border)',
-                      color: activeModel === 'y-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
+                      color: activeModel === 'v-bot' ? 'var(--brand-charcoal, #2E2E2E)' : 'var(--text-secondary)',
                       padding: '2px 8px',
                       fontFamily: 'var(--font-mono)',
                       fontSize: '10px',

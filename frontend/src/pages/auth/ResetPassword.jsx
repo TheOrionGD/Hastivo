@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useNotification } from '../../contexts/NotificationContext';
+import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 import config from '../../config/env';
-import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Hastivo — Reset Password Screen (SRS Section 7.4)
- * UI:
- * - New Password
- * - Confirm New Password
- * - Password strength indicator
- * - Show/hide controls
- * - Update Password action
- * - Token verification & validation
+ * Hastivo — Reset Password (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -78,165 +71,179 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="trench-auth-viewport">
-      <div className="trench-auth-card" style={{ maxWidth: '480px', margin: 'auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div
-            style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '20px',
-              background: 'rgba(111, 163, 239, 0.15)',
-              border: '1.5px solid var(--color-blue)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-              fontSize: '1.8rem',
-            }}
-          >
-            🛡️
-          </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px' }}>
-            Set New Password
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
-            Choose a strong, unique password with at least 8 characters.
-          </p>
-        </div>
+    <PageContainer maxWidth="640px">
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 90px) 0' }}>
+        <CardlessBadge color="blue">CREDENTIAL UPDATE</CardlessBadge>
+
+        <h1
+          style={{
+            fontFamily: 'var(--font-display, "Manrope", sans-serif)',
+            fontSize: 'clamp(2.2rem, 4vw, 3rem)',
+            fontWeight: 800,
+            color: 'var(--text-primary)',
+            margin: '24px 0 14px',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          Set New Password
+        </h1>
+
+        <p
+          style={{
+            fontSize: '1rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.6,
+            maxWidth: '520px',
+            margin: '0 auto 36px',
+          }}
+        >
+          Choose a strong, unique password with at least 8 characters containing uppercase letters, numbers, and symbols.
+        </p>
 
         {isSuccess ? (
           <div
             style={{
               padding: '24px',
-              borderRadius: 'var(--radius-control)',
-              background: 'rgba(52, 211, 153, 0.12)',
-              border: '1px solid rgba(52, 211, 153, 0.35)',
-              textAlign: 'center',
+              borderLeft: '3px solid #34d399',
+              background: 'var(--background-secondary)',
+              maxWidth: '480px',
+              margin: '0 auto 36px',
+              textAlign: 'left',
             }}
           >
-            <div style={{ fontSize: '2.4rem', marginBottom: '8px' }}>✅</div>
-            <h4 style={{ color: '#34d399', margin: '0 0 8px', fontWeight: 700 }}>Password Updated</h4>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '0 0 16px' }}>
-              Redirecting you to the Sign In portal...
+            <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: '#34d399', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              [ CREDENTIAL UPDATED ]
+            </span>
+            <p style={{ margin: '8px 0 16px', fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
+              Password rotation completed. Redirecting to sign in interface...
             </p>
-            <Link to="/signin" className="soft-pill-btn" style={{ justifyContent: 'center' }}>
-              Sign In Immediately
+            <Link to="/signin" style={{ textDecoration: 'none' }}>
+              <CardlessButton variant="primary" size="sm">
+                Proceed to Sign In &rarr;
+              </CardlessButton>
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            {/* New Password */}
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <label style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <form onSubmit={handleSubmit} style={{ maxWidth: '440px', margin: '0 auto 36px', textAlign: 'left' }}>
+            <div style={{ marginBottom: '18px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <label
+                  style={{
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.6875rem',
+                    letterSpacing: '0.08em',
+                    color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   New Password
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ background: 'none', border: 'none', color: 'var(--color-blue)', fontSize: '0.8rem', cursor: 'pointer' }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.72rem',
+                    color: 'var(--color-blue)',
+                    cursor: 'pointer',
+                  }}
                 >
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
               <input
                 type={showPassword ? 'text' : 'password'}
+                required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="At least 8 characters"
-                required
-                className="input-field"
-                style={{ width: '100%', padding: '12px 16px', fontSize: '0.95rem' }}
+                placeholder="••••••••••••"
+                style={{
+                  width: '100%',
+                  padding: '12px 14px',
+                  background: 'var(--background-secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '4px',
+                  color: 'var(--text-primary)',
+                  fontFamily: 'inherit',
+                  fontSize: '0.95rem',
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
               />
-
-              {/* Strength Meter */}
-              {newPassword && (
-                <div style={{ marginTop: '8px' }}>
-                  <div style={{ display: 'flex', gap: '4px', height: '4px', marginBottom: '4px' }}>
-                    {[1, 2, 3, 4].map((step) => (
-                      <div
-                        key={step}
-                        style={{
-                          flex: 1,
-                          borderRadius: '2px',
-                          background: step <= strength.score ? strength.color : 'rgba(255,255,255,0.1)',
-                          transition: 'background 0.3s ease',
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <span style={{ fontSize: '0.74rem', color: strength.color, fontWeight: 600 }}>
-                    Strength: {strength.label}
-                  </span>
+              {/* Strength indicator bar */}
+              <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ flex: 1, height: '3px', background: 'var(--border)', borderRadius: '2px', overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      width: `${(strength.score / 4) * 100}%`,
+                      height: '100%',
+                      background: strength.color,
+                      transition: 'all 0.25s ease',
+                    }}
+                  />
                 </div>
-              )}
+                <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.7rem', color: strength.color }}>
+                  {strength.label}
+                </span>
+              </div>
             </div>
 
-            {/* Confirm Password */}
-            <div>
-              <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                Confirm New Password
+            <div style={{ marginBottom: '24px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-mono, monospace)',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.08em',
+                  color: 'var(--text-secondary)',
+                  textTransform: 'uppercase',
+                  marginBottom: '8px',
+                }}
+              >
+                Confirm Password
               </label>
               <input
                 type={showPassword ? 'text' : 'password'}
+                required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter your new password"
-                required
-                className="input-field"
-                style={{ width: '100%', padding: '12px 16px', fontSize: '0.95rem' }}
+                placeholder="••••••••••••"
+                style={{
+                  width: '100%',
+                  padding: '12px 14px',
+                  background: 'var(--background-secondary)',
+                  border: `1px solid ${confirmPassword ? (passwordsMatch ? '#34d399' : 'var(--color-coral)') : 'var(--border)'}`,
+                  borderRadius: '4px',
+                  color: 'var(--text-primary)',
+                  fontFamily: 'inherit',
+                  fontSize: '0.95rem',
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
               />
-              {confirmPassword && (
-                <span
-                  style={{
-                    display: 'block',
-                    marginTop: '6px',
-                    fontSize: '0.76rem',
-                    fontWeight: 600,
-                    color: passwordsMatch ? '#34d399' : '#f87171',
-                  }}
-                >
-                  {passwordsMatch ? '✓ Passwords match' : '✗ Passwords do not match'}
-                </span>
-              )}
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting || !passwordsMatch || newPassword.length < 8}
-              className="soft-pill-btn"
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                padding: '13px',
-                fontSize: '0.96rem',
-                background: 'var(--color-blue)',
-                borderColor: 'var(--color-blue)',
-                color: '#ffffff',
-                fontWeight: 700,
-                opacity: !passwordsMatch || newPassword.length < 8 ? 0.6 : 1,
-              }}
-            >
-              {isSubmitting ? 'Updating Password...' : 'Update Password'}
-            </button>
+            <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <CardlessButton variant="primary" size="md" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Updating...' : 'Update Password'}
+              </CardlessButton>
+              <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <CardlessButton variant="ghost" size="md">
+                  Cancel
+                </CardlessButton>
+              </Link>
+            </div>
           </form>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '24px', borderTop: '1px solid var(--border)', paddingTop: '18px' }}>
-          <Link
-            to="/signin"
-            style={{
-              fontSize: '0.88rem',
-              color: 'var(--text-secondary)',
-              textDecoration: 'none',
-              fontWeight: 600,
-            }}
-          >
-            Cancel and Return to Sign In
-          </Link>
-        </div>
+        <SectionDivider margin="24px auto 36px" style={{ maxWidth: '360px' }} />
+
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          [ CLIENT-SIDE SALT AND HASH INTEGRITY CHECK ]
+        </span>
       </div>
-    </div>
+    </PageContainer>
   );
 }

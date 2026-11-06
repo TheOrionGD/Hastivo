@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
+import { PageContainer, CardlessBadge, CardlessButton, SectionDivider } from '../../components/cardless/CardlessComponents';
 import config from '../../config/env';
-import '../../styles/auth-sculpted-trench.css';
 
 /**
- * Hastivo — Email Verification Screen (SRS Section 7.5)
- * UI:
- * - Email verification status
- * - Registered email display
- * - Resend Verification action
- * - Continue action
+ * Hastivo — Email Verification (Vision Pro / Swiss Editorial Cardless Architecture)
  */
 export default function EmailVerification() {
   const [searchParams] = useSearchParams();
@@ -72,122 +67,86 @@ export default function EmailVerification() {
   };
 
   return (
-    <div className="trench-auth-viewport">
-      <div className="trench-auth-card" style={{ maxWidth: '480px', margin: 'auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div
-            style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '20px',
-              background: isVerified ? 'rgba(52, 211, 153, 0.15)' : 'rgba(255, 193, 7, 0.15)',
-              border: `1.5px solid ${isVerified ? '#34d399' : 'var(--color-amber)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-              fontSize: '1.8rem',
-            }}
-          >
-            {isVerified ? '✉️' : '⏳'}
+    <PageContainer maxWidth="640px">
+      <div style={{ textAlign: 'center', padding: 'clamp(40px, 8vw, 90px) 0' }}>
+        <CardlessBadge color="blue">CREDENTIAL HANDSHAKE</CardlessBadge>
+
+        <h1
+          style={{
+            fontFamily: 'var(--font-display, "Manrope", sans-serif)',
+            fontSize: 'clamp(2.2rem, 4vw, 3rem)',
+            fontWeight: 800,
+            color: 'var(--text-primary)',
+            margin: '24px 0 14px',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          {isVerified ? 'Email Confirmed' : 'Verify Your Identity'}
+        </h1>
+
+        <p
+          style={{
+            fontSize: '1rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.6,
+            maxWidth: '520px',
+            margin: '0 auto 32px',
+          }}
+        >
+          {isVerified
+            ? 'Your email address has been verified against our authentication ledger. You now have full access to real-time conversation and 3D avatar translation.'
+            : `A cryptographic verification link was dispatched to ${displayEmail}. Please check your inbox or trigger an automatic token check.`}
+        </p>
+
+        <div
+          style={{
+            padding: '20px 24px',
+            borderLeft: `3px solid ${isVerified ? '#34d399' : 'var(--color-blue)'}`,
+            background: 'var(--background-secondary)',
+            maxWidth: '480px',
+            margin: '0 auto 36px',
+            textAlign: 'left',
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.6875rem', color: isVerified ? '#34d399' : 'var(--color-blue)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            [ IDENTITY LEDGER STATUS ]
+          </span>
+          <div style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>
+            Account: {displayEmail} &bull; {isVerified ? 'VERIFIED' : 'PENDING ACTIVATION'}
           </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px' }}>
-            {isVerified ? 'Email Confirmed' : 'Verify Your Email'}
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
-            {isVerified
-              ? 'Your email address has been verified successfully. Your account has full privileges.'
-              : `We sent a confirmation link to ${displayEmail}. Please check your inbox.`}
-          </p>
         </div>
 
-        {isVerified ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div
-              style={{
-                padding: '16px',
-                borderRadius: 'var(--radius-control)',
-                background: 'rgba(52, 211, 153, 0.1)',
-                border: '1px solid rgba(52, 211, 153, 0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                fontSize: '0.88rem',
-                color: '#34d399',
-              }}
-            >
-              <span>✓</span>
-              <span>{displayEmail} is verified</span>
-            </div>
+        <SectionDivider margin="24px auto 36px" style={{ maxWidth: '360px' }} />
 
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard')}
-              className="soft-pill-btn"
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                padding: '13px',
-                fontSize: '0.96rem',
-                background: 'var(--color-blue)',
-                borderColor: 'var(--color-blue)',
-                color: '#ffffff',
-                fontWeight: 700,
-              }}
-            >
-              Continue to Dashboard
-            </button>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {token && (
-              <button
-                type="button"
-                disabled={isVerifying}
-                onClick={handleVerifyToken}
-                className="soft-pill-btn"
-                style={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  padding: '13px',
-                  fontSize: '0.96rem',
-                  background: 'var(--color-coral)',
-                  borderColor: 'var(--color-coral)',
-                  color: '#ffffff',
-                  fontWeight: 700,
-                }}
+        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          {isVerified ? (
+            <CardlessButton variant="primary" size="md" onClick={() => navigate('/dashboard')}>
+              Enter Workspace &rarr;
+            </CardlessButton>
+          ) : (
+            <>
+              {token && (
+                <CardlessButton variant="primary" size="md" disabled={isVerifying} onClick={handleVerifyToken}>
+                  {isVerifying ? 'Verifying...' : 'Complete Verification'}
+                </CardlessButton>
+              )}
+              <CardlessButton
+                variant={token ? 'ghost' : 'primary'}
+                size="md"
+                disabled={resendCooldown > 0}
+                onClick={handleResend}
               >
-                {isVerifying ? 'Verifying Token...' : 'Confirm Email Verification'}
-              </button>
-            )}
-
-            <button
-              type="button"
-              disabled={resendCooldown > 0}
-              onClick={handleResend}
-              className="soft-pill-btn"
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                padding: '12px',
-                fontSize: '0.9rem',
-                opacity: resendCooldown > 0 ? 0.6 : 1,
-              }}
-            >
-              {resendCooldown > 0 ? `Resend Link in ${resendCooldown}s` : 'Resend Verification Link'}
-            </button>
-
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '14px', fontSize: '0.86rem' }}>
-              <Link to="/signin" style={{ color: 'var(--color-blue)', textDecoration: 'none' }}>
-                &larr; Back to Sign In
+                {resendCooldown > 0 ? `Resend In ${resendCooldown}s` : 'Resend Verification Note'}
+              </CardlessButton>
+              <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <CardlessButton variant="ghost" size="md">
+                  Back to Sign In
+                </CardlessButton>
               </Link>
-              <Link to="/dashboard" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                Skip for now &rarr;
-              </Link>
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -23,7 +23,7 @@ export const LANGUAGES = [
 export const translations = {
   en: {
     appName: 'Hastivo',
-    tagline: 'Vibrant Connections Through Language Colors.',
+    tagline: 'Every Gesture Deserves to Be Heard.',
     dashboard: 'Dashboard',
     textToSign: 'Text-to-Sign',
     signToText: 'Sign-to-Text',
@@ -66,7 +66,7 @@ export const translations = {
   },
   hi: {
     appName: 'सिग्नोरा एआई',
-    tagline: 'भाषा के रंगों से जीवंत संबंध।',
+    tagline: 'हर संकेत सुनने योग्य है।',
     dashboard: 'डैशबोर्ड',
     textToSign: 'टेक्स्ट से सांकेतिक भाषा',
     signToText: 'सांकेतिक भाषा से टेक्स्ट',
@@ -109,7 +109,7 @@ export const translations = {
   },
   ta: {
     appName: 'சிக்னோரா AI',
-    tagline: 'மொழி வண்ணங்கள் வழியாக துடிப்பான தொடர்புகள்.',
+    tagline: 'ஒவ்வொரு சைகையும் கேட்கப்பட வேண்டும்.',
     dashboard: 'டாஷ்போர்டு',
     textToSign: 'உரையிலிருந்து சைகை மொழி',
     signToText: 'சைகையிலிருந்து உரை',
@@ -152,7 +152,7 @@ export const translations = {
   },
   te: {
     appName: 'సిగ్నోరా AI',
-    tagline: 'భాషా రంగుల ద్వారా శక్తివంతమైన అనుసంధానాలు.',
+    tagline: 'ప్రతి సంకేతం వినబడటానికి అర్హమైనది.',
     dashboard: 'డాష్‌బోర్డ్',
     textToSign: 'టెక్స్ట్ నుండి సంకేత భాష',
     signToText: 'సంకేతం నుండి టెక్స్ట్',
@@ -195,7 +195,7 @@ export const translations = {
   },
   kn: {
     appName: 'ಸಿಗ್ನೋರಾ AI',
-    tagline: 'ಭಾಷಾ ಬಣ್ಣಗಳ ಮೂಲಕ ರೋಮಾಂಚಕ ಸಂಪರ್ಕಗಳು.',
+    tagline: 'ಪ್ರತಿಯೊಂದು ಸಂಕೇತವೂ ಕೇಳಿಸಿಕೊಳ್ಳಲು ಅರ್ಹವಾಗಿದೆ.',
     dashboard: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
     textToSign: 'ಪಠ್ಯದಿಂದ ಸಂಕೇತ ಭಾಷೆ',
     signToText: 'ಸಂಕೇತದಿಂದ ಪಠ್ಯ',
@@ -238,7 +238,7 @@ export const translations = {
   },
   ur: {
     appName: 'سگنورا اے آئی',
-    tagline: 'زبان کے رنگوں کے ذریعے پرجوش رابطے۔',
+    tagline: 'ہر اشارہ سنے جانے کا مستحق ہے۔',
     dashboard: 'ڈیش بورڈ',
     textToSign: 'متن سے اشاروں کی زبان',
     signToText: 'اشارے سے متن',
@@ -281,7 +281,7 @@ export const translations = {
   },
   ml: {
     appName: 'സിഗ്നോറ AI',
-    tagline: 'ഭാഷാ വർണ്ണങ്ങളിലൂടെയുള്ള ചലനാത്മക ബന്ധങ്ങൾ.',
+    tagline: 'ഓരോ ആംഗ്യവും കേൾക്കപ്പെടേണ്ടതാണ്.',
     dashboard: 'ഡാഷ്‌ബോർഡ്',
     textToSign: 'ടെക്സ്റ്റിൽ നിന്ന് ആംഗ്യഭാഷ',
     signToText: 'ആംഗ്യത്തിൽ നിന്ന് ടെക്സ്റ്റ്',
