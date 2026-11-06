@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, Heart, Sparkles, Mail, MapPin } from 'lucide-react';
+import { CircularTagline } from './CircularTagline';
 
 interface FooterProps {
   onOpenEmailModal: () => void;
@@ -8,14 +9,16 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onOpenEmailModal }) => {
   return (
     <footer className="relative w-full border-t border-[#e5e5e5] dark:border-[#2a2e39] bg-white dark:bg-[#17191E] overflow-hidden transition-colors">
-      {/* Huge Reverse Rotating Decorative Stamp */}
+      {/* Huge Reverse Rotating Decorative System Tagline Stamp */}
       <div
-        className="footer-circle absolute -bottom-[900px] -right-[500px] w-[1800px] h-[1800px] pointer-events-none opacity-20 dark:opacity-10"
+        className="footer-circle absolute -bottom-[900px] -right-[500px] w-[1800px] h-[1800px] pointer-events-none opacity-25 dark:opacity-15"
         aria-hidden="true"
       >
-        <svg className="w-full h-full animate-rotate-reverse text-[#FF6F61]">
-          <use xlinkHref="#footer-circle" />
-        </svg>
+        <CircularTagline
+          reverse
+          text="• EVERY GESTURE DESERVES TO BE HEARD • HASTIVO AI SPATIAL LINGUISTICS • 7 LANGUAGES • 60 FPS PROCEDURAL KINEMATICS "
+          className="w-full h-full text-[#FF6F61]"
+        />
       </div>
 
       <div className="max-w-[1720px] mx-auto px-8 md:px-14 py-24 md:py-32 relative z-10">

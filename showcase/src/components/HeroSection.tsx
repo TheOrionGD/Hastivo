@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { TextReveal } from '../animation/TextReveal';
 import { MagneticButton } from '../animation/MagneticButton';
 import { AnimatedBadge } from '../animation/AnimatedBadge';
+import { CircularTagline } from './CircularTagline';
 
 interface HeroSectionProps {
   onOpenDiscoveryCall: () => void;
@@ -15,11 +16,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiscoveryCall })
 
   return (
     <section id="top" className="relative w-full pt-16 sm:pt-20 md:pt-28 pb-28 md:pb-36 overflow-hidden">
-      {/* Huge Background Rotating Stamp Circle */}
+      {/* Dynamic Background Rotating System Tagline Circle */}
       <div className="intro-circle red" aria-hidden="true">
-        <svg className="w-full h-full animate-rotate opacity-90 text-[var(--primary)]">
-          <use xlinkHref="#intro-circle-red" />
-        </svg>
+        <CircularTagline
+          text="• EVERY GESTURE DESERVES TO BE HEARD • HASTIVO AI SPATIAL LINGUISTICS • 60 FPS PROCEDURAL KINEMATICS "
+          className="w-full h-full text-[var(--primary)] opacity-85 dark:opacity-90"
+        />
       </div>
 
       <div className="max-w-[1720px] mx-auto px-8 md:px-14 relative z-10">
