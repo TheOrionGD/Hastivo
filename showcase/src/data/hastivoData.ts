@@ -173,7 +173,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "HASTIVO Linguistics & Bioacoustics Lab",
     year: "2024",
     category: "Linguistic Topology & 3D Kinematics",
-    image: "/assets/showcase-ai/avatar-kinematics.png",
+    image: "./assets/showcase-ai/avatar-kinematics.png",
     summary:
       "Drawing inspiration from multi-channel spatial communications research, HASTIVO engineered a groundbreaking spatial topology engine. It synchronizes facial non-manual markers (eyebrow posture, mouth morphemes, eye gaze) with three-dimensional hand trajectories, eliminating robotic motion and capturing the affective grammar of natural sign language.",
     deliverables: [
@@ -205,7 +205,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "Edge Vision Research Consortium",
     year: "2024",
     category: "Computer Vision & Edge Machine Learning",
-    image: "/assets/showcase-ai/vision-tracking.png",
+    image: "./assets/showcase-ai/vision-tracking.png",
     summary:
       "Signers move their hands with extraordinary speed, frequently crossing wrists and occluding fingers. HASTIVO developed a custom temporal landmark pipeline that tracks 21 hand joints at 60 FPS without dropping tracking locks, even when hands pass in front of the face or in low-contrast indoor lighting.",
     deliverables: [
@@ -237,7 +237,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "Global Accessibility Communication Lab",
     year: "2024",
     category: "Full-Duplex Telephony & Event Streaming",
-    image: "/assets/showcase-ai/bilateral-conversation.png",
+    image: "./assets/showcase-ai/bilateral-conversation.png",
     summary:
       "Traditional assistive apps force users into artificial walkie-talkie pauses. HASTIVO's Bilateral Duplex Bridge enables organic, simultaneous two-way conversations where speech audio streams to 3D avatar gestures in real time while hand signs stream simultaneously to synthetic vocal speech.",
     deliverables: [
@@ -269,7 +269,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "Centre for Sign Linguistics Research",
     year: "2024",
     category: "Spatial Linguistics & Computational Syntax",
-    image: "/assets/showcase-ai/spatial-locus.png",
+    image: "./assets/showcase-ai/spatial-locus.png",
     summary:
       "In natural sign languages, signers establish conceptual points in the air around them to represent people, places, and timeframes. HASTIVO created the Terrazzo Spatial Grammar Locus, which maps virtual 3D anchor points in the avatar's signing envelope so pronouns and directional verbs point with mathematical precision.",
     deliverables: [
@@ -301,7 +301,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "Voice & Speech Synthesis Institute",
     year: "2024",
     category: "Speech Synthesis & Affective Computing",
-    image: "/assets/showcase-ai/prosodic-voice.png",
+    image: "./assets/showcase-ai/prosodic-voice.png",
     summary:
       "Signers express urgency, excitement, and questioning through hand velocity and facial expressions. HASTIVO's Neural Prosodic Voice Vocalizer maps non-manual cues and signing dynamics directly into the acoustic prosody, pitch, and cadence of the synthesized spoken voice.",
     deliverables: [
@@ -333,7 +333,7 @@ export const BREAKTHROUGH_PROJECTS: BreakthroughProject[] = [
     organization: "National Accessibility & Language Consortium",
     year: "2024",
     category: "Regional Dialects & Script Localization",
-    image: "/assets/showcase-ai/dialect-matrix.png",
+    image: "./assets/showcase-ai/dialect-matrix.png",
     summary:
       "Covering English, Hindi, Tamil, Telugu, Kannada, Malayalam, and Urdu, HASTIVO bridges major regional linguistic families. The platform accounts for regional ISL sign variations between northern and southern Indian states, ensuring that local dialectal gestures are accurately recognized and displayed.",
     deliverables: [

@@ -22,7 +22,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "Hugging Face / Hemg Research",
     category: "Sign Benchmark",
     sampleCount: "42,745 Annotated Parquet Samples",
-    logo: "/assets/source-logos/huggingface.svg",
+    logo: "./assets/source-logos/huggingface.svg",
     description:
       "Full 35-class Indian Sign Language isolated gesture corpus comprising numerals 1–9 and alphabets A–Z. Sourced directly from verified open research repositories and cached locally for benchmark testing.",
     specs: [
@@ -43,7 +43,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "IIT Kanpur (Exploration Lab, ACL 2023)",
     category: "Translation Corpus",
     sampleCount: "31,222 Continuous Sign Sentences",
-    logo: "/assets/source-logos/iitk-github.svg",
+    logo: "./assets/source-logos/iitk-github.svg",
     description:
       "First and largest open research translation dataset for continuous Indian Sign Language (Joshi, Agrawal, Modi, ACL 2023) featuring corresponding English transcripts and 291 human gold-validated signer evaluations.",
     specs: [
@@ -64,7 +64,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "Bridge Connectivity Solutions Pvt. Ltd.",
     category: "Kinematics Corpus",
     sampleCount: "3,077 Lexicon Words / DWPose NPZ",
-    logo: "/assets/source-logos/bridgeconn.svg",
+    logo: "./assets/source-logos/bridgeconn.svg",
     description:
       "High-fidelity Indian Sign Language Bible (ISLV) video recordings, 133-point dense DWPose kinematics (.npz), and MediaPipe pose tracking developed by Bridge Connectivity Solutions.",
     specs: [
@@ -85,7 +85,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "World-Level American Sign Language (WLASL v0.3)",
     category: "Comparative Lexicon",
     sampleCount: "2,000 Glosses / 21,083 Instances",
-    logo: "/assets/source-logos/wlasl.svg",
+    logo: "./assets/source-logos/wlasl.svg",
     description:
       "Largest open research word-level sign corpus compiled across multiple accredited sign banks (ASL Signbank, ASL Pro, SignSchool) used for cross-lingual kinematic benchmarking.",
     specs: [
@@ -106,7 +106,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "Google Research / AI Perception",
     category: "Vision Framework",
     sampleCount: "60 FPS Client-Side Landmark Pipeline",
-    logo: "/assets/source-logos/mediapipe.svg",
+    logo: "./assets/source-logos/mediapipe.svg",
     description:
       "Open-source landmark tracking pipeline by Google Research providing client-side 543 topological keypoints (33 pose, 468 face, 42 hand) executing entirely in the user's browser without uploading camera video.",
     specs: [
@@ -127,7 +127,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "Adobe Research & Mixamo Animation Lab",
     category: "3D Animation Standard",
     sampleCount: "65 Skeletal Bones / Multi-Axis Quaternions",
-    logo: "/assets/source-logos/mixamo.svg",
+    logo: "./assets/source-logos/mixamo.svg",
     description:
       "Industry standard humanoid skeletal hierarchy established by Adobe Mixamo, governing the 65-bone joint and 15 finger-joint orientation quaternions used for real-time 3D signing avatar animations.",
     specs: [
@@ -148,7 +148,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "World Wide Web Consortium (W3C)",
     category: "Compliance Directive",
     sampleCount: "WCAG 2.2 Level AA Standard",
-    logo: "/assets/source-logos/w3c.svg",
+    logo: "./assets/source-logos/w3c.svg",
     description:
       "Governing web accessibility guidelines established by the W3C, defining high-contrast visual ratios, accessible keyboard interaction flows, ARIA live region behaviors, and reduced-motion compliance.",
     specs: [
@@ -169,7 +169,7 @@ export const realSourcesData: RealSourceItem[] = [
     institution: "SIL International & IETF Standard",
     category: "Linguistic Standard",
     sampleCount: "Canonical Sign & Spoken Identifiers",
-    logo: "/assets/source-logos/iso-sil.svg",
+    logo: "./assets/source-logos/iso-sil.svg",
     description:
       "International ISO 639-3 language registry and IETF BCP-47 tags defining canonical codes for Indian Sign Language (code 'ins'), American Sign Language ('ase'), British Sign Language ('bfi'), and regional spoken dialects.",
     specs: [

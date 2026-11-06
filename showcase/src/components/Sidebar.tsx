@@ -37,9 +37,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           title="HASTIVO — Vibrant Connections Through Language Colors"
         >
           <img
-            src="/assets/dots.svg"
+            src="./assets/dots.svg"
             alt="HASTIVO logo dots"
-            className="w-[26px] h-[32px] max-md:w-[18px] max-md:h-[22px] group-hover:scale-110 transition-transform invert dark:invert-0"
+            className="w-full h-full p-2 object-contain group-hover:scale-110 transition-transform invert dark:invert-0"
           />
         </a>
 

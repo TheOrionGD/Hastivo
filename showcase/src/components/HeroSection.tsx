@@ -36,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiscoveryCall })
               className="relative w-full aspect-[3/4] overflow-hidden border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
             >
               <img
-                src="/assets/hero-editorial.jpg"
+                src="./assets/hero-editorial.jpg"
                 alt="HASTIVO Spatial Sign Language Communication"
                 className="w-full h-full object-cover filter contrast-110 brightness-95"
               />
