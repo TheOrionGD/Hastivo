@@ -1,0 +1,6 @@
+{
+  "name": "HASTIVO",
+  "description": "HASTIVO — Every Gesture Deserves to Be Heard. AI-assisted sign-language communication and spatial linguistics showcase platform, featuring 3D procedural kinematics avatar, 60 FPS vision landmark telemetry, 7-language matrix, and cardless Swiss grid architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
