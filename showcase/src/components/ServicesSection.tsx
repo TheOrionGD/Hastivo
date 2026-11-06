@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ARCHITECTURE_SERVICES, ArchitectureService } from '../data/hastivoData';
-import { ChevronDown, ChevronUp, Cpu, CheckCircle2, ArrowUpRight } from 'lucide-react';
-import { TextReveal } from '../animation/TextReveal';
+import { ChevronDown, ChevronUp, Cpu, ArrowUpRight } from 'lucide-react';
+import { ScrollStoryElement } from '../animation/ScrollStoryElement';
+import { ScrollCardReveal } from '../animation/ScrollCardReveal';
 import { AnimatedBadge } from '../animation/AnimatedBadge';
 
 export const ServicesSection: React.FC = () => {
@@ -13,45 +14,71 @@ export const ServicesSection: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <section
       id="architecture"
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full py-24 md:py-36 border-t border-[var(--divider)] bg-[var(--background)] transition-colors"
     >
       <div className="max-w-[1720px] mx-auto px-8 md:px-14">
         {/* Section Header: WHAT WE DO. */}
         <div className="grid grid-cols-12 gap-6 mb-16 md:mb-24">
           <div className="col-span-12 md:col-span-1">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--primary)] font-semibold">
+            <ScrollStoryElement
+              as="span"
+              granularity="words"
+              start="top 92%"
+              end="bottom 70%"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--primary)] font-semibold"
+            >
               01 / Core
-            </span>
+            </ScrollStoryElement>
           </div>
 
           <div className="col-span-12 md:col-span-11">
-            <TextReveal as="h2" type="chars" duration={0.9} stagger={0.03} className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-8 select-none">
+            {/* Section Title: Character-Level Scroll-Driven Animation */}
+            <ScrollStoryElement
+              as="h2"
+              granularity="chars"
+              variant="chromatic-lift"
+              start="top 88%"
+              end="bottom 55%"
+              stagger={0.04}
+              className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-8 select-none"
+            >
               WHAT WE DO.
-            </TextReveal>
+            </ScrollStoryElement>
 
+            {/* Passage-Level and Word-Level Scrubbing */}
             <div className="max-w-3xl">
-              <TextReveal as="p" type="words" duration={0.7} stagger={0.02} className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)]">
+              <ScrollStoryElement
+                as="p"
+                granularity="words"
+                variant="progressive-clarity"
+                start="top 85%"
+                end="bottom 50%"
+                stagger={0.03}
+                className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)]"
+              >
                 HASTIVO is engineered as a multi-service spatial linguistics architecture. We do not rely on naive word-by-word substitution or isolated still gestures. We integrate real-time neural syntactic parsing, 60 FPS markerless vision tracking, procedural WebGL 3D avatar kinematics, and bilateral duplex event orchestration across seven regional languages.
-              </TextReveal>
+              </ScrollStoryElement>
             </div>
           </div>
         </div>
 
-        {/* 6 Expandable Architectural Service Drawers */}
-        <div className="border-t border-[var(--divider)]">
+        {/* 6 Expandable Architectural Service Drawers with Card/Drawer-level Scroll reveals */}
+        <ScrollCardReveal
+          start="top 88%"
+          end="bottom 55%"
+          stagger={0.08}
+          itemSelector=".architecture-drawer-item"
+          className="border-t border-[var(--divider)]"
+        >
           {ARCHITECTURE_SERVICES.map((service: ArchitectureService) => {
             const isExpanded = expandedId === service.id;
 
             return (
               <div
                 key={service.id}
-                className="border-b border-[var(--divider)] transition-colors"
+                className="architecture-drawer-item border-b border-[var(--divider)] transition-colors"
               >
                 {/* Header Row (Clickable Accordion Trigger) */}
                 <button
@@ -60,25 +87,38 @@ export const ServicesSection: React.FC = () => {
                   aria-expanded={isExpanded}
                 >
                   <div className="grid grid-cols-12 gap-4 md:gap-6 w-full items-baseline">
-                    {/* Number */}
+                    {/* Number with character-level clarity */}
                     <div className="col-span-2 md:col-span-1">
                       <span className="font-mono text-sm md:text-base font-semibold text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors">
                         {service.number}
                       </span>
                     </div>
 
-                    {/* Title */}
+                    {/* Title with word-level scroll scrub */}
                     <div className="col-span-10 md:col-span-6 lg:col-span-5">
-                      <h3 className="font-felix text-2xl sm:text-3xl md:text-4xl text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors uppercase">
+                      <ScrollStoryElement
+                        as="h3"
+                        granularity="words"
+                        variant="chromatic-lift"
+                        start="top 92%"
+                        end="bottom 65%"
+                        className="font-felix text-2xl sm:text-3xl md:text-4xl text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors uppercase"
+                      >
                         {service.title}
-                      </h3>
+                      </ScrollStoryElement>
                     </div>
 
                     {/* Short Description (Desktop) */}
                     <div className="hidden lg:block lg:col-span-5">
-                      <p className="font-exo text-sm md:text-base text-[var(--text-muted)] line-clamp-2">
+                      <ScrollStoryElement
+                        as="p"
+                        granularity="words"
+                        start="top 92%"
+                        end="bottom 65%"
+                        className="font-exo text-sm md:text-base text-[var(--text-muted)] line-clamp-2"
+                      >
                         {service.shortDesc}
-                      </p>
+                      </ScrollStoryElement>
                     </div>
 
                     {/* Latency Pill */}
@@ -119,31 +159,44 @@ export const ServicesSection: React.FC = () => {
                         </span>
                       </div>
 
-                      {/* Descriptive narrative */}
+                      {/* Descriptive narrative passages */}
                       <div className="space-y-4 mb-8">
                         {service.content.map((paragraph, idx) => (
-                          <p
+                          <ScrollStoryElement
                             key={idx}
+                            as="p"
+                            granularity="words"
+                            variant="progressive-clarity"
+                            start="top 95%"
+                            end="bottom 70%"
                             className="font-exo text-base md:text-lg leading-relaxed text-[var(--text-secondary)]"
                           >
                             {paragraph}
-                          </p>
+                          </ScrollStoryElement>
                         ))}
                       </div>
 
-                      {/* Specific Capabilities Grid */}
+                      {/* Specific Capabilities Points Grid */}
                       <div>
                         <h4 className="font-mono text-xs uppercase tracking-widest text-[var(--text-muted)] mb-4">
                           Verified Functional Capabilities
                         </h4>
-                        {/* Animated capability tags */}
-                        <div className="flex flex-wrap gap-2">
+                        {/* Animated capability tags / points */}
+                        <ScrollCardReveal
+                          start="top 95%"
+                          end="bottom 75%"
+                          stagger={0.05}
+                          itemSelector=".capability-point-item"
+                          className="flex flex-wrap gap-2"
+                        >
                           {service.capabilities.map((cap, idx) => (
-                            <AnimatedBadge key={idx} variant="primary">
-                              {cap}
-                            </AnimatedBadge>
+                            <div key={idx} className="capability-point-item">
+                              <AnimatedBadge variant="primary">
+                                {cap}
+                              </AnimatedBadge>
+                            </div>
                           ))}
-                        </div>
+                        </ScrollCardReveal>
                       </div>
 
                       {/* Direct jump to simulator action */}
@@ -162,8 +215,8 @@ export const ServicesSection: React.FC = () => {
               </div>
             );
           })}
-        </div>
+        </ScrollCardReveal>
       </div>
-    </motion.section>
+    </section>
   );
 };

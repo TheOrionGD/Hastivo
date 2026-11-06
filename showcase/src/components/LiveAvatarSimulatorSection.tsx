@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { SignAvatarScene, GestureType } from '../three/SignAvatarScene';
 import { SAMPLE_TRANSLATION_PROMPTS } from '../data/hastivoData';
 import { Sparkles, Play, RefreshCw, Send, Sliders, Volume2, ShieldCheck, Check } from 'lucide-react';
-import { TextReveal } from '../animation/TextReveal';
+import { ScrollStoryElement } from '../animation/ScrollStoryElement';
+import { ScrollCardReveal } from '../animation/ScrollCardReveal';
 import { AnimatedBadge } from '../animation/AnimatedBadge';
 import { MagneticButton } from '../animation/MagneticButton';
 
@@ -52,37 +53,63 @@ export const LiveAvatarSimulatorSection: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <section
       id="simulator"
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full py-24 md:py-36 border-t border-[var(--divider)] bg-[var(--background-secondary)] transition-colors"
     >
       <div className="max-w-[1720px] mx-auto px-8 md:px-14">
         {/* Section Header */}
         <div className="grid grid-cols-12 gap-6 mb-12 md:mb-16">
           <div className="col-span-12 md:col-span-1">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--primary)] font-semibold">
+            <ScrollStoryElement
+              as="span"
+              granularity="words"
+              start="top 92%"
+              end="bottom 70%"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--primary)] font-semibold"
+            >
               02 / Kinematics
-            </span>
+            </ScrollStoryElement>
           </div>
 
           <div className="col-span-12 md:col-span-11">
-            <TextReveal as="h2" type="chars" duration={0.9} stagger={0.03} className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none">
+            {/* Title: Character-Level Scroll-Driven Animation */}
+            <ScrollStoryElement
+              as="h2"
+              granularity="chars"
+              variant="chromatic-lift"
+              start="top 88%"
+              end="bottom 55%"
+              stagger={0.04}
+              className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none"
+            >
               3D AVATAR SIMULATOR.
-            </TextReveal>
-            <TextReveal as="p" type="words" duration={0.7} stagger={0.02} className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl">
+            </ScrollStoryElement>
+
+            {/* Passage-Level and Word-Level Scrubbing */}
+            <ScrollStoryElement
+              as="p"
+              granularity="words"
+              variant="progressive-clarity"
+              start="top 85%"
+              end="bottom 50%"
+              stagger={0.03}
+              className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl"
+            >
               Procedural WebGL inverse kinematics executing natural sign language expressions. Experience how spoken phrases translate into structured Subject-Object-Verb gloss tokens, facial non-manual markers, and spatial signing locus coordinates in real time.
-            </TextReveal>
+            </ScrollStoryElement>
           </div>
         </div>
 
-        {/* Workspace Grid */}
-        <div className="grid grid-cols-12 gap-8 items-start">
+        {/* Workspace Grid: Cards reveal progressively */}
+        <ScrollCardReveal
+          start="top 85%"
+          end="bottom 50%"
+          itemSelector=".simulator-card-item"
+          className="grid grid-cols-12 gap-8 items-start"
+        >
           {/* Left Column: 3D WebGL Avatar Viewport */}
-          <div className="col-span-12 lg:col-span-7 bg-[var(--surface)] border border-[var(--border)] relative overflow-hidden shadow-sm">
+          <div className="simulator-card-item col-span-12 lg:col-span-7 bg-[var(--surface)] border border-[var(--border)] relative overflow-hidden shadow-sm">
             {/* Viewport Top Header */}
             <div className="px-5 py-3 border-b border-[var(--divider)] flex items-center justify-between text-xs font-mono bg-[var(--surface-elevated)]">
               <div className="flex items-center gap-2">
@@ -161,7 +188,7 @@ export const LiveAvatarSimulatorSection: React.FC = () => {
           </div>
 
           {/* Right Column: Interactive Prompting & Linguistic Decomposition */}
-          <div className="col-span-12 lg:col-span-5 flex flex-col space-y-6">
+          <div className="simulator-card-item col-span-12 lg:col-span-5 flex flex-col space-y-6">
             {/* Language Switcher for Samples */}
             <div className="bg-[var(--surface)] p-5 border border-[var(--border)]">
               <div className="flex items-center justify-between mb-4">
@@ -186,15 +213,21 @@ export const LiveAvatarSimulatorSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Sample Prompts List */}
-              <div className="space-y-2">
+              {/* Sample Prompts List with Card/Point-level scroll entrance */}
+              <ScrollCardReveal
+                start="top 90%"
+                end="bottom 60%"
+                stagger={0.06}
+                itemSelector=".prompt-point-card"
+                className="space-y-2"
+              >
                 {SAMPLE_TRANSLATION_PROMPTS.map((prompt, idx) => {
                   const isSelected = selectedPromptIndex === idx && !customInput;
                   return (
                     <button
                       key={prompt.id}
                       onClick={() => handleSelectPrompt(idx)}
-                      className={`w-full p-3 text-left border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                      className={`prompt-point-card w-full p-3 text-left border transition-all cursor-pointer flex items-start justify-between gap-3 ${
                         isSelected
                           ? 'border-[var(--primary)] bg-[var(--primary)]/5 shadow-xs'
                           : 'border-[var(--border-subtle)] hover:border-[var(--border)] bg-[var(--surface-elevated)]'
@@ -214,7 +247,7 @@ export const LiveAvatarSimulatorSection: React.FC = () => {
                     </button>
                   );
                 })}
-              </div>
+              </ScrollCardReveal>
             </div>
 
             {/* Custom Natural Language Input */}
@@ -240,47 +273,41 @@ export const LiveAvatarSimulatorSection: React.FC = () => {
                     <Send className="w-3 h-3" />
                   </button>
                 </div>
-                <p className="text-[11px] font-mono text-[var(--text-muted)]">
+                <ScrollStoryElement
+                  as="p"
+                  granularity="words"
+                  start="top 95%"
+                  end="bottom 75%"
+                  className="text-[11px] font-mono text-[var(--text-muted)]"
+                >
                   Parses SVO natural language into SOV gloss tokens and executes avatar kinematics.
-                </p>
+                </ScrollStoryElement>
               </form>
             </div>
 
-            {/* Linguistic Token Breakdown Card */}
+            {/* Linguistic Token Breakdown Points Card */}
             <div className="bg-[var(--surface)] p-5 border border-[var(--border)]">
               <h3 className="font-mono text-xs uppercase tracking-widest text-[var(--text-primary)] font-semibold mb-3">
-                Linguistic Gloss Representation
+                Spatial Token Decomposition
               </h3>
-
-              <div className="p-3 bg-[var(--surface-elevated)] font-mono text-xs flex flex-wrap items-center gap-2 mb-4 border border-[var(--border-subtle)]">
-                {currentPrompt.gloss.split(' ').map((token, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-1 bg-[var(--surface)] border border-[var(--border)] text-[var(--primary)] font-bold shadow-xs"
-                  >
-                    {token}
-                  </span>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-                <div className="p-2.5 bg-[var(--surface-elevated)] border border-[var(--border-subtle)]">
-                  <span className="text-[var(--text-muted)] block text-[10px] uppercase">Non-Manual Marker</span>
-                  <span className="text-[var(--text-primary)] font-semibold text-[11px]">
-                    {currentPrompt.facialMarker}
-                  </span>
+              <div className="p-3 bg-[var(--surface-elevated)] border border-[var(--border-subtle)] font-mono text-xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--text-muted)]">SOV Sequence:</span>
+                  <span className="text-[var(--primary)] font-bold">{currentPrompt.gloss}</span>
                 </div>
-                <div className="p-2.5 bg-[var(--surface-elevated)] border border-[var(--border-subtle)]">
-                  <span className="text-[var(--text-muted)] block text-[10px] uppercase">3D Locus Envelop</span>
-                  <span className="text-[var(--text-primary)] font-semibold text-[11px]">
-                    {currentPrompt.spatialLocus}
-                  </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--text-muted)]">Locus Coordinates:</span>
+                  <span className="text-[var(--secondary)] font-bold">{currentPrompt.spatialLocus}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--text-muted)]">Facial Marker:</span>
+                  <span className="text-emerald-500 font-bold">{currentPrompt.facialMarker}</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollCardReveal>
       </div>
-    </motion.section>
+    </section>
   );
 };

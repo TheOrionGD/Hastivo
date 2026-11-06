@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useTheme, SupportedLanguage } from '../context/ThemeContext';
-import { Globe, ArrowRight, Check, CheckCircle2 } from 'lucide-react';
-import { TextReveal } from '../animation/TextReveal';
-import { AnimatedBadge } from '../animation/AnimatedBadge';
-import { MagneticButton } from '../animation/MagneticButton';
+import { ScrollStoryElement } from '../animation/ScrollStoryElement';
+import { ScrollCardReveal } from '../animation/ScrollCardReveal';
 
 interface LanguageDetail {
   code: SupportedLanguage;
@@ -87,7 +84,7 @@ const LANGUAGES_DATA: LanguageDetail[] = [
     speakers: '38+ Million',
     region: 'Kerala & Coastal South',
     islDialect: 'Kerala Regional ISL Lexicon (Kochi, Thiruvananthapuram)',
-    sampleText: 'HASTIVO-ലേക്ക് സ്വാಗതം, ഭാഷാ വർണ്ണങ്ങളിലൂടെ ഊർജ്ಜസ്വಲമായ ബന്ധങ്ങൾ.',
+    sampleText: 'HASTIVO-ലേക്ക് സ്വാഗതം, ഭാഷാ വർണ്ണങ്ങളിലൂടെ ഊർജ്ജസ്വലമായ ബന്ധങ്ങൾ.',
     sampleGloss: '[HASTIVO] [SWAGATHAM] [BHASHA] [VARNNANGAL] [BANDHANGAL]',
     scriptFamily: 'Malayalam Script',
     isRtl: false
@@ -118,35 +115,62 @@ export const LanguageGridSection: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <section
       id="languages"
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full py-24 md:py-36 border-t border-[var(--divider)] bg-[var(--background-secondary)] transition-colors"
     >
       <div className="max-w-[1720px] mx-auto px-8 md:px-14">
         {/* Section Header */}
         <div className="grid grid-cols-12 gap-6 mb-16 md:mb-24">
           <div className="col-span-12 md:col-span-1">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] font-semibold">
+            <ScrollStoryElement
+              as="span"
+              granularity="words"
+              start="top 92%"
+              end="bottom 70%"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] font-semibold"
+            >
               05 / Localization
-            </span>
+            </ScrollStoryElement>
           </div>
 
           <div className="col-span-12 md:col-span-11">
-            <TextReveal as="h2" type="chars" duration={0.9} stagger={0.03} className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none">
+            {/* Title: Character-Level Scroll-Driven Animation */}
+            <ScrollStoryElement
+              as="h2"
+              granularity="chars"
+              variant="chromatic-lift"
+              start="top 88%"
+              end="bottom 55%"
+              stagger={0.03}
+              className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none"
+            >
               SEVEN LANGUAGES. ZERO BARRIERS.
-            </TextReveal>
-            <TextReveal as="p" type="words" duration={0.7} stagger={0.02} className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl">
+            </ScrollStoryElement>
+
+            {/* Passage-Level and Word-Level Scrubbing */}
+            <ScrollStoryElement
+              as="p"
+              granularity="words"
+              variant="progressive-clarity"
+              start="top 85%"
+              end="bottom 50%"
+              stagger={0.03}
+              className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl"
+            >
               India is a linguistic continent. HASTIVO delivers native localization across seven major official languages, complete with bidirectional Right-to-Left layout for Urdu and regional dialectal mappings for Indian Sign Language (ISL).
-            </TextReveal>
+            </ScrollStoryElement>
           </div>
         </div>
 
-        {/* 7-Language Interactive Selector Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-12">
+        {/* 7-Language Interactive Selector Bar with Card-Level scroll reveals */}
+        <ScrollCardReveal
+          start="top 90%"
+          end="bottom 60%"
+          stagger={0.05}
+          itemSelector=".lang-pill-item"
+          className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-12"
+        >
           {LANGUAGES_DATA.map((lang) => {
             const isSelected = selectedLangCode === lang.code;
             const isAppActive = language === lang.code;
@@ -155,7 +179,7 @@ export const LanguageGridSection: React.FC = () => {
               <button
                 key={lang.code}
                 onClick={() => handleApplyGlobalLanguage(lang.code)}
-                className={`p-4 text-left border transition-all cursor-pointer flex flex-col justify-between h-28 relative group ${
+                className={`lang-pill-item p-4 text-left border transition-all cursor-pointer flex flex-col justify-between h-28 relative group ${
                   isSelected
                     ? 'border-[var(--primary)] bg-[var(--surface)] shadow-md'
                     : 'border-[var(--border)] bg-[var(--surface-elevated)] hover:border-[var(--primary)]'
@@ -181,7 +205,7 @@ export const LanguageGridSection: React.FC = () => {
               </button>
             );
           })}
-        </div>
+        </ScrollCardReveal>
 
         {/* Selected Language Deep-Dive Interactive Matrix Card */}
         <div className="bg-[var(--surface)] border border-[var(--border)] p-8 md:p-12 shadow-sm">
@@ -210,7 +234,7 @@ export const LanguageGridSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Gloss Representation */}
+              {/* Gloss Representation with Points-Level Tokens */}
               <div className="p-4 bg-[var(--surface-elevated)] border border-[var(--border-subtle)] font-mono text-xs">
                 <span className="text-[var(--text-muted)] block mb-1 uppercase text-[10px]">
                   Synthesized Sign Gloss Tokens:
@@ -258,16 +282,15 @@ export const LanguageGridSection: React.FC = () => {
               <div className="pt-2">
                 <button
                   onClick={() => handleApplyGlobalLanguage(activeLang.code)}
-                  className="w-full py-3.5 px-4 bg-[var(--text-primary)] text-[var(--text-inverse)] font-mono text-xs uppercase tracking-widest hover:bg-[var(--primary)] hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                  className="w-full py-3 px-4 bg-[var(--text-primary)] text-[var(--text-inverse)] hover:bg-[var(--primary)] hover:text-white font-mono text-xs uppercase tracking-widest font-semibold transition-all cursor-pointer shadow-sm"
                 >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Set Entire Application to {activeLang.name}</span>
+                  Apply {activeLang.name} to Entire UI
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };

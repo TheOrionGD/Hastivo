@@ -2,11 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BREAKTHROUGH_PROJECTS, BreakthroughProject } from '../data/hastivoData';
-import { ArrowUpRight, Cpu, Layers, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
-import { TextReveal } from '../animation/TextReveal';
+import { ArrowUpRight, Cpu, CheckCircle2 } from 'lucide-react';
+import { ScrollStoryElement } from '../animation/ScrollStoryElement';
 import { ScrollScrubText } from '../animation/ScrollScrubText';
-import { AnimatedBadge } from '../animation/AnimatedBadge';
-import { TiltCard } from '../animation/TiltCard';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -103,8 +101,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     };
   }, []);
 
-  const currentProject = BREAKTHROUGH_PROJECTS[activeStep] || BREAKTHROUGH_PROJECTS[0];
-
   return (
     <section
       ref={pinContainerRef}
@@ -150,16 +146,18 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         <div className="grid grid-cols-12 gap-8 lg:gap-14 items-center flex-1 my-auto py-4">
           {/* Left Fixed Column: Bold Sticky Editorial Narrative */}
           <div className="col-span-12 lg:col-span-5 flex flex-col justify-center">
-            <TextReveal
+            {/* Title: Character-level animation */}
+            <ScrollStoryElement
               as="h2"
-              type="chars"
-              duration={0.9}
+              granularity="chars"
+              variant="chromatic-lift"
+              start="top 85%"
+              end="bottom 50%"
               stagger={0.03}
-              scrollTrigger={false}
               className="font-felix text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-4 sm:mb-6 select-none"
             >
               BREAKTHROUGHS.
-            </TextReveal>
+            </ScrollStoryElement>
 
             {/* Scroll-Driven Character-by-Character Progress Narrative */}
             <ScrollScrubText
@@ -169,7 +167,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               Six foundational research milestones powering HASTIVO's real-time spatial linguistics and accessibility architecture. Scroll continuously to advance the journey through neural SOV parsing, 60 FPS landmarks, and biometric synthesis.
             </ScrollScrubText>
 
-            {/* Dynamic Step Index Pills */}
+            {/* Dynamic Step Index Points-Level Pills */}
             <div className="flex flex-wrap gap-2 pt-2">
               {BREAKTHROUGH_PROJECTS.map((p, idx) => (
                 <div

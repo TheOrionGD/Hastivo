@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Camera, Activity, ShieldCheck, Eye, Sparkles } from 'lucide-react';
-import { TextReveal } from '../animation/TextReveal';
-import { AnimatedBadge } from '../animation/AnimatedBadge';
-import { MagneticButton } from '../animation/MagneticButton';
+import { ScrollStoryElement } from '../animation/ScrollStoryElement';
+import { ScrollCardReveal } from '../animation/ScrollCardReveal';
 
 export const VisionTelemetrySection: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -75,98 +73,87 @@ export const VisionTelemetrySection: React.FC = () => {
         ctx.stroke();
       }
 
-      // Generate organic 21 hand landmarks based on mathematical sinusoidal kinematics
-      const centerX = width * 0.5 + Math.sin(t * 0.8) * 40;
-      const centerY = height * 0.52 + Math.cos(t * 0.6) * 30;
-      const scale = Math.min(width, height) * 0.32;
+      // Center reference crosshair
+      ctx.strokeStyle = 'rgba(255, 111, 97, 0.2)';
+      ctx.beginPath();
+      ctx.moveTo(width / 2 - 20, height / 2);
+      ctx.lineTo(width / 2 + 20, height / 2);
+      ctx.moveTo(width / 2, height / 2 - 20);
+      ctx.lineTo(width / 2, height / 2 + 20);
+      ctx.stroke();
 
-      const rawPoints: [number, number][] = [
-        [0, 0.45], // 0: Wrist
-        [-0.2, 0.25], [-0.32, 0.08], [-0.4, -0.06], [-0.46, -0.2], // Thumb 1-4
-        [-0.15, -0.05], [-0.18, -0.26], [-0.2, -0.42], [-0.22, -0.58], // Index 5-8
-        [0, -0.08], [0.01, -0.3], [0.02, -0.48], [0.03, -0.65], // Middle 9-12
-        [0.14, -0.05], [0.16, -0.26], [0.17, -0.42], [0.18, -0.56], // Ring 13-16
-        [0.26, 0.02], [0.3, -0.16], [0.33, -0.3], [0.35, -0.44] // Pinky 17-20
-      ];
+      // Procedural synthetic 21-joint Hand Landmark coordinates
+      const cx = width / 2;
+      const cy = height / 2 + Math.sin(t * 1.5) * 12;
 
-      const curl = Math.sin(t * 1.5) * 0.3;
-      const wave = Math.cos(t * 2.0) * 0.15;
+      // Generate 21 points based on kinematic tree
+      const points: { x: number; y: number }[] = [];
 
-      const landmarks: { x: number; y: number }[] = rawPoints.map(([px, py], idx) => {
-        let xMod = px;
-        let yMod = py;
+      // 0: Wrist
+      points.push({ x: cx, y: cy + 120 });
 
-        if (idx >= 4 && idx <= 8) {
-          yMod += curl * 0.2;
-          xMod += wave * 0.1;
-        } else if (idx >= 9 && idx <= 12) {
-          yMod += curl * 0.35;
-        } else if (idx >= 13 && idx <= 16) {
-          yMod += curl * 0.3;
-        } else if (idx >= 17 && idx <= 20) {
-          yMod += curl * 0.25;
+      // Finger bases and tips with rhythmic articulation
+      const fingerFrequencies = [1.2, 1.4, 1.3, 1.1, 0.9];
+      const fingerSpreads = [-55, -28, 0, 28, 55];
+      const fingerLengths = [90, 130, 140, 125, 95];
+
+      for (let f = 0; f < 5; f++) {
+        const spread = fingerSpreads[f];
+        const freq = fingerFrequencies[f];
+        const flex = Math.sin(t * 2 + freq) * 20;
+        const totalLen = fingerLengths[f];
+
+        for (let j = 1; j <= 4; j++) {
+          const ratio = j / 4;
+          const x = cx + spread * ratio + Math.cos(t + f) * 4;
+          const y = (cy + 120) - (totalLen * ratio) + (flex * ratio * ratio);
+          points.push({ x, y });
+        }
+      }
+
+      // Draw skeleton connections
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = 'rgba(255, 111, 97, 0.7)';
+      connections.forEach(([i, j]) => {
+        const p1 = points[i];
+        const p2 = points[j];
+        if (p1 && p2) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      });
+
+      // Draw Joint Landmark Nodes
+      points.forEach((p, idx) => {
+        // Outer pulsing halo on fingertips (4, 8, 12, 16, 20)
+        if ([4, 8, 12, 16, 20].includes(idx)) {
+          ctx.fillStyle = 'rgba(78, 205, 196, 0.25)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 10 + Math.sin(t * 4 + idx) * 3, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#4ECDC4';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#FF6F61';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+          ctx.fill();
         }
 
-        return {
-          x: centerX + xMod * scale,
-          y: centerY + yMod * scale
-        };
-      });
-
-      // Forearm trajectory lines
-      ctx.strokeStyle = 'rgba(111, 163, 239, 0.3)';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(landmarks[0].x, landmarks[0].y);
-      ctx.lineTo(landmarks[0].x - 60, height);
-      ctx.moveTo(landmarks[0].x, landmarks[0].y);
-      ctx.lineTo(landmarks[0].x + 60, height);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Skeletal Connective Bones
-      ctx.lineWidth = 3;
-      connections.forEach(([start, end]) => {
-        const p1 = landmarks[start];
-        const p2 = landmarks[end];
-        const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
-        gradient.addColorStop(0, '#6FA3EF');
-        gradient.addColorStop(1, '#FF6F61');
-        ctx.strokeStyle = gradient;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
-      });
-
-      // Landmark Joint Nodes
-      landmarks.forEach((p, idx) => {
-        const isTip = [4, 8, 12, 16, 20].includes(idx);
-        const isWrist = idx === 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, isTip ? 7 : isWrist ? 8 : 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = isTip
-          ? 'rgba(255, 111, 97, 0.35)'
-          : isWrist
-          ? 'rgba(255, 193, 7, 0.35)'
-          : 'rgba(111, 163, 239, 0.3)';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, isTip ? 4.5 : isWrist ? 5 : 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = isTip ? '#FF6F61' : isWrist ? '#FFC107' : '#ffffff';
-        ctx.fill();
-
+        // Draw joint index label
         ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
         ctx.font = '9px monospace';
-        ctx.fillText(idx.toString(), p.x + 6, p.y - 3);
+        ctx.fillText(`j${idx}`, p.x + 6, p.y - 4);
       });
 
-      // Bounding Box
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      landmarks.forEach((p) => {
+      // Bounding box overlay
+      let minX = width, maxX = 0, minY = height, maxY = 0;
+      points.forEach((p) => {
         if (p.x < minX) minX = p.x;
         if (p.x > maxX) maxX = p.x;
         if (p.y < minY) minY = p.y;
@@ -236,37 +223,63 @@ export const VisionTelemetrySection: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <section
       id="vision-telemetry"
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full py-24 md:py-36 border-t border-[var(--divider)] bg-[var(--background)] transition-colors"
     >
       <div className="max-w-[1720px] mx-auto px-8 md:px-14">
         {/* Section Header */}
         <div className="grid grid-cols-12 gap-6 mb-12 md:mb-16">
           <div className="col-span-12 md:col-span-1">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--secondary)] font-semibold">
+            <ScrollStoryElement
+              as="span"
+              granularity="words"
+              start="top 92%"
+              end="bottom 70%"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--secondary)] font-semibold"
+            >
               03 / Vision AI
-            </span>
+            </ScrollStoryElement>
           </div>
 
           <div className="col-span-12 md:col-span-11">
-            <TextReveal as="h2" type="chars" duration={0.9} stagger={0.03} className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none">
+            {/* Title: Character-Level Scroll-Driven Animation */}
+            <ScrollStoryElement
+              as="h2"
+              granularity="chars"
+              variant="chromatic-lift"
+              start="top 88%"
+              end="bottom 55%"
+              stagger={0.03}
+              className="font-felix text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[var(--text-primary)] uppercase mb-6 select-none"
+            >
               60 FPS SENSORLESS VISION AI.
-            </TextReveal>
-            <TextReveal as="p" type="words" duration={0.7} stagger={0.02} className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl">
+            </ScrollStoryElement>
+
+            {/* Passage-Level and Word-Level Scrubbing */}
+            <ScrollStoryElement
+              as="p"
+              granularity="words"
+              variant="progressive-clarity"
+              start="top 85%"
+              end="bottom 50%"
+              stagger={0.03}
+              className="font-exo text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] max-w-4xl"
+            >
               High-frequency temporal pose estimation tracking 21 hand joints, wrist trajectory, and facial morphology directly from standard webcams. Zero external hardware, zero wearable sensors, and strict client-side biometric isolation.
-            </TextReveal>
+            </ScrollStoryElement>
           </div>
         </div>
 
-        {/* Vision AI Workspace Grid */}
-        <div className="grid grid-cols-12 gap-8 items-start">
+        {/* Vision AI Workspace Grid with Scroll reveals */}
+        <ScrollCardReveal
+          start="top 85%"
+          end="bottom 50%"
+          itemSelector=".vision-card-item"
+          className="grid grid-cols-12 gap-8 items-start"
+        >
           {/* Left Column: Interactive Telemetry HUD Canvas */}
-          <div className="col-span-12 lg:col-span-7 bg-[#0f1115] border border-neutral-800 relative overflow-hidden shadow-2xl">
+          <div className="vision-card-item col-span-12 lg:col-span-7 bg-[#0f1115] border border-neutral-800 relative overflow-hidden shadow-2xl">
             {/* HUD Top Bar */}
             <div className="px-5 py-3 border-b border-neutral-800 flex items-center justify-between text-xs font-mono bg-[#14171d]">
               <div className="flex items-center gap-2">
@@ -338,7 +351,7 @@ export const VisionTelemetrySection: React.FC = () => {
           </div>
 
           {/* Right Column: Processing Pipeline & Reconstruction Flow */}
-          <div className="col-span-12 lg:col-span-5 flex flex-col space-y-6">
+          <div className="vision-card-item col-span-12 lg:col-span-5 flex flex-col space-y-6">
             {/* Step 1: Raw Landmark Acquisition */}
             <div className="bg-[var(--surface)] p-5 border border-[var(--border)]">
               <div className="flex items-center justify-between mb-3">
@@ -348,11 +361,17 @@ export const VisionTelemetrySection: React.FC = () => {
                 </h3>
                 <span className="text-[10px] font-mono text-emerald-500 font-bold">60.0 FPS</span>
               </div>
-              <p className="font-exo text-xs text-[var(--text-secondary)] leading-relaxed mb-4">
+              <ScrollStoryElement
+                as="p"
+                granularity="words"
+                start="top 92%"
+                end="bottom 70%"
+                className="font-exo text-xs text-[var(--text-secondary)] leading-relaxed mb-4"
+              >
                 Processes video frames using a lightweight MobileNetV4 spatial-temporal graph
                 convolutional network. Calculates 3D Cartesian coordinates (X, Y, Z depth) for all 21
                 joints, compensating for self-occlusions and rapid wrist rotations.
-              </p>
+              </ScrollStoryElement>
               <div className="grid grid-cols-3 gap-2 text-center font-mono text-[11px]">
                 <div className="p-2 bg-[var(--surface-elevated)] border border-[var(--border-subtle)]">
                   <span className="block text-[var(--text-muted)] text-[9px] uppercase">X-Axis</span>
@@ -389,10 +408,16 @@ export const VisionTelemetrySection: React.FC = () => {
                 <span className="font-bold text-emerald-500">[CONFIRM]</span>
               </div>
 
-              <p className="text-[11px] font-mono text-[var(--text-muted)]">
+              <ScrollStoryElement
+                as="p"
+                granularity="words"
+                start="top 92%"
+                end="bottom 70%"
+                className="text-[11px] font-mono text-[var(--text-muted)]"
+              >
                 Maps spatial velocity vectors and hand orientations against standardized ISL & ASL
                 vocabulary matrices with continuous sliding-window inference.
-              </p>
+              </ScrollStoryElement>
             </div>
 
             {/* Step 3: Natural Sentence Synthesis */}
@@ -416,8 +441,8 @@ export const VisionTelemetrySection: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollCardReveal>
       </div>
-    </motion.section>
+    </section>
   );
 };
