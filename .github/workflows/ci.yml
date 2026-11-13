@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  lint-and-build-frontend:
-    name: Frontend Lint & Production Build
+  lint-and-build-client:
+    name: Client Lint & Production Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -22,18 +22,36 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: client/package-lock.json
 
-      - name: Install Frontend Dependencies
-        working-directory: frontend
+      - name: Install Client Dependencies
+        working-directory: client
         run: npm ci
 
-      - name: Run Oxlint Check
-        working-directory: frontend
-        run: npm run lint
+      - name: Build Client Application
+        working-directory: client
+        run: npm run build
 
-      - name: Build Frontend Application
-        working-directory: frontend
+  build-showcase-app:
+    name: Showcase App Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install App Dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Build Showcase App
+        working-directory: app
         run: npm run build
 
   backend-and-integration-tests:
@@ -49,16 +67,16 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: |
-            backend/package-lock.json
-            microservice/package-lock.json
+            server/package-lock.json
+            services/package-lock.json
             tests/package-lock.json
 
-      - name: Install Backend Dependencies
-        working-directory: backend
+      - name: Install Server Dependencies
+        working-directory: server
         run: npm ci
 
-      - name: Install Microservice Dependencies
-        working-directory: microservice
+      - name: Install Services Dependencies
+        working-directory: services
         run: npm ci
 
       - name: Install Testing Dependencies
@@ -70,7 +88,7 @@ jobs:
         run: node test_backend_suite.js
 
       - name: Run Microservice Test
-        working-directory: microservice
+        working-directory: services
         run: npm test
 
   python-services-tests:
@@ -89,16 +107,16 @@ jobs:
       - name: Install AI Service Requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r ai-service/requirements.txt
+          pip install -r models/requirements.txt
 
       - name: Run AI Service Tests
-        working-directory: ai-service
-        run: python -m pytest
+        working-directory: models
+        run: python -m pytest tests/
 
       - name: Install Computer Vision Requirements
-        run: pip install -r computer-vision/requirements.txt
+        run: pip install -r images/requirements.txt
 
       - name: Run Vision Service Tests
-        working-directory: computer-vision
-        run: python -m pytest
+        working-directory: images
+        run: python -m pytest tests/
 

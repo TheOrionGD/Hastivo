@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "theoriongd" ]
     paths:
-      - 'showcase/**'
+      - 'app/**'
       - '.github/workflows/deploy-showcase.yml'
   workflow_dispatch:
 
@@ -35,10 +35,10 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'showcase/package-lock.json'
+          cache-dependency-path: 'app/package-lock.json'
 
       - name: Install dependencies & Build
-        working-directory: showcase
+        working-directory: app
         run: |
           npm ci --legacy-peer-deps
           npm run build
@@ -46,7 +46,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'showcase/dist'
+          path: 'app/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
