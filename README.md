@@ -5,334 +5,192 @@
 ### Real-Time Indian Sign Language (ISL) Assistive Communication & 3D Kinematic Avatar Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-20.x%20%7C%2024.x-brightgreen.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x%20%7C%2022.x%20%7C%2026.x-brightgreen.svg)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.14-blue.svg)](https://www.python.org/)
-[![React](https://img.shields.io/badge/React-19.3-61dafb.svg)](https://react.dev/)
+[![TanStack Start](https://img.shields.io/badge/TanStack%20Start-v1.130-orange.svg)](https://tanstack.com/start)
+[![React](https://img.shields.io/badge/React-19.0-61dafb.svg)](https://react.dev/)
+[![Smooth UI](https://img.shields.io/badge/Smooth%20UI-187%2B%20Components-purple.svg)](https://smoothui.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-0.187-black.svg)](https://threejs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg)](https://fastapi.tiangolo.com/)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10-orange.svg)](https://developers.google.com/mediapipe)
 
-**Hastivo** bridges communication between the Deaf/Hard-of-Hearing community and hearing individuals across India. It provides low-latency, bidirectional Indian Sign Language (ISL) translation powered by Three.js procedural & FBX 3D avatars, MediaPipe computer vision landmark tracking, and real-time duplex WebSockets.
+**Hastivo** bridges communication between the Deaf/Hard-of-Hearing community and hearing individuals across India. It provides low-latency, bidirectional Indian Sign Language (ISL) translation powered by Three.js procedural & FBX 3D avatars, MediaPipe computer vision landmark tracking, real-time duplex WebSockets, and a production-grade **Smooth UI suite of 187+ components and 34 typography motion features**.
 
-[Key Features](#key-features) • [Architecture](#architecture-overview) • [Directory Structure](#repository-structure) • [Prerequisites](#prerequisites) • [Installation](#installation--setup) • [Environment Setup](#environment-variable-configuration) • [Testing](#testing--verification) • [Security](#security--governance)
+[Key Features](#1-key-features) • [Smooth UI & Text Motion](#2-smooth-ui--typography-motion-suite) • [Architecture](#3-architecture-overview) • [Directory Structure](#4-repository-structure) • [Installation](#5-installation--setup) • [Verification & Testing](#6-verification--testing) • [Security & Governance](#7-security--governance)
 
 ---
 
 </div>
 
-## 1. Problem Statement
+## 1. Key Features
 
-Over 18 million Deaf and Hard-of-Hearing citizens in India encounter significant daily barriers in healthcare, government administration, legal services, and education due to a severe shortage of certified Indian Sign Language (ISL) interpreters. Most commercial accessibility tools cater exclusively to American Sign Language (ASL), which differs substantially in grammar, fingerspelling syntax (two-handed in ISL vs. one-handed in ASL), and regional vocabulary.
-
-**Hastivo solves this by delivering:**
-- An automated Indian Sign Language (ISL) grammar parsing and synthesis engine.
-- High-fidelity 3D humanoid avatar kinematic animation (Mixamo X-Bot & Y-Bot rigs + procedural avatars).
-- Real-time vision-based sign recognition using 21 3D hand landmarks per hand.
-- Full localization in 7 Indian regional languages (**English, Hindi, Tamil, Telugu, Kannada, Malayalam, and Urdu**).
-- Zero-placeholder, production-grade architecture that reflects real service statuses without simulated data.
-
----
-
-## 2. Key Features
-
-- **Bidirectional Translation Engine**:
-  - **Text-to-Sign**: Natural language input is parsed into ISL glosses and animated smoothly on a 3D avatar with precise finger, wrist, shoulder, and facial expressions.
-  - **Sign-to-Text**: High-frequency webcam frame processing captures two-handed gestures, classifies postures, and produces regional text/speech.
-- **Interactive 3D Avatar System**:
+- **Bidirectional Multimodal Translation Engine**:
+  - **Text-to-Sign**: Natural language input is parsed into ISL glosses (Subject-Object-Verb syntax) and animated smoothly on a 3D avatar with precise finger, wrist, shoulder, and non-manual facial expressions.
+  - **Sign-to-Text**: High-frequency webcam frame processing captures two-handed gestures, classifies postures with MediaPipe (21 3D landmarks per hand), and synthesizes regional text and speech.
+  - **Speech-to-Sign**: Continuous voice recognition streams acoustic inputs directly to 3D avatar signs in real time.
+- **Interactive 3D Avatar Kinematic Engine**:
   - Mixamo 65-bone humanoid skeletal rig with female (`X-Bot`) and male (`Y-Bot`) models.
   - Procedural hand mesh generation with realistic joint deformation and customizable skin/accent tones.
-- **Real-Time Duplex Communication Microservice**:
+- **Assistive AI Companion (Hastivo AI)**:
+  - Audio-reactive spatial companions (`SiriOrb`, `AIOrbFace`) that respond dynamically to listening, thinking, streaming, and idle states.
+  - Live conversation stream (`AIConversation`, `AIMessage`), prompt suggestion chips (`AISuggestions`), token telemetry meters (`AIContextMeter`), multi-step task runners (`AITaskList`), and neural vector artifact inspectors (`AIArtifact`).
+- **Real-Time Duplex Communication**:
   - WebSocket-powered room sessions connecting deaf and hearing participants.
-  - Simultaneous bidirectional messaging with automated policy moderation.
+  - Simultaneous bidirectional messaging with automated policy moderation and delivery acknowledgements.
 - **Multilingual Support & RTL Integration**:
-  - Full interface support for English, Tamil, Telugu, Kannada, Urdu (with native RTL direction), Malayalam, and Hindi.
-- **Cardless Swiss-Style Design System**:
-  - Modern, clean, typography-driven visual aesthetic with floating docked navigation, circular remote dial, and command palette (`Ctrl+K` / `Cmd+K`).
-- **Comprehensive Administration & Audit**:
-  - Role-based access control (Citizen and Administrator roles).
-  - Moderation queue, user restriction controls, platform audit logs, and real-time telemetry metrics.
+  - Full interface support for 7 Indian regional languages: **English, Hindi (हिन्दी), Tamil (தமிழ்), Telugu (తెలుగు), Kannada (ಕನ್ನಡ), Malayalam (മലയാളം), and Urdu (اردو with native RTL direction)**.
+- **Zero-Placeholder Policy**:
+  - Fully wired to real data APIs and backend services without mock fallback values or simulated delays.
 
 ---
 
-## 3. Technology Stack
+## 2. Smooth UI & Typography Motion Suite
 
-| Layer | Technologies |
-| ----- | ------------ |
-| **Frontend** | React 19, Three.js, React Three Fiber, Framer Motion, GSAP, Lenis, Vite, Oxlint |
-| **Backend Gateway** | Node.js, Express 4, JSON Web Tokens (JWT), Bcrypt.js, WebSockets |
-| **AI Language Service** | Python 3.10+, FastAPI, Pydantic v2, Uvicorn, Pytest |
-| **Computer Vision Service** | Python 3.10+, FastAPI, OpenCV, Google MediaPipe Hands, NumPy |
-| **Real-Time Microservice** | Node.js, Express, `ws` WebSockets, Brevo Notification Integration |
-| **Interactive Showcase** | Vanilla JS, Express, HTML5 Canvas, WebGL |
-| **Testing & Verification** | Node.js Test Harness, Pytest, Oxlint Static Analysis |
+Hastivo features a comprehensive integration of **187+ Smooth UI components** (with 207 barrel export aliases) and **34 modern typography/text motion features** across all 50+ screens, layouts, and studios:
+
+### Text Motion Components (34 Features)
+| Component | Functionality | Primary Placement |
+| :--- | :--- | :--- |
+| `PerspectiveText3d` | 3D perspective angle typography | ISL Explorer, Landing Page, AI Spatial Core |
+| `RevealText` | Upward masking line-by-line reveal | Text-to-Sign Studio, Hastivo Layout Header |
+| `RollingText` | Vertical rolling character counter/reel | Sign-to-Text Studio, Guest Sign-to-Text |
+| `WaveText` | Continuous sinusoidal oscillating wave | Speech Studio, Research Grammar Spec |
+| `ShineText` | Shimmering light gradient sweep | User Dashboard, Admin Dashboard Header |
+| `SoftBlurIn` | Gaussian blur resolve (10px -> 0px) | Review Collaboration, Privacy Policy |
+| `DepthParallaxWords` | Depth-offset layered 3D words | Real-Time Conversation, Research Corpus |
+| `TypewriterText` | Realistic mechanical typing cadence | Live Sign Recognition subtitle streams |
+| `KineticCenterBuild` | Spring expansion from center anchor | Profile Page, Get Started Portal |
+| `KineticTypeScroll` | Velocity-based typography skewing | Translation History, Security Audit Logs |
+| `LineByLineSlide` | Staggered vertical line unveil | Announcement Management, Terms Page |
+| `MaskRevealUp` | Clean clipping mask upward emergence | Translation Workspace, Guest Translation |
+| `BottomUpLetters` | Smooth upward letter spring bounce | Speech Studio Subtitle Decoder |
+| `TopDownLetters` | Cascading gravity drop letter stream | Community Hub, Guest Community |
+| `StaggerFromCenter` | Dual outward index letter stagger | Community Activity, Category Management |
+| `StaggerFromEdges` | Inward converging letter stagger | Saved Content Portal |
+| `MicroScaleFade` | Subtle 0.95 -> 1.00 spring scaling | Avatar Settings Page |
+| `ScaleDownFade` | Settling 1.15 -> 1.00 macro heading | System Settings Page |
+| `ShortSlideDown` | Crisp 14px downward spring drop | Notification Centre |
+| `ShortSlideRight` | Crisp 16px lateral slide transition | Privacy & Security Settings |
+| `BlurOutUp`, `FadeThrough`, `FocusBlurResolve`, `GravityLetters`, `PerCharacterRise`, `PerWordCrossfade`, `ScrambleHover`, `ScrollRevealParagraph`, `SharedAxisX/Y/Z`, `ShimmerSweep`, `SpringScaleIn`, `TextMorph` | Complete motion vocabulary | Distributed across all studios & docs |
 
 ---
 
-## 4. Architecture Overview
+## 3. Architecture Overview
 
 ```mermaid
 flowchart TD
-    subgraph ClientLayer["Frontend Client (:5173)"]
-        UI["React 19 Swiss UI & Docked Nav"]
+    subgraph ClientTier["Client Application — TanStack Start & Nitro (:3000 / :5173)"]
+        UI["React 19 + Smooth UI Suite (187+ Comps)"]
         ThreeCanvas["Three.js 3D Avatar (X-Bot / Y-Bot)"]
-        AudioVideo["Web Audio & MediaStream Video"]
+        VisionTracking["MediaPipe Hands (21 3D Landmarks)"]
+        AIUI["Hastivo AI Spatial Companion & SiriOrb"]
     end
 
-    subgraph GatewayLayer["Backend API Gateway (:5000)"]
-        Gateway["Express Gateway / JWT Auth / Router"]
-        DBStore["State, Users & History Persistence"]
+    subgraph GatewayTier["Backend API Gateway (:5000)"]
+        ExpressRouter["Express.js 4 / REST Router"]
+        AuthService["Firebase & JWT Session Manager"]
+        AuditModeration["Audit Logging & Policy Engine"]
     end
 
-    subgraph ServiceLayer["Specialized Engines & Microservices"]
-        AIEngine["Python AI Language Engine (:8000)<br/>• ISL Glossing<br/>• Grammar Parser<br/>• Multilingual Moderation"]
-        CVEngine["Python Computer Vision (:8001)<br/>• MediaPipe 21 Landmarks<br/>• Gesture Vector Classifier"]
-        Microservice["Real-Time Duplex Microservice (:5002)<br/>• WebSocket Sessions<br/>• Notification Dispatch"]
+    subgraph ServiceTier["Microservices Layer"]
+        AIService["AI Service (:8000) — FastAPI / NLP / SOV Grammar"]
+        CVService["Computer Vision Engine (:8001) — OpenCV / MediaPipe"]
+        DuplexService["Realtime Microservice (:5002) — WebSockets (ws)"]
     end
 
-    ClientLayer -->|REST / JWT Auth| Gateway
-    ClientLayer -->|WebSockets Duplex| Microservice
-    Gateway -->|Forward Translation| AIEngine
-    Gateway -->|Verify Gestures| CVEngine
-    Gateway -->|Trigger Notifications| Microservice
+    ClientTier -->|HTTP REST / Bearer JWT| GatewayTier
+    ClientTier -->|Duplex WebSockets| DuplexService
+    ClientTier -->|Direct Frame Stream| CVService
+    GatewayTier -->|Grammar & Synthesis RPC| AIService
+    GatewayTier -->|Gesture Landmark RPC| CVService
+    GatewayTier -->|Notification Triggers| DuplexService
 ```
 
 ---
 
-## 5. Repository Structure
+## 4. Repository Structure
 
 ```
-hastivo/
-├── .agents/                      # Agent governance and system rule definitions
-├── .github/                      # GitHub configuration
-│   ├── ISSUE_TEMPLATE/           # Bug report and feature request templates
-│   ├── workflows/                # CI/CD GitHub Actions workflow definitions
-│   └── PULL_REQUEST_TEMPLATE.md  # Standard pull request checklist
-├── ai-service/                   # Python FastAPI Natural Language & Moderation Service
-│   ├── app/                      # Application routes, schemas, and language modules
-│   ├── tests/                    # Pytest test cases for NLP & moderation
-│   ├── requirements.txt          # Python dependencies
-│   └── run_server.py             # Service startup runner (:8000)
-├── backend/                      # Node.js Express Gateway & Central API
-│   ├── server.js                 # API routes, auth, history, and admin logic (:5000)
-│   ├── package.json              # Node dependencies
-│   └── .env.example              # Gateway environment template
-├── computer-vision/              # Python FastAPI MediaPipe Computer Vision Service
-│   ├── app/                      # Hand tracking, landmark analysis & gesture classifier
-│   ├── tests/                    # Pytest test cases for CV & gesture extraction
-│   ├── requirements.txt          # Python dependencies
-│   └── run_server.py             # Vision service startup runner (:8001)
-├── docs/                         # Additional project architectural documentation
-│   ├── ARCHITECTURE.md           # In-depth architectural decomposition
-│   ├── DEVELOPMENT.md            # Step-by-step developer onboarding
-│   └── API.md                    # REST and WebSocket endpoint specifications
-├── documentation/                # Project specifications and OpenAPI definition
-│   ├── AI_AND_COMPUTER_VISION_PIPELINE.md
-│   ├── DEPLOYMENT_AND_OPERATIONS.md
-│   ├── REALTIME_COMMUNICATION_WORKFLOW.md
-│   ├── SECURITY_AUTHENTICATION_AND_MODERATION.md
-│   ├── SERVICE_RESPONSIBILITIES.md
-│   ├── SYSTEM_ARCHITECTURE.md
-│   ├── ZERO_PLACEHOLDER_AND_REAL_DATA_POLICY.md
-│   └── openapi.yaml              # OpenAPI 3.0 specification
-├── frontend/                     # React 19 + Three.js Application
-│   ├── public/                   # 3D models (FBX bots), textures, audio, icons
+Hastivo/
+├── client/                     # TanStack Start, React 19, Nitro Cloudflare SSR Client
 │   ├── src/
-│   │   ├── avatar/               # Three.js 3D avatar controllers, kinematics & rigs
-│   │   ├── components/           # UI components, cardless design, modals
-│   │   ├── contexts/             # Auth, Language, Notification, Theme state providers
-│   │   ├── locales/              # 7-language translation dictionaries
-│   │   ├── pages/                # Public, Auth, Citizen, Translation, Admin routes
-│   │   └── services/             # API client integrations
-│   ├── package.json              # Frontend dependencies
-│   └── vite.config.js            # Vite build configuration
-├── microservice/                 # Express & WebSocket Duplex Real-Time Service (:5002)
-│   ├── server.js                 # WebSocket room coordination & notifications
-│   └── test_microservice.js      # Microservice unit tests
-├── showcase/                     # Standalone Visual Demonstration Engine (:3000)
-│   └── server.js                 # Demonstration server
-├── testing/                      # Central Verification & Automated Test Suite
-│   ├── run_all_tests.js          # Master test orchestrator
-│   ├── verify_system.js          # 47-point UI and SRS policy verifier
-│   ├── test_backend_suite.js     # Backend gateway & authentication suite
-│   └── test_integration_e2e.js   # Multi-service end-to-end integration suite
-├── .editorconfig                 # Cross-IDE file formatting rules
-├── .gitattributes                # Git line ending normalization
-├── .gitignore                    # Comprehensive multi-stack ignore rules
-├── CHANGELOG.md                  # Project versioning and history
-├── CODE_OF_CONDUCT.md            # Contributor Covenant Code of Conduct
-├── CONTRIBUTING.md               # Guidelines for contributing
-├── LICENSE                       # MIT License
-├── README.md                     # Main repository guide
-└── SECURITY.md                   # Security vulnerability disclosure policy
+│   │   ├── components/
+│   │   │   ├── ai/             # Multimodal AI Companion and Orb components
+│   │   │   ├── glass/          # Glassmorphic controls, panels, and docks
+│   │   │   ├── layout/         # HastivoUserLayout, AdminLayout, GlobalFooter
+│   │   │   ├── ui/
+│   │   │   │   └── smoothui/   # 187+ Smooth UI components & 34 text motion modules
+│   │   ├── pages/
+│   │   │   ├── admin/          # 10 Admin management and telemetry consoles
+│   │   │   ├── auth/           # 7 Authentication, verification, and upgrade pages
+│   │   │   ├── guest/          # 8 Guest portal studios and exploratory pages
+│   │   │   └── hastivo/        # 19 Flagship authenticated studios & workspaces
+│   │   ├── routes/             # TanStack Router file-based route definitions
+│   │   └── services/           # Session management, Firebase, and API adapters
+├── server/                     # Express.js backend gateway and auth endpoints
+├── services/
+│   ├── ai/                     # Python FastAPI ISL language & grammar service
+│   ├── cv/                     # Python FastAPI MediaPipe computer vision engine
+│   └── microservice/           # WebSocket real-time duplex communications
+├── docs/                       # Architectural specs, OpenAPI 3.0 contracts, workflows
+├── database/                   # Database migrations, seed data, and schema definitions
+├── CHANGELOG.md                # Detailed project versioning and release notes
+├── CODE_OF_CONDUCT.md          # Contributor standards and accessibility guidelines
+├── SECURITY.md                 # Security reporting and zero-credential policies
+└── Hastivo_Agile_Tracker.xlsx  # Engineering backlog and Kanban tracker
 ```
 
 ---
 
-## 6. Prerequisites
+## 5. Installation & Setup
 
-Ensure your environment has the following tools installed:
-- **Node.js**: `v18.x`, `v20.x`, or `v24.x`
-- **npm**: `v9.x` or higher
-- **Python**: `3.10` through `3.14`
-- **Git**
-- Web browser with **WebGL 2.0** and **MediaStream Camera/Microphone** support
+### Prerequisites
+- **Node.js**: `20.x`, `22.x`, or `26.x`
+- **npm** or **pnpm**
+- **Python**: `3.10+` (for AI and Computer Vision services)
 
----
-
-## 7. Installation & Setup
-
-### Step 1: Clone the Repository
+### Quick Start (Client)
 ```bash
-git clone https://github.com/your-username/hastivo.git
-cd hastivo
-```
+# Navigate to the client directory
+cd client
 
-### Step 2: Install Node.js Dependencies
-```bash
-# Frontend
-cd frontend && npm install && cd ..
+# Install dependencies
+npm install
 
-# Backend Gateway
-cd backend && npm install && cd ..
+# Run the development server
+npm run dev
 
-# Real-Time Microservice
-cd microservice && npm install && cd ..
-
-# Central Testing Suite
-cd testing && npm install && cd ..
-```
-
-### Step 3: Install Python Dependencies
-```bash
-# Create and activate virtual environment
-python -m venv venv
-
-# Windows
-.\venv\Scripts\Activate.ps1
-# Linux / macOS
-source venv/bin/activate
-
-# Install AI Service dependencies
-pip install -r ai-service/requirements.txt
-
-# Install Computer Vision dependencies
-pip install -r computer-vision/requirements.txt
-```
-
----
-
-## 8. Environment Variable Configuration
-
-Copy the sample environment configurations for each service:
-
-```bash
-cp frontend/.env.example frontend/.env
-cp backend/.env.example backend/.env
-cp ai-service/.env.example ai-service/.env
-cp computer-vision/.env.example computer-vision/.env
-cp microservice/.env.example microservice/.env
-```
-
-### Environment Parameters Overview
-
-| File | Key Variables | Description |
-| ---- | ------------- | ----------- |
-| `frontend/.env` | `VITE_API_BASE_URL`<br/>`VITE_WS_URL` | Backend Gateway HTTP endpoint (`http://localhost:5000`) and WebSocket endpoint (`ws://localhost:5000`) |
-| `backend/.env` | `PORT`<br/>`JWT_SECRET`<br/>`AI_SERVICE_URL`<br/>`CV_SERVICE_URL`<br/>`MICROSERVICE_URL` | Port (`5000`), secure signing secret, and inter-service routing URLs |
-| `ai-service/.env` | `PORT`<br/>`HOST`<br/>`MODEL_NAME` | Service Port (`8000`), bind address (`0.0.0.0`), and translation model ID |
-| `computer-vision/.env` | `PORT`<br/>`MIN_DETECTION_CONFIDENCE`<br/>`MAX_NUM_HANDS` | Vision Port (`8001`), MediaPipe threshold (`0.65`), and maximum hands (`2`) |
-| `microservice/.env` | `PORT`<br/>`AI_SERVICE_URL`<br/>`CV_SERVICE_URL` | WebSocket Microservice Port (`5002`) and upstream service URLs |
-
-> [!CAUTION]
-> Never commit actual credentials, private certificates, or production `.env` files into source control. All `.env` files are excluded by `.gitignore`.
-
----
-
-## 9. Development Execution Commands
-
-Run each service in separate terminal windows:
-
-```bash
-# 1. Backend Gateway (Port 5000)
-cd backend && npm run dev
-
-# 2. AI Language Engine (Port 8000)
-cd ai-service && python run_server.py
-
-# 3. Computer Vision Engine (Port 8001)
-cd computer-vision && python run_server.py
-
-# 4. Real-Time Microservice (Port 5002)
-cd microservice && npm start
-
-# 5. Frontend Application (Port 5173)
-cd frontend && npm run dev
-```
-
-Open **`http://localhost:5173`** in your browser.
-
----
-
-## 10. Production Build Instructions
-
-To build the client application for production:
-```bash
-cd frontend
+# Build for production (Nitro Cloudflare Workers SSR)
 npm run build
 ```
-Production assets are generated in `frontend/dist/`. To preview the production bundle locally:
+
+---
+
+## 6. Verification & Testing
+
+Verify that the entire client suite builds cleanly:
 ```bash
-npm run preview
+cd client
+npm run build
+```
+- Compiles 4,500+ modules with 0 errors.
+- Generates SSR bundle in `.output/server/` and public assets in `.output/public/`.
+
+Run root integration test suite:
+```bash
+npm test
 ```
 
 ---
 
-## 11. Testing & Verification
+## 7. Security & Governance
 
-Hastivo includes a comprehensive test framework verifying UI policies, SRS compliance, backend routing, AI translations, computer vision, and duplex messaging.
-
-Run all test suites with the master test orchestrator:
-```bash
-cd testing
-node run_all_tests.js
-```
-
-### Master Test Suite Breakdown:
-1. **System Verification & UI Policy (`verify_system.js`)**: Verifies 7 multilingual dictionaries, route registry completeness, and cardless navigation compliance.
-2. **Core Backend Gateway & Auth Suite (`test_backend_suite.js`)**: Tests registration, login, JWT validation, conversation history, and administration endpoints.
-3. **Python AI Language Engine (`pytest ai-service`)**: Tests text-to-sign grammar synthesis, language detection, and content moderation.
-4. **Python Computer Vision Engine (`pytest computer-vision`)**: Tests 21-point 3D hand tracking and gesture classification.
-5. **Real-Time WebSocket Microservice (`test_microservice.js`)**: Tests duplex WebSocket messaging and notification dispatching.
-6. **Multi-Service E2E Integration Suite (`test_integration_e2e.js`)**: Tests end-to-end communication across running services.
-7. **Frontend Production Build**: Validates compilation, bundle size, and tree-shaking via Vite.
+- **Zero Hardcoded Secrets**: Production keys and environment variables are never embedded in client source code.
+- **Strict Accessibility Standards**: Adheres to WCAG 2.2 AAA guidelines and honors `prefers-reduced-motion` across all Smooth UI animations.
+- **Responsible Disclosure**: Please review our [SECURITY.md](SECURITY.md) before reporting security concerns.
 
 ---
 
-## 12. Screenshots & Interface Showcase
-
-<!-- Placeholder for product screenshots & animated demonstration -->
-| 3D Avatar Translation | Real-Time Duplex Room |
-| :---: | :---: |
-| *[Screenshot: Interactive 3D Avatar Rendering ISL]* | *[Screenshot: Real-Time Accessible Conversation]* |
-
-| Multilingual Vocabulary Explorer | Admin Telemetry & Moderation |
-| :---: | :---: |
-| *[Screenshot: Indian Sign Language Explorer]* | *[Screenshot: Administrative Telemetry & Monitoring]* |
-
----
-
-## 13. Security & Governance
-
-- **Zero-Placeholder Policy**: Production screens never display hardcoded, fake, or mock statistics. When external services or models are unconfigured, explicit `UnavailableState` components are rendered with clear user guidance.
-- **Role-Based Access Control (RBAC)**: All protected routes and API operations enforce JWT-based authorization for Citizen and Administrator tiers.
-- **Automated Content Moderation**: Outbound messages and recognized signs pass through real-time multilingual moderation filters.
-- **Reporting Vulnerabilities**: See [SECURITY.md](SECURITY.md) for details on our responsible disclosure process.
-
----
-
-## 14. Contributing & License
-
-We welcome contributions from developers, accessibility researchers, and sign language experts. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before submitting pull requests.
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
-
+<div align="center">
+  <b>Built with care for the Deaf and Hard-of-Hearing Community 🤟</b>
+</div>

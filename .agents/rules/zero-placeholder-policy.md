@@ -5,7 +5,7 @@ globs: **/*
 
 # STRICT ZERO-PLACEHOLDER, ZERO-MOCK-DATA AND ZERO-HARDCODED-DATA POLICY
 
-This rule applies across all modules in this repository (`frontend/`, `backend/`, `ai-service/`, `computer-vision/`, `microservice/`, `showcase/`, `testing/`, and `documentation/`).
+This rule applies across all modules in this repository (`client/`, `server/`, `database/`, `ai-service/`, `computer-vision/`, `microservice/`, `showcase/`, `tests/`, and `docs/`).
 
 **Goal**: Build a genuinely functional, data-driven application—not a visually complete application filled with fabricated content.
 

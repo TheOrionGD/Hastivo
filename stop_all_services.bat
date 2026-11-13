@@ -7,8 +7,8 @@ echo       HASTIVO - TERMINATING RUNNING SERVICES
 echo ========================================================
 echo.
 
-echo Terminating Node processes on ports 5000, 5002, 5173...
-for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5000 :5002 :5173" ^| findstr "LISTENING"') do (
+echo Terminating Node processes on ports 3000, 5000, 5002, 5173...
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":3000 :5000 :5002 :5173" ^| findstr "LISTENING"') do (
     taskkill /F /PID %%a 2>nul
 )
 
@@ -20,5 +20,4 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":8000 :8001" ^| findstr "LIS
 echo.
 echo All Hastivo services have been stopped.
 echo ========================================================
-timeout /t 3
-
+exit /b 0

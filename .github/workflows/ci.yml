@@ -51,7 +51,7 @@ jobs:
           cache-dependency-path: |
             backend/package-lock.json
             microservice/package-lock.json
-            testing/package-lock.json
+            tests/package-lock.json
 
       - name: Install Backend Dependencies
         working-directory: backend
@@ -62,11 +62,11 @@ jobs:
         run: npm ci
 
       - name: Install Testing Dependencies
-        working-directory: testing
+        working-directory: tests
         run: npm ci
 
       - name: Run Backend Test Suite
-        working-directory: testing
+        working-directory: tests
         run: node test_backend_suite.js
 
       - name: Run Microservice Test

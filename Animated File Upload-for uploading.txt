@@ -1,0 +1,1837 @@
+Animated File Upload->for uploading of video 
+"# Animated File Upload (/docs/components/animated-file-upload)
+
+
+
+## Features [#features]
+
+* Drag-and-drop file upload zone
+* Click to browse files
+* Animated drag-over state
+* File list with animated add/remove
+* File size validation
+* MIME type filtering
+* Single or multiple file support
+* Accessible with proper ARIA attributes
+* Respects reduced motion preferences
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key               | Description                               |
+| ----------------- | ----------------------------------------- |
+| `Enter` / `Space` | Open file browser                         |
+| `Tab`             | Navigate between drop zone and file items |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                     | Element       | Purpose                              |
+| ----------------------------- | ------------- | ------------------------------------ |
+| `role="button"`               | Drop zone     | Identifies the clickable upload area |
+| `aria-label`                  | Drop zone     | Describes the upload action          |
+| `aria-label="Selected files"` | File list     | Identifies the file list             |
+| `aria-label`                  | Remove button | Announces which file will be removed |
+| `role="alert"`                | Error message | Announces validation errors          |
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, drag animations and file list transitions are disabled.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/animated-file-upload/index.tsx" name="AnimatedFileUploadProps" />
+"
+
+
+Animated Stepper->for any fetures thats takes process of time for completion like during account creatin/sign in or during a tutorial of feature explanation and the process of a uploaded data:
+"# Animated Stepper (/docs/components/animated-stepper)
+
+## Features [#features]
+
+* Horizontal and vertical variants
+* Animated progress line between steps
+* Directional slide transitions for step content
+* Controlled and uncontrolled modes
+* Click navigation support
+* Full keyboard navigation
+* Accessible with proper ARIA attributes
+* Respects reduced motion preferences
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key                | Description                                                |
+| ------------------ | ---------------------------------------------------------- |
+| `Arrow Right/Down` | Moves to the next step (when click navigation enabled)     |
+| `Arrow Left/Up`    | Moves to the previous step (when click navigation enabled) |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                     | Element        | Purpose                     |
+| ----------------------------- | -------------- | --------------------------- |
+| `role="group"`                | Container      | Identifies the step group   |
+| `aria-label="Progress steps"` | Container      | Provides an accessible name |
+| `role="tab"`                  | Step indicator | Identifies each step button |
+| `aria-selected`               | Step indicator | Indicates the current step  |
+| `role="tabpanel"`             | Content area   | Identifies the step content |
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, step transitions and progress animations are disabled.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/animated-stepper/index.tsx" name="AnimatedStepperProps" />
+"
+
+Auth Form-> during a entering of mailid/username and password and during password reset too
+"# Auth Form (/docs/components/auth-form)
+
+
+
+## Scope [#scope]
+
+`AuthForm` is **presentation only**. It never authenticates, never stores or transmits credentials, and never makes a network call. It renders whatever `status`, `error`, and `fieldErrors` you pass in, and calls your `onSubmit` with the current `{ email, password }` values — everything else (validation, API calls, sessions) is your responsibility to wire up.
+
+## Features [#features]
+
+* Email field shown first; the password field springs into place with a measured-height animation once the email looks valid — no field ever mounts on a keystroke, so autofill works
+* `mode="sign-in" | "sign-up"` cross-fades the header with a direction-aware slide and morphs the submit button label
+* Password requirement list ticks live as you type, using your own `test` functions or the built-in defaults
+* Submit button morphs through idle → submitting (spinner) → success (checkmark)
+* Optional OAuth-style provider buttons and a "send a magic link instead" action
+* Show/hide password toggle with `aria-pressed`
+* Composes [Smooth Button](/docs/primitives/smooth-button) for the provider, submit, reveal and magic-link controls — the submit spinner is the primitive's own `loading` state
+* Field-level and form-level error rendering, with the error summary auto-focused on failed submit
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key                 | Description                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------------- |
+| `Tab` / `Shift+Tab` | Moves through email, password, show/hide toggle, and submit in document order                   |
+| `Enter`             | Submits the form from any field                                                                 |
+| Typing in email     | Reveals the password field once the value matches a valid email shape — no key handler required |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                              | Element                     | Purpose                                                                                              |
+| -------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `<label htmlFor>`                      | Email, password             | Binds every input to its visible label                                                               |
+| `aria-invalid`                         | Email, password inputs      | Marks a field as failing validation                                                                  |
+| `aria-describedby`                     | Email, password inputs      | Points to the field's error message and/or the requirements list                                     |
+| `role="alert"`                         | Error summary, field errors | Announces validation failures immediately                                                            |
+| `tabIndex={-1}` + focus on error       | Error summary               | Moves focus to the failure so screen reader users hear it right away                                 |
+| `aria-pressed`                         | Show/hide password button   | Reflects whether the password is currently visible                                                   |
+| `aria-live="polite"` + `role="status"` | Status announcer            | Announces submitting / success / error state changes                                                 |
+| `tabIndex={-1}` + `aria-hidden`        | Collapsed password wrapper  | Keeps the hidden password field out of the tab order until the email is valid, without unmounting it |
+
+### Screen Reader [#screen-reader]
+
+* The password field stays mounted at all times (never conditionally rendered) so autofill and password managers work; it is only removed from the tab order and hidden via `aria-hidden` while collapsed.
+* Each password requirement announces its label plus "met" or "not met" as you type.
+* The error summary receives focus automatically when `status` becomes `"error"` with a message.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the password reveal skips the height animation (it snaps between `0` and `auto`), the mode-switch slide becomes an instant cross-fade, and the submit button label swap has no motion — all with `duration: 0`.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/auth-form/index.tsx" name="AuthFormProps" />
+
+### AuthFormValues [#authformvalues]
+
+<AutoTypeTable path="../../packages/smoothui/components/auth-form/index.tsx" name="AuthFormValues" />
+
+### AuthFormFieldErrors [#authformfielderrors]
+
+<AutoTypeTable path="../../packages/smoothui/components/auth-form/index.tsx" name="AuthFormFieldErrors" />
+
+### AuthProvider [#authprovider]
+
+<AutoTypeTable path="../../packages/smoothui/components/auth-form/index.tsx" name="AuthProvider" />
+
+### AuthPasswordRequirement [#authpasswordrequirement]
+
+<AutoTypeTable path="../../packages/smoothui/components/auth-form/index.tsx" name="AuthPasswordRequirement" />
+"
+
+content skeleton->for all container auto lodeing
+"# Content Skeleton (/docs/components/content-skeleton)
+
+
+
+## Features [#features]
+
+* **Auto-adaptive**: Wrap any component and skeleton matches its exact shape
+* Uses Tailwind's `animate-pulse` for smooth animation
+* Toggle between loading/loaded states with `loading` prop
+* Works with any component structure
+* Accessible with ARIA attributes
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+* Sets `aria-busy="true"` on the container while loading, signaling to assistive technologies that content is being loaded.
+* Uses `aria-live="polite"` so screen readers announce when content finishes loading.
+* Marks the pulse overlay with `aria-hidden="true"` to hide decorative elements from the accessibility tree.
+
+### Reduced Motion [#reduced-motion]
+
+Uses Tailwind's `animate-pulse` for the shimmer effect. Tailwind respects the `prefers-reduced-motion` media query at the CSS level, but the component does not include an explicit JavaScript-level `useReducedMotion` check.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/content-skeleton/index.tsx" name="ContentSkeletonProps" />
+
+## Usage [#usage]
+
+### Wrap your UI [#wrap-your-ui]
+
+Simply wrap your component - the skeleton will match its exact dimensions:
+
+```tsx
+<Skeleton loading={isLoading}>
+  <UserCard user={user} />
+</Skeleton>
+```
+
+### Basic blocks [#basic-blocks]
+
+Use without children for simple skeleton shapes:
+
+```tsx
+<div className="flex items-center gap-4">
+  <Skeleton className="size-12 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-[200px]" />
+    <Skeleton className="h-4 w-[160px]" />
+  </div>
+</div>
+```
+"
+
+count badge-> like notification count,limit count,activity count and others
+"# Count Badge (/docs/components/count-badge)
+
+
+
+## Features [#features]
+
+* Three variants: dot (simple indicator), count (number badge), status (presence indicator)
+* Animated count changes with scale pop effect
+* Ping animation for attention-grabbing alerts
+* Status colors for user presence: online (green), offline (gray), busy (red), away (yellow)
+* Flexible positioning in all four corners
+* Wraps any element as children
+* Respects reduced motion preferences
+* Accessible with proper ARIA attributes
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element   | Purpose                                                         |
+| -------------------- | --------- | --------------------------------------------------------------- |
+| `aria-hidden="true"` | Ping span | Hides the decorative ping animation from assistive technologies |
+
+### Screen Reader [#screen-reader]
+
+* The badge count is rendered as plain text, readable by screen readers.
+* The component wraps children in a `span` with `relative inline-flex` positioning, preserving the semantic meaning of the wrapped element.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, entrance/exit scale animations are disabled, the animated count transitions appear instantly, and the ping animation is not rendered.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/count-badge/index.tsx" name="CountBadgeProps" />
+"
+
+country picker-. during the entering of phone number and the convertion of language sentence structure like translation:
+"# Country Picker (/docs/components/country-picker)
+
+
+
+## Features [#features]
+
+* Full-screen-safe modal dialog with backdrop, focus trap, and portal rendering
+* Diacritic-insensitive search across country name, ISO code, and dial code
+* Optional "Recent" group shown above the full list when the search field is empty
+* Optional grouping by region (`group`) with section headers
+* Windowed rendering (simple slice-window, no external library) once the list crosses a size threshold
+* Emoji flags derived automatically from the ISO code, with a text fallback
+* Full keyboard support via the ARIA combobox + listbox pattern (`aria-activedescendant`)
+
+## Scope [#scope]
+
+This component is presentation only. It ships with no network calls, no geolocation or IP-based country detection, and no bundled country dataset — you pass in the `countries` array (and optional `recent` codes) as props. Nothing here reads or infers a user's real location.
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                                      | Element                | Purpose                                                                                 |
+| ---------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------- |
+| `aria-haspopup="dialog"` / `aria-expanded`     | Trigger button         | Announces that activating it opens a dialog                                             |
+| `role="dialog"` / `aria-modal="true"`          | Dialog panel           | Marks the panel as a modal dialog                                                       |
+| `role="combobox"` / `aria-autocomplete="list"` | Search input           | Identifies the input as a combobox driving a list                                       |
+| `aria-controls`                                | Search input           | Points to the listbox it controls                                                       |
+| `aria-activedescendant`                        | Search input           | Points to the `id` of the currently highlighted option, while focus stays on the input  |
+| `role="listbox"`                               | Results container      | Identifies the results as a selectable listbox                                          |
+| `role="option"` / `aria-selected`              | Each country row       | Identifies each row as a selectable option and its selection state                      |
+| `role="presentation"`                          | Group/"Recent" headers | Hides purely visual section labels from the accessibility tree as list semantics        |
+| `aria-hidden="true"`                           | Flag emoji             | The country name already carries the accessible label, so the decorative flag is hidden |
+
+### Keyboard [#keyboard]
+
+| Key                            | Action                                               |
+| ------------------------------ | ---------------------------------------------------- |
+| `Enter` / `Space` (on trigger) | Opens the dialog                                     |
+| `Escape`                       | Closes the dialog and returns focus to the trigger   |
+| `Tab` / `Shift+Tab`            | Cycles focus within the dialog (focus trap)          |
+| `Arrow Down`                   | Moves the highlighted option to the next row         |
+| `Arrow Up`                     | Moves the highlighted option to the previous row     |
+| `Home`                         | Highlights the first option                          |
+| `End`                          | Highlights the last option                           |
+| `Enter` (in search field)      | Selects the highlighted option and closes the dialog |
+
+### Screen Reader [#screen-reader]
+
+* Focus moves to the search field when the dialog opens and returns to the element that opened it when the dialog closes.
+* The search field keeps focus at all times; the highlighted option is announced through `aria-activedescendant` rather than by moving focus into the list.
+* Selection state is exposed via `aria-selected` on the option and reinforced visually with a checkmark.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects `prefers-reduced-motion` via `useReducedMotion` from Motion. When reduced motion is preferred, the backdrop and dialog panel still fade in and out via `opacity`, but the transition duration is `0` (instant) and the scale/vertical-offset entrance used in normal motion is removed entirely.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/country-picker/index.tsx" name="CountryPickerProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/country-picker/index.tsx" name="Country" />
+"
+
+duration picker->for the time like speed,radius,orientation and so on:
+"# Duration Picker (/docs/components/duration-picker)
+
+
+
+## Features [#features]
+
+* Segmented hours / minutes / seconds input, configurable via `units`
+* Controlled and uncontrolled value in seconds
+* Horizontal pointer drag to scrub any segment up or down
+* Full keyboard control: arrow keys, Shift for ×10 steps, Page Up/Down, Home/End
+* Direct digit typing with auto-advance and carry into the next unit
+* Odometer-style digit roll animation on change
+* `formatDuration` helper exported for formatting a duration elsewhere in your app
+* Respects `prefers-reduced-motion`
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                         | Element           | Purpose                                                   |
+| --------------------------------- | ----------------- | --------------------------------------------------------- |
+| `role="group"`                    | Picker container  | Groups the unit segments as one control                   |
+| `aria-labelledby` / `aria-label`  | Picker container  | Associates the visible label, or provides a fallback name |
+| `role="spinbutton"`               | Each unit segment | Identifies the segment as an adjustable numeric control   |
+| `aria-valuenow`                   | Each unit segment | Current value of that unit                                |
+| `aria-valuemin` / `aria-valuemax` | Each unit segment | Valid range for that unit given its position              |
+| `aria-valuetext`                  | Each unit segment | Human-readable value, e.g. "23 minutes"                   |
+| `aria-disabled`                   | Each unit segment | Reflects the `disabled` prop                              |
+
+### Keyboard [#keyboard]
+
+| Key                          | Action                                                           |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `Arrow Up` / `Arrow Down`    | Increase/decrease the focused segment by `step`                  |
+| `Shift + Arrow Up/Down`      | Increase/decrease by `step × 10`                                 |
+| `Page Up` / `Page Down`      | Increase/decrease by a larger step                               |
+| `Home` / `End`               | Jump the focused segment to its minimum/maximum                  |
+| `Arrow Left` / `Arrow Right` | Move focus to the previous/next segment                          |
+| `0`-`9`                      | Type a value directly; a second digit commits and advances focus |
+
+### Screen Reader [#screen-reader]
+
+* Each segment announces its unit, current value and range as a standard spinbutton.
+* The picker container exposes a single accessible name via `aria-labelledby` (when `label` is set) or a fallback `aria-label`.
+
+### Reduced Motion [#reduced-motion]
+
+When `prefers-reduced-motion` is enabled, the digit roll animation is skipped entirely — digits update instantly with no transform or opacity transition.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/duration-picker/index.tsx" name="DurationPickerProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/duration-picker/index.tsx" name="DurationUnit" />
+"
+
+favicon search->for the command pallete(ctrl k search):
+"# Favicon Search (/docs/components/favicon-search)
+
+
+
+## Features [#features]
+
+* Combobox pattern: `role="combobox"` input drives a `role="listbox"` result panel
+* Each result's favicon resolves from the `favicon` prop, falls back to Google's `s2/favicons` service, and falls back again to a monogram tile if the image fails to load
+* Matched substrings in the title and description are wrapped in `<mark>`
+* Results stagger in by a few milliseconds each, and the highlighted row's background slides between rows via a shared `layoutId`
+* Loading state renders skeleton rows instead of a spinner
+* Optional `⌘K`-style shortcut hint that focuses the input from anywhere on the page
+* Controlled or uncontrolled `value`
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key                             | Description                                                                            |
+| ------------------------------- | -------------------------------------------------------------------------------------- |
+| `Arrow Down`                    | Opens the panel (if closed) or moves the highlight to the next result (wraps to first) |
+| `Arrow Up`                      | Moves the highlight to the previous result (wraps to last)                             |
+| `Enter`                         | Selects the highlighted result                                                         |
+| `Escape`                        | Closes the result panel                                                                |
+| `⌘/Ctrl` + hotkey (default `K`) | Focuses the search input from anywhere on the page, when `showShortcut` is set         |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                         | Element                      | Purpose                                                   |
+| --------------------------------- | ---------------------------- | --------------------------------------------------------- |
+| `role="combobox"`                 | Search input                 | Identifies the input as a combobox                        |
+| `aria-expanded`                   | Search input                 | Indicates whether the result panel is open                |
+| `aria-controls`                   | Search input                 | References the `id` of the result listbox                 |
+| `aria-activedescendant`           | Search input                 | Points to the currently highlighted result option         |
+| `aria-autocomplete="list"`        | Search input                 | Indicates the input provides list-based results           |
+| `role="listbox"` + `aria-label`   | Result panel                 | Identifies the results as a listbox with a group label    |
+| `aria-busy`                       | Result panel                 | Indicates results are still loading                       |
+| `role="option"` + `aria-selected` | Result row                   | Identifies each result and its highlighted state          |
+| `aria-hidden="true"`              | Favicon image, skeleton rows | Hides purely decorative content from assistive technology |
+
+### Screen Reader [#screen-reader]
+
+* A visually hidden `aria-live="polite"` status announces "Loading results…" while a search is in flight.
+* Skeleton placeholder rows are marked `aria-hidden` so they are never announced as real options.
+* Each result announces its title and description together via the button's text content; the favicon image is decorative (`alt=""`) since the title already identifies the site.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, results appear without staggering, the highlighted row uses a plain background class instead of an animated shared-`layoutId` background, and the loading skeleton no longer pulses.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/favicon-search/index.tsx" name="FaviconSearchProps" />
+
+### FaviconSearchResult [#faviconsearchresult]
+
+<AutoTypeTable path="../../packages/smoothui/components/favicon-search/index.tsx" name="FaviconSearchResult" />
+"
+
+float input->this is used on every places where a inout text field is implemented:
+"# Float Input (/docs/components/float-input)
+
+
+
+## Features [#features]
+
+Smooth focus animations with floating labels and optional leading icons.
+
+## Variants [#variants]
+
+Focus an input in the panel to see the label animation for each field type.
+
+### Email [#email]
+
+Email field with a mail icon — the default contact-form input.
+
+### Password [#password]
+
+Password field with a lock icon — the label floats above on focus like the others.
+
+### Username [#username]
+
+Username field with a user icon — good for registration flows.
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element        | Purpose                                             |
+| -------------------- | -------------- | --------------------------------------------------- |
+| `aria-label`         | Input          | Provides an accessible name matching the label text |
+| `aria-hidden="true"` | Icon container | Hides the decorative icon from screen readers       |
+
+### Screen Reader [#screen-reader]
+
+* The floating label is programmatically associated with the input via `htmlFor` and `id`
+* The `aria-label` attribute provides an accessible name for assistive technologies
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the floating label transitions are applied instantly without animation.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/float-input/index.tsx" name="FloatInputProps" />
+"
+
+form->this is implemented where a necessary and valid input is needed like necessary input field proper data handling:
+"# Form (/docs/components/form)
+
+
+
+## Features [#features]
+
+Composable form wrapper with animated field-level errors. Submit empty fields to see validation messages spring in.
+
+* Composable API: `Form > FormField > FormLabel + FormControl + FormMessage`
+* Animated error messages with spring entrance/exit (opacity + translateY)
+* `aria-describedby` links inputs to their error and description elements
+* `aria-invalid="true"` set on inputs when errors are present
+* Works standalone with simple validation or with react-hook-form
+* Composes with Checkbox, RadioGroup, Select, and native inputs
+* No forced dependency on any form library
+
+## Usage [#usage]
+
+```tsx
+import Form, { FormField, FormLabel, FormControl, FormMessage } from "@smoothui/form";
+
+<Form errors={errors} onFormSubmit={handleSubmit}>
+  <FormField name="email">
+    <FormLabel>Email</FormLabel>
+    <FormControl>
+      <input type="email" />
+    </FormControl>
+    <FormMessage />
+  </FormField>
+</Form>
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key     | Description                                      |
+| ------- | ------------------------------------------------ |
+| `Tab`   | Moves focus between form controls                |
+| `Enter` | Submits the form (native behavior)               |
+| `Space` | Activates checkboxes and buttons within the form |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute          | Element                 | Purpose                                                     |
+| ------------------ | ----------------------- | ----------------------------------------------------------- |
+| `aria-invalid`     | Input (via FormControl) | Set to `true` when the field has an error                   |
+| `aria-describedby` | Input (via FormControl) | References the description and/or error message element IDs |
+| `role="alert"`     | FormMessage             | Announces error messages to screen readers                  |
+
+### Reduced Motion [#reduced-motion]
+
+Error messages animate with a subtle opacity + translateY spring transition. When `prefers-reduced-motion` is enabled, messages appear and disappear instantly with zero duration.
+
+## Props [#props]
+
+### FormProps [#formprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormProps" />
+
+### FormFieldProps [#formfieldprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormFieldProps" />
+
+### FormLabelProps [#formlabelprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormLabelProps" />
+
+### FormMessageProps [#formmessageprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormMessageProps" />
+"
+
+otp slot for account verification and account deletion brevo services
+"# Form (/docs/components/form)
+
+
+
+## Features [#features]
+
+Composable form wrapper with animated field-level errors. Submit empty fields to see validation messages spring in.
+
+* Composable API: `Form > FormField > FormLabel + FormControl + FormMessage`
+* Animated error messages with spring entrance/exit (opacity + translateY)
+* `aria-describedby` links inputs to their error and description elements
+* `aria-invalid="true"` set on inputs when errors are present
+* Works standalone with simple validation or with react-hook-form
+* Composes with Checkbox, RadioGroup, Select, and native inputs
+* No forced dependency on any form library
+
+## Usage [#usage]
+
+```tsx
+import Form, { FormField, FormLabel, FormControl, FormMessage } from "@smoothui/form";
+
+<Form errors={errors} onFormSubmit={handleSubmit}>
+  <FormField name="email">
+    <FormLabel>Email</FormLabel>
+    <FormControl>
+      <input type="email" />
+    </FormControl>
+    <FormMessage />
+  </FormField>
+</Form>
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key     | Description                                      |
+| ------- | ------------------------------------------------ |
+| `Tab`   | Moves focus between form controls                |
+| `Enter` | Submits the form (native behavior)               |
+| `Space` | Activates checkboxes and buttons within the form |
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute          | Element                 | Purpose                                                     |
+| ------------------ | ----------------------- | ----------------------------------------------------------- |
+| `aria-invalid`     | Input (via FormControl) | Set to `true` when the field has an error                   |
+| `aria-describedby` | Input (via FormControl) | References the description and/or error message element IDs |
+| `role="alert"`     | FormMessage             | Announces error messages to screen readers                  |
+
+### Reduced Motion [#reduced-motion]
+
+Error messages animate with a subtle opacity + translateY spring transition. When `prefers-reduced-motion` is enabled, messages appear and disappear instantly with zero duration.
+
+## Props [#props]
+
+### FormProps [#formprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormProps" />
+
+### FormFieldProps [#formfieldprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormFieldProps" />
+
+### FormLabelProps [#formlabelprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormLabelProps" />
+
+### FormMessageProps [#formmessageprops]
+
+<AutoTypeTable path="../../packages/smoothui/components/form/index.tsx" name="FormMessageProps" />
+"
+
+pinned list for conversation history
+"# Pinned List (/docs/components/pinned-list)
+
+
+
+## Features [#features]
+
+Four springs, each tuned for its own job, so pinning reads as a physical launch rather than a rigid reflow:
+
+* **The launch** — pinning moves the row into the pinned group through a shared `layoutId` on a spring with real overshoot (`bounce: 0.3`), so the row visibly arrives rather than sliding to a stop
+* **The landing pop** — the row compresses to `0.985` and settles back in two decaying steps as it lands in the pinned group, on an inner wrapper so the pop never fights the layout projection. It squashes rather than inflates on purpose: a row that grows past `1` pushes outside the list, and the list almost always sits in a scroller, so an inflating pop gets sliced off exactly when it is biggest
+* **The pin** — the icon rotates 45° and fills on its own, snappier spring (`bounce: 0.32`, `0.2s`), ahead of the row it belongs to
+* **The gap** — the rows closing the gap underneath each get a small incremental layout delay, so the group settles one row after another instead of moving as one block
+
+Plus:
+
+* Pinned rows are marked structurally rather than with a fill: the surface lifts on a real shadow with a crisper edge, a short accent rail grows on the leading edge, and the pin itself carries the colour — unpinned rows sit flat and transparent underneath
+* Every row keeps a 4px halo inside the list, so the landing rebound, the launch overshoot and the focus ring all stay clear of whatever clips the list
+* Works controlled (`pinnedIds` / `onPinnedChange`) or uncontrolled
+* `maxPinned` caps how many items can be pinned at once
+* Optional `renderItem` for fully custom row content
+* The row itself is the control: it carries the roving tabindex, so `Arrow`, `Home`, `End` and `P` always reach a row that actually holds focus
+* Pinned and unpinned rows live in one list, so pinning reorders a row inside its parent rather than tearing it out of one list and rebuilding it in another — and focus stays on the row that moved
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                          | Element           | Purpose                                                                                    |
+| ---------------------------------- | ----------------- | ------------------------------------------------------------------------------------------ |
+| `role="button"`                    | Row               | The whole row is the pin control, so there is one tab stop and one keyboard target per row |
+| `aria-pressed`                     | Row               | Reflects whether the row is currently pinned                                               |
+| `aria-label="Pin / Unpin {title}"` | Row               | Names the action and its target for assistive technology, flipping with the pinned state   |
+| `aria-disabled`                    | Row               | Indicates the pin action is unavailable once `maxPinned` is reached                        |
+| `aria-label`                       | List              | Names the list, from the `label` prop                                                      |
+| `aria-hidden="true"`               | Divider, pin icon | Hides the purely visual separator and the pin glyph from assistive technology              |
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key                        | Description                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| `Tab`                      | Moves focus into the list, landing on the last focused row (the first row initially) |
+| `ArrowDown` / `ArrowRight` | Moves focus to the next row, wrapping at the end                                     |
+| `ArrowUp` / `ArrowLeft`    | Moves focus to the previous row, wrapping at the start                               |
+| `Home` / `End`             | Moves focus to the first / last row                                                  |
+| `P`                        | Toggles pin on the focused row                                                       |
+| `Enter` / `Space`          | Toggles pin on the focused row                                                       |
+
+### Screen Reader [#screen-reader]
+
+* Every row is a labelled, pressable control, so the pinned state is announced without relying on the icon rotation alone.
+* Rows render inside one semantic `<ul>` named by `label`, and reordering a row keeps its position in the list announcement consistent with what is on screen.
+* When there are no pinned items, an `emptyPinnedMessage` row is rendered at the top of the list.
+* Focus returns to the acted-on row after it moves between the pinned and unpinned groups, so a keyboard user never loses their place.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, layout animation is switched off entirely so rows cut straight to their final position, and the landing pop, the staggered gap close and the pin rotation all resolve instantly.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/pinned-list/index.tsx" name="PinnedListProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/pinned-list/index.tsx" name="PinnedListItem" />
+"
+
+a new community page ..where anonymous post are made like review,fault on website
+tweet card style
+"# Tweet Card (/docs/components/tweet-card)
+
+
+
+## Features [#features]
+
+* Beautiful tweet card design with full-width images
+* Hover-activated external link button positioned at bottom-right
+* Support for tweets with images, videos, and text
+* Server-side and client-side rendering options
+* Loading and error states included
+* Fully customizable styling
+* Configurable user info position (top or bottom)
+* Customizable avatar rounded style
+* Accessible with proper ARIA labels
+* Consistent 24px padding on all sides
+
+## Accessibility [#accessibility]
+
+### Semantic HTML [#semantic-html]
+
+Uses `<article>` as the root element and `<blockquote>` for tweet text, providing meaningful document structure for assistive technologies.
+
+### ARIA Attributes [#aria-attributes]
+
+* The external link button includes `aria-label="Open tweet in new tab"` for screen reader context.
+* Decorative SVG icons use `aria-hidden="true"` to hide them from the accessibility tree.
+* All external links include `rel="noreferrer"` or `rel="noopener noreferrer"` for security.
+
+### Reduced Motion [#reduced-motion]
+
+The hover-activated link button uses Tailwind's `motion-safe:hover:scale-110` utility, which automatically disables the scale animation when `prefers-reduced-motion` is enabled. There is no additional JavaScript-level `useReducedMotion` check, as animations are CSS-only.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/tweet-card/client.tsx" name="ClientTweetCardProps" />
+
+## Usage [#usage]
+
+### Client-Side (Recommended) [#client-side-recommended]
+
+Use `ClientTweetCard` for client-side rendering:
+
+```tsx
+import { ClientTweetCard, TweetSkeleton } from "@repo/smoothui/components";
+
+export function MyComponent() {
+  return (
+    <ClientTweetCard
+      id="1944804313156419771"
+      fallback={<TweetSkeleton />}
+    />
+  );
+}
+```
+
+### Server-Side [#server-side]
+
+Use `TweetCard` for server-side rendering:
+
+```tsx
+import { TweetCard } from "@repo/smoothui/components";
+
+export default async function MyPage() {
+  return (
+    <TweetCard id="1944804313156419771" />
+  );
+}
+```
+
+## Configuration Options [#configuration-options]
+
+### User Info Position [#user-info-position]
+
+Control where the user information (avatar and name) appears in the card:
+
+```tsx
+// User info at bottom (default)
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="bottom"
+  fallback={<TweetSkeleton />}
+/>
+
+// User info at top
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="top"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+### Avatar Rounded Style [#avatar-rounded-style]
+
+Customize the avatar's border radius:
+
+```tsx
+// Rounded corners (default)
+<ClientTweetCard
+  id="1944804313156419771"
+  avatarRounded="rounded"
+  fallback={<TweetSkeleton />}
+/>
+
+// Fully rounded (circle)
+<ClientTweetCard
+  id="1944804313156419771"
+  avatarRounded="rounded-full"
+  fallback={<TweetSkeleton />}
+/>
+
+// Large rounded corners
+<ClientTweetCard
+  id="1944804313156419771"
+  avatarRounded="rounded-lg"
+  fallback={<TweetSkeleton />}
+/>
+
+// Medium rounded corners
+<ClientTweetCard
+  id="1944804313156419771"
+  avatarRounded="rounded-md"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+### Combined Configuration [#combined-configuration]
+
+Use both props together for different layouts:
+
+```tsx
+// Top position with circular avatar
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="top"
+  avatarRounded="rounded-full"
+  fallback={<TweetSkeleton />}
+/>
+
+// Bottom position with large rounded corners
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="bottom"
+  avatarRounded="rounded-lg"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+## Examples [#examples]
+
+### Default Configuration [#default-configuration]
+
+Default layout with user info at bottom and rounded avatar:
+
+```tsx
+<ClientTweetCard
+  id="1944804313156419771"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+### User Info at Top [#user-info-at-top]
+
+Display user information at the top of the card:
+
+```tsx
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="top"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+### Circular Avatar [#circular-avatar]
+
+Use a fully rounded (circular) avatar:
+
+```tsx
+<ClientTweetCard
+  id="1944804313156419771"
+  avatarRounded="rounded-full"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+### Top Position with Circular Avatar [#top-position-with-circular-avatar]
+
+Combine top position with circular avatar:
+
+```tsx
+<ClientTweetCard
+  id="1944804313156419771"
+  userInfoPosition="top"
+  avatarRounded="rounded-full"
+  fallback={<TweetSkeleton />}
+/>
+```
+
+## Grid Layout [#grid-layout]
+
+Display multiple tweets in a grid with different configurations:
+
+```tsx
+import { ClientTweetCard, TweetSkeleton } from "@repo/smoothui/components";
+
+export function TweetGrid() {
+  return (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <ClientTweetCard
+        id="1944804313156419771"
+        fallback={<TweetSkeleton />}
+      />
+      <ClientTweetCard
+        id="2010439383795810775"
+        userInfoPosition="top"
+        avatarRounded="rounded-full"
+        fallback={<TweetSkeleton />}
+      />
+      <ClientTweetCard
+        id="1785225558818771172"
+        avatarRounded="rounded-lg"
+        fallback={<TweetSkeleton />}
+      />
+    </div>
+  );
+}
+```
+"
+
+expandable navbar->instead of navbar..use this on footer for expangin pages
+"# Expandable Navbar (/docs/components/expandable-navbar)
+
+
+
+## Features [#features]
+
+* Panel expands downward with an animated, measured height
+* Cross-fades content with a direction-aware slide between sections
+* Controlled or uncontrolled open section
+* Opens on hover (configurable delay) or on click for touch devices
+* Closes on `Escape`, outside click, or focus leaving the navbar
+* Respects reduced motion preferences
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                            | Element            | Purpose                                              |
+| ------------------------------------ | ------------------ | ---------------------------------------------------- |
+| `aria-label="Expandable navigation"` | `<nav>`            | Identifies the navbar as a navigation landmark       |
+| `aria-expanded`                      | Trigger `<button>` | Indicates whether the item's panel is currently open |
+| `aria-controls`                      | Trigger `<button>` | Associates the trigger with its panel by id          |
+| `role="region"`                      | Panel              | Identifies the expanded content as a distinct region |
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key                 | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `Tab` / `Shift+Tab` | Moves focus between triggers; focusing a trigger opens its panel |
+| `Enter` / `Space`   | Toggles the focused trigger's panel                              |
+| `Escape`            | Closes the currently open panel                                  |
+
+### Screen Reader [#screen-reader]
+
+* Each trigger is a real `<button>` with `aria-expanded` and `aria-controls`, so assistive technology can tell whether a panel is open and which panel it controls.
+* The expanded panel is marked `role="region"` so it is announced as a distinct content area.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the height morph and cross-fade become instant with no slide offset.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/expandable-navbar/index.tsx" name="ExpandableNavbarProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/expandable-navbar/index.tsx" name="ExpandableNavbarItem" />
+"
+
+morph icon->use this for page icons
+"# Morph Icon (/docs/components/morph-icon)
+
+
+
+## Features [#features]
+
+Eight ready-made morphs driven by a single `active` boolean. Geometry attributes animate directly — no path-morph library. Size, stroke, color, and duration are tunable; pass `label` when the icon should be announced.
+
+## Variants [#variants]
+
+Click the icon in the panel to flip `active`.
+
+### Sidebar [#sidebar]
+
+Collapsed and expanded rail.
+
+### List [#list]
+
+Stacked lines that open into a list.
+
+### Grid [#grid]
+
+Cells that rearrange into a grid.
+
+### Compact [#compact]
+
+Dense layout cue.
+
+### Menu [#menu]
+
+Hamburger that opens.
+
+### Search [#search]
+
+Magnifier that settles into place.
+
+### Play [#play]
+
+Play / pause morph.
+
+### Check [#check]
+
+Empty mark that draws a check.
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element       | Purpose                                                                                      |
+| -------------------- | ------------- | -------------------------------------------------------------------------------------------- |
+| `aria-hidden="true"` | `<svg>`       | Applied when no `label` is passed, hiding a purely decorative icon from assistive technology |
+| `role="img"`         | `<svg>`       | Applied when `label` is passed, exposing the icon as a single accessible image               |
+| `<title>`            | `<svg>` child | Provides the accessible name for the icon when `label` is passed                             |
+
+### Keyboard Interactions [#keyboard-interactions]
+
+This component renders a static graphic with no interactive elements of its own; it has no keyboard interactions. Wrap it in a `<button>` or other interactive element to make it actionable, and drive the `active` prop from that element's state.
+
+### Screen Reader [#screen-reader]
+
+* Without a `label`, the icon is `aria-hidden` and is skipped entirely by screen readers — pair it with visible or accessible text on its container.
+* With a `label`, the icon is announced as an image with that label as its accessible name.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, all geometry transitions snap instantly between states with `duration: 0`.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/morph-icon/index.tsx" name="MorphIconProps" />
+"
+
+button copy -> implement for copying of sentence,otp number , and so on
+"# Button Copy (/docs/components/button-copy)
+
+
+
+## Features [#features]
+
+* One-click copy with success state
+* Optional tooltip and label
+* Accessible with aria-live
+* Themable and lightweight
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element | Purpose                                                                             |
+| -------------------- | ------- | ----------------------------------------------------------------------------------- |
+| `aria-label`         | Button  | Dynamically updates to reflect the current state: "Copy", "Copying...", or "Copied" |
+| `aria-live="polite"` | Button  | Announces state changes to screen readers without interrupting current speech       |
+
+### Screen Reader [#screen-reader]
+
+* State transitions (idle, loading, success) are announced via the `aria-live="polite"` region
+* The button is automatically disabled during loading and success states to prevent double-clicks
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the icon swap blur and slide animations are disabled instantly.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/button-copy/index.tsx" name="ButtonCopyProps" />
+"
+
+magnetic button-> for the pages,icons,tags on important screens
+"# Magnetic Button (/docs/components/magnetic-button)
+
+
+
+## Features [#features]
+
+* Cursor-following magnetic effect
+* Configurable strength and activation radius
+* Spring physics for natural movement
+* Respects reduced motion preferences
+* Touch device detection (effect disabled on touch)
+* Disabled state support
+* Polymorphic with `asChild` prop
+* GPU-accelerated transforms
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute             | Element     | Purpose                                                                      |
+| --------------------- | ----------- | ---------------------------------------------------------------------------- |
+| `role="presentation"` | Wrapper div | Indicates the outer mouse-tracking wrapper is decorative and not interactive |
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the magnetic cursor-following effect is completely disabled. The component also detects hover-capable devices and disables the effect on touch devices. When the `disabled` prop is set, the magnetic effect is also disabled.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/magnetic-button/index.tsx" name="MagneticButtonProps" />
+
+## Usage [#usage]
+
+```tsx
+import MagneticButton from "@/components/magnetic-button";
+
+export default function Example() {
+  return (
+    <MagneticButton strength={0.3} radius={150}>
+      Hover near me
+    </MagneticButton>
+  );
+}
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+```tsx
+<MagneticButton>Click me</MagneticButton>
+```
+
+### Custom Strength [#custom-strength]
+
+Increase the magnetic pull strength (0-1):
+
+```tsx
+<MagneticButton strength={0.5}>Strong magnetic effect</MagneticButton>
+```
+
+### Custom Radius [#custom-radius]
+
+Adjust the activation radius in pixels:
+
+```tsx
+<MagneticButton radius={200}>Large activation area</MagneticButton>
+```
+
+### Custom Spring Config [#custom-spring-config]
+
+Fine-tune the spring animation:
+
+```tsx
+<MagneticButton springConfig={{ duration: 0.6, bounce: 0.2 }}>
+  Bouncy
+</MagneticButton>
+```
+
+### As Child (Polymorphic) [#as-child-polymorphic]
+
+Use with any component using `asChild`:
+
+```tsx
+<MagneticButton asChild>
+  <a href="/docs">Go to Docs</a>
+</MagneticButton>
+```
+"
+
+bottom up letter -> for the displaing of the signed converted text displaying
+"# Bottom Up Letters (/docs/components/bottom-up-letters)
+
+
+
+## Features [#features]
+
+* Per-character bottom-up staircase reveal with zero blur
+* Pronounced staging at 88ms stagger for deliberate, one-letter-at-a-time rhythm
+* Configurable delay and per-character stagger
+* Optional scroll-trigger via `triggerOnView`
+* Accessible: respects `prefers-reduced-motion`
+
+## Accessibility [#accessibility]
+
+### Reduced Motion [#reduced-motion]
+
+Respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the text renders immediately at full opacity with no movement. The full string is exposed to screen readers via `aria-label`, with the per-character spans `aria-hidden`.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/bottom-up-letters/index.tsx" name="BottomUpLettersProps" />
+"
+
+gravity letters->implement this on where where is suitable
+"# Gravity Letters (/docs/components/gravity-letters)
+
+
+
+## Features [#features]
+
+* Each letter's rest position is measured once with `getBoundingClientRect` and never recomputed during animation, only on resize
+* A single `requestAnimationFrame` loop integrates position, velocity, and angular velocity per letter and writes `transform` directly to refs — no React state per frame
+* Letters collide with the container floor and walls only, with configurable restitution (`bounce`) and `friction`
+* Staggered detachment (`stagger`) and a random horizontal `spread` impulse give the fall a natural, scattered feel
+* Four trigger modes: `hover`, `click`, `inView` (falls once when scrolled into view), and `manual` (fully controlled via `collapsed`/`onCollapsedChange`)
+* Re-forming springs every letter back to its measured origin
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element                                     | Purpose                                                                 |
+| -------------------- | ------------------------------------------- | ----------------------------------------------------------------------- |
+| `aria-hidden="true"` | Measurement layer and animated letter layer | Hides the decorative, per-letter spans from assistive technologies      |
+| `role="button"`      | Container (`trigger="click"` only)          | Identifies the container as activatable when click-to-topple is enabled |
+| `aria-pressed`       | Container (`trigger="click"` only)          | Reflects whether the text is currently collapsed (fallen)               |
+
+### Screen Reader [#screen-reader]
+
+* The full string is always present as real, visually-hidden (`sr-only`) text, independent of animation state, so screen readers always read the intended sentence.
+* The animated letter spans are `aria-hidden` and never become the accessible content.
+* For `trigger="hover"` and `trigger="click"`, the container is keyboard-focusable (`tabIndex={0}`); focusing it triggers the same effect as hovering, and `click` also responds to <kbd>Enter</kbd>/<kbd>Space</kbd>.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects `prefers-reduced-motion` via `useReducedMotion` from Motion. When reduced motion is preferred, letters never fall — the component renders the plain, fully readable text with no measurement layer, no physics loop, and no interaction handlers.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/gravity-letters/index.tsx" name="GravityLettersProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/gravity-letters/index.tsx" name="GravityLettersTrigger" />
+"
+
+new page chat with hastivo ai
+conversation loading"# AI Conversation (/docs/components/ai-conversation)
+
+
+
+## Features [#features]
+
+* Follows the bottom while pinned, stops the moment the reader scrolls up
+* Jump-to-latest pill appears only when it is no longer following
+* Scrolls in a layout effect, so growth never flashes the old position
+* A `ResizeObserver` catches content that grows without the key changing
+* `overscroll-contain`, so the page behind never scrolls with it
+
+## The rule that matters [#the-rule-that-matters]
+
+Scrolling up during a stream is an explicit act — the reader wants to read
+something. Dragging them back down is the single most common way chat interfaces
+become unusable. This container follows the bottom **only while the reader is
+already within 48px of it**; past that it leaves them alone and offers the trip
+back as a pill.
+
+## Usage [#usage]
+
+```tsx
+<AIConversation className="flex-1" contentKey={messages.length + streamed.length}>
+  {messages.map((message) => (
+    <AIMessage key={message.id} role={message.role}>
+      {message.text}
+    </AIMessage>
+  ))}
+</AIConversation>
+```
+
+`contentKey` should change whenever content grows — a message count plus the
+length of the streaming text is usually enough. Give the container a bounded
+height; it manages its own overflow.
+
+## Accessibility [#accessibility]
+
+The pill is a labelled button. Under reduced motion the scroll is instant rather
+than smooth, and the pill appears without its spring — automatic smooth scrolling
+is exactly the kind of motion that triggers motion sickness.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/ai-conversation/index.tsx" name="AIConversationProps" />
+"
+
+ai message"# AI Message (/docs/components/ai-message)
+
+
+
+## Features [#features]
+
+* `user` and `assistant` authors with mirrored bubble geometry
+* Copy, retry and up/down feedback actions, all optional
+* Copy flips to a check and scales once, then resets itself
+* Avatar slot for an orb or an image
+* Timestamp with tabular figures, so a column of them does not jitter
+
+## Why `from` and not `role` [#why-from-and-not-role]
+
+`role` is an ARIA attribute. A component prop with the same name misleads readers
+and trips accessibility linters, which see `role="user"` and reject it as an
+invalid ARIA role. The author is `from`.
+
+## The meta row: timestamp first, then actions [#the-meta-row-timestamp-first-then-actions]
+
+The timestamp is fixed content, so it stays pinned to the edge the bubble is
+anchored to — left for the assistant, right for the user. The action slots sit
+beside it, on the inward side. Putting the (invisible) slots ahead of it pushed
+the timestamp toward the middle of the row, where it read as floating in nothing.
+
+## Origin-aware actions [#origin-aware-actions]
+
+Each action slides out of the side the bubble is anchored to — leftwards for the
+assistant, rightwards for the user — so the row reads as belonging to that
+message rather than fading in from nowhere.
+
+## `bubble={false}` for rich assistant turns [#bubblefalse-for-rich-assistant-turns]
+
+An assistant turn that carries reasoning traces, tool calls, diffs or artifacts is
+already a stack of surfaces. Wrapping that in a tinted bubble reads as a box inside
+a box, which is why ChatGPT-style clients bubble the user and leave the assistant
+bare. Turn the skin off and keep the row, the avatar slot and the action reveal.
+
+## No voting on your own message [#no-voting-on-your-own-message]
+
+`onVote` is honoured on assistant messages only. The feedback pair never renders
+on a user message, because you do not rate what you just wrote. `copyText` and
+`onRetry` still work on both.
+
+## Revealed on hover *and* focus, with no layout shift [#revealed-on-hover-and-focus-with-no-layout-shift]
+
+The actions are **always mounted** and only faded, so the row reserves its height
+whether or not they are visible. Mounting them on hover changes the row's height,
+which makes every message below jump as the pointer travels down a thread — the
+single most irritating thing a message list can do.
+
+The reveal is plain CSS on the message's own root class — not a motion `animate`
+target and not Tailwind's shared `group`, so a `group` ancestor elsewhere on the
+page cannot light up every row at once, and the row cannot get stuck
+half-revealed if a pointer event is missed.
+
+Being always mounted also means they stay focusable, so a keyboard user tabs
+straight to them and `:focus-within` reveals them. A hover-only control row is
+unreachable by keyboard, and tab order never shifts as the pointer moves.
+
+## Usage [#usage]
+
+```tsx
+<AIMessage
+  avatar={<SiriOrb size="26px" state={state} />}
+  copyText={answer}
+  onRetry={retry}
+  onVote={vote}
+  from="assistant"
+  timestamp="14:32"
+>
+  {answer}
+</AIMessage>
+```
+
+Pass an orb as the avatar and drive it from the same `AIState` as the rest of the
+screen — the message and the presence indicator then move as one surface.
+
+## Accessibility [#accessibility]
+
+Every action is labelled, and the feedback buttons expose `aria-pressed`. A
+blocked clipboard is swallowed rather than thrown, since a failed copy is not
+worth interrupting a conversation over.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/ai-message/index.tsx" name="AIMessageProps" />
+"
+
+sorce of information"# AI Sources (/docs/components/ai-sources)
+
+
+
+## Features [#features]
+
+* Collapsed to a stack of overlapping favicons with a `+n` overflow chip
+* Hovering fans the stack apart; opening moves each favicon into its row
+* Takes a real isotype as a node, so a brand's own SVG goes straight in
+* Falls back to a neutral globe, never to a letter standing in for a logo
+* Rows link out with `target="_blank"` and `rel="noopener noreferrer"`
+
+## The favicon travels [#the-favicon-travels]
+
+Opening the list does not fade one set of icons out and another in. Both use the
+same `layoutId`, so the icon the eye was already tracking is the icon that lands
+in the row. That continuity is the difference between "a list appeared" and "the
+thing I was looking at unfolded".
+
+The fan on hover is a separate, smaller hint: it says *this is a set*, before you
+commit to opening it.
+
+## Provenance should be available, not loud [#provenance-should-be-available-not-loud]
+
+Collapsed by default. Sources matter enormously when someone doubts an answer and
+not at all the rest of the time, which is exactly what a disclosure is for.
+
+## Pass a real mark, not a placeholder [#pass-a-real-mark-not-a-placeholder]
+
+`favicon` is a `ReactNode`, not a URL, so anything renders: a logo service, a
+brand's own SVG, a local asset. The component never fetches on your behalf.
+
+```tsx
+const BrandMark = ({ domain }: { domain: string }) => (
+  <img alt="" src={`https://img.logo.dev/${domain}?size=36&retina=true`} />
+);
+
+<AISources
+  sources={[
+    {
+      id: "1",
+      favicon: <BrandMark domain="canva.com" />,
+      title: "How Canva scaled its design system",
+      url: "https://canva.com/engineering",
+    },
+  ]}
+/>;
+```
+
+What it will never do is render an initial in a circle. A one-letter badge
+dressed up as a logo is a placeholder that shipped, and it tells the reader
+nothing about where the answer came from. With no `favicon` it draws a neutral
+globe, which is at least honest about not knowing.
+
+For inline references to the same sources, see
+[AI Citation](/docs/components/ai-citation).
+
+## Accessibility [#accessibility]
+
+The trigger is a button with `aria-expanded`. The fan also triggers on focus, so
+the hint is not pointer-only. Favicons are decorative and carry empty alt text —
+the title and host are the real content.
+
+### Reduced Motion [#reduced-motion]
+
+Uses `useReducedMotion`: no fan, no height spring, no row stagger, and the shared
+layout transition resolves instantly.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/ai-sources/index.tsx" name="AISourcesProps" />
+"
+
+a org like ai floats and this is on the ai chat page for all possible actios
+"# AI Orb Face (/docs/components/ai-orb-face)
+
+
+
+## Features [#features]
+
+* Gaze follows the pointer with a spring, and looks *away* while thinking
+* Blinks on a natural cadence — snap shut, ease open, occasionally a double
+* Squints while thinking, widens while listening, half-closes while streaming
+* Happy arc eyes and a squash-and-stretch hop when it finishes
+* Spiral eyes and a woozy wobble on error, then it recovers on its own
+* Body breathes with the voice, driven from a `MotionValue` so audio never re-renders React
+
+## Expression instead of iconography [#expression-instead-of-iconography]
+
+Status here is carried by the face, which is the thing humans read fastest. That
+is also why the other orbs in this family carry state in their *material* rather
+than wearing a badge: a checkmark stuck onto a decorative orb looks like a
+sticker. A character can simply be pleased.
+
+| State       | Expression                                                    |
+| ----------- | ------------------------------------------------------------- |
+| `idle`      | Eyes open, follows the cursor, occasional blink               |
+| `listening` | Eyes widen, body breathes with the voice                      |
+| `thinking`  | Squints and looks away in saccades, off-centre "hmm" mouth    |
+| `streaming` | Eyes half-closed and focused                                  |
+| `done`      | Happy arc eyes, curved smile, a small hop                     |
+| `error`     | Spiral eyes, woozy mouth, one wobble — confused, not scolding |
+
+The gaze and blink timings are lifted from the SmoothUI moai in the site header,
+so the two read as the same creature.
+
+## Usage [#usage]
+
+```tsx
+"use client";
+
+import type { AIState } from "@/components/smoothui/ai-core";
+import AIOrbFace from "@/components/smoothui/ai-orb-face";
+
+export const Companion = ({ state }: { state: AIState }) => (
+  <AIOrbFace aria-label={`Assistant is ${state}`} size={96} state={state} />
+);
+```
+
+Turn the gaze off where many instances would compete for attention:
+
+```tsx
+<AIOrbFace gaze={false} size={32} state={state} />
+```
+
+## Accessibility [#accessibility]
+
+### Reduced Motion [#reduced-motion]
+
+Uses `useReducedMotion`. Blinking, saccades, the hop and the dizzy wobble are all
+disabled; expressions still change, they just arrive instantly. Pointer tracking
+is also disabled, since involuntary following motion is exactly what motion
+sensitivity is about.
+
+### Labelling [#labelling]
+
+Without `aria-label` the character is `aria-hidden`. When it is the only status
+indicator, pass a label that states the state in words — an expression is not
+available to a screen reader.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/ai-orb-face/index.tsx" name="AIOrbFaceProps" />
+"
+
+page preloader for each screens in words design
+"# Page Preloader (/docs/components/page-preloader)
+
+
+
+## Features [#features]
+
+* Four built-in variants: `words`, `stairs`, `pixel`, `curtain`
+* Controlled (`active`) or uncontrolled (`defaultActive`) usage
+* `container` mode renders the overlay `absolute` inside its parent instead of a full-screen `fixed` layer
+* Locks page scroll while holding (skipped entirely in `container` mode)
+* Deterministic, seeded tile order for the `pixel` variant — no randomness between renders
+* Fires `onComplete` once the exit transition has fully finished
+* Fully respects `prefers-reduced-motion`
+
+## Variants [#variants]
+
+* **words** — cycles through the `words` array with a vertical roll while holding, then the whole panel slides away.
+* **stairs** — exits as `columns` vertical columns leaving the screen in a staggered cascade.
+* **pixel** — exits as a `columns` × `columns` grid of tiles fading out in a randomized-but-deterministic, seeded order.
+* **curtain** (default) — splits into two halves that part to reveal the page underneath.
+
+## Usage guidance [#usage-guidance]
+
+Mount `PagePreloader` once, near the root of the page it covers, and leave `active`/`defaultActive` uncontrolled for a simple "hold for `duration`, then reveal" splash. Switch to the controlled `active` prop when the reveal should wait on real data (e.g. `active={!isReady}`) — flipping it to `false` plays the same exit transition instead of the timer-driven one. Use `container` when the preloader should only cover a section of the page rather than the whole viewport.
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element              | Purpose                                                                     |
+| -------------------- | -------------------- | --------------------------------------------------------------------------- |
+| `role="status"`      | Overlay container    | Announces the overlay as a status region while it's visible                 |
+| `aria-live="polite"` | Overlay container    | Lets assistive tech announce the loading state without interrupting         |
+| `aria-hidden="true"` | Variant tiles/panels | Hides the decorative curtain/stairs/pixel/words visuals from assistive tech |
+
+### Screen Reader [#screen-reader]
+
+* A visually-hidden "Loading" string is rendered inside the `role="status"` region for the entire time the overlay is mounted.
+* All decorative variant visuals (curtain halves, stair columns, pixel tiles, the words panel) are `aria-hidden`, so screen readers only ever hear the single "Loading" announcement.
+* The overlay unmounts entirely (renders `null`) once the exit finishes, so it never traps focus or lingers in the accessibility tree.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects `prefers-reduced-motion` via `useReducedMotion` from Motion. When reduced motion is preferred, the hold ends immediately, the staggered cascade is skipped, and every variant performs a single instant opacity fade at `duration: 0` instead of a transform-based exit.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/page-preloader/index.tsx" name="PagePreloaderProps" />
+"
+
+hover expands for activities,reviews on commuminity ,also for other places where its needed
+"# Hover Expand (/docs/components/hover-expand)
+
+
+
+## Features [#features]
+
+* Flex-basis/flex-grow driven expansion animated with Motion
+* Horizontal or vertical orientation, with labels rotating vertical when collapsed in horizontal mode
+* Each panel is a real, focusable `<button>` — focus expands it
+* Tap-to-expand on touch/non-hover devices instead of relying on hover
+* Controlled `activeIndex`/`onActiveIndexChange` support
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute      | Element           | Purpose                                           |
+| -------------- | ----------------- | ------------------------------------------------- |
+| `role="group"` | Panel container   | Groups the panels as a single widget              |
+| `aria-label`   | Panel container   | Names the widget "Expandable image panels"        |
+| `aria-label`   | Each panel button | Names the panel by its title                      |
+| `aria-pressed` | Each panel button | Indicates whether the panel is currently expanded |
+
+### Screen Reader [#screen-reader]
+
+* Each panel is a native `<button>`, so its expanded state is exposed via `aria-pressed` and its label via `aria-label`.
+* Panel titles and descriptions remain in the DOM at all times; only their visual rotation/opacity changes.
+
+### Keyboard [#keyboard]
+
+| Key                        | Description                                       |
+| -------------------------- | ------------------------------------------------- |
+| `Tab`                      | Moves focus between panels in document order      |
+| `ArrowRight` / `ArrowDown` | Moves focus (and expansion) to the next panel     |
+| `ArrowLeft` / `ArrowUp`    | Moves focus (and expansion) to the previous panel |
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the flex-grow change is instant with no spring easing, and labels do not rotate or animate their opacity.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/hover-expand/index.tsx" name="HoverExpandProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/hover-expand/index.tsx" name="HoverExpandItem" />
+"
+
+this is applied for the video conversion page where text is displayed
+"# Scroll Progress (/docs/components/scroll-progress)
+
+
+
+## Features [#features]
+
+* Four variants — bar, ring, number and segments — all four can share one scroll container
+* Tracks the window's scroll, or any scrollable ancestor via the `container` prop
+* Bar variant has a real track and slides a full-width fill with `translateX` (never `width`), so it stays compositor-only and its rounded cap and gradient are never distorted; the leading-edge glow is a stop in the fill's own gradient, so it is flush with the bar and cannot drift off it
+* Ring variant uses Motion's normalised `pathLength` for the stroke sweep, over a matching track circle, with the percentage set in its centre (`showLabel`)
+* The percentage is one typographic unit — tabular figures with the `%` sized as a fraction of them on a shared baseline — optically centred in the ring rather than merely centred by geometry
+* Segments variant gives each pill its own slice of the range and springs it open, so they fill strictly one after another
+* `position` uses `sticky`, not `fixed`, so it stays safely contained inside constrained layouts — or `inline` to opt out of stickiness and place the indicator in your own header or footer bar
+* Full `prefers-reduced-motion` support
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element      | Purpose                                                 |
+| -------------------- | ------------ | ------------------------------------------------------- |
+| `role="progressbar"` | Root element | Identifies the indicator as a progress meter            |
+| `aria-valuemin`      | Root element | Always `0`                                              |
+| `aria-valuemax`      | Root element | Always `100`                                            |
+| `aria-valuenow`      | Root element | Current read percentage, rounded to the nearest integer |
+| `aria-label`         | Root element | `"Reading progress"`                                    |
+
+### Screen Reader [#screen-reader]
+
+* The root element exposes `role="progressbar"` with live `aria-valuenow`, so assistive technology can announce reading progress independent of the visual variant chosen.
+* The `showLabel` prop additionally renders a visible percentage (ring, segments) or an `sr-only` one (bar) for sighted or screen-reader users who want an explicit number.
+* The ring's `<svg>` is `aria-hidden`; the value is exposed once, on the root `progressbar`, so it is never announced twice.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects `prefers-reduced-motion` via `useReducedMotion` from Motion. When reduced motion is preferred, the value updates directly from scroll with no spring smoothing — the indicator still tracks scroll position exactly, since that is its entire purpose, but never overshoots or eases. The segments variant drops its per-pill spring for the same reason.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/scroll-progress/index.tsx" name="ScrollProgressProps" />
+
+<Callout type="warn">
+  When you pass `container`, that element needs a **definite height** — `h-[440px]`,
+  `h-dvh`, a grid track, anything resolvable — plus `overflow-y-auto`. A
+  percentage height such as `h-full` resolves to `auto` against a parent that
+  sizes itself to its content, at which point the container grows to fit
+  everything inside it, never scrolls, and every indicator sits frozen at 0%.
+  Nothing errors; the progress simply never moves.
+</Callout>
+"
+
+infinite sliders for the positive reviews one layer,resources used for sources,third layer(negative reviw)
+"# Infinite Slider (/docs/components/infinite-slider)
+
+
+
+## Features [#features]
+
+* Smooth infinite scrolling animation
+* Customizable speed and gap
+* Pause on hover support
+* Horizontal and vertical directions
+* Reverse direction option
+* Seamless loop without jumps
+
+## Accessibility [#accessibility]
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the scrolling animation is stopped and the translation is reset to 0, displaying the content statically.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/infinite-slider/index.tsx" name="InfiniteSliderProps" />
+"
+
+inline testimonies on review/community screen for the developers"# Inline Testimonials (/docs/components/inline-testimonials)
+
+
+
+## Features [#features]
+
+* Parses `{{id}}` tokens inside a paragraph and renders each as a focusable inline trigger
+* The quote card is a popover measured against the container and clamped to its edges, so it can never overflow sideways — and it scales from the trigger it belongs to
+* Vertical room is measured against the viewport, so the card flips above the name when there is not enough space below it
+* The popover's hover region includes the gap between the trigger and the card, and closing runs on a short delay, so moving the pointer from the name to the card never makes it flicker
+* The card follows its trigger on resize and scroll while it is open
+* Only one card is open at a time
+* Click toggles the card (so touch devices work), while focus opens it only for keyboard users — a mouse click can't open and instantly re-close it
+* `Escape` closes the open card and returns focus to its trigger
+* Each trigger reads as an enriched word, not a chip: the name keeps the prose's size and colour and picks up only a face and a hairline rule, which turns to the accent colour while its card is open
+* Star rating rendered from an optional `rating` value
+* Works controlled (`openId` / `onOpenChange`) or uncontrolled
+* Fully respects `prefers-reduced-motion`
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute            | Element        | Purpose                                                                        |
+| -------------------- | -------------- | ------------------------------------------------------------------------------ |
+| `aria-expanded`      | Inline trigger | Reflects whether this testimonial's card is open                               |
+| `aria-controls`      | Inline trigger | Points to the quote card's `id`                                                |
+| `aria-label`         | Star rating    | Announces the numeric rating instead of relying on icons                       |
+| `aria-hidden="true"` | Star icons     | Hides decorative icons from assistive technology                               |
+| `alt=""`             | Trigger avatar | The person's name is already the button's text, so the thumbnail is decorative |
+
+### Keyboard Interactions [#keyboard-interactions]
+
+| Key               | Description                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| `Tab`             | Moves focus between inline triggers, opening each card as it receives keyboard focus |
+| `Enter` / `Space` | Toggles the focused testimonial's card                                               |
+| `Escape`          | Closes the open card and returns focus to its trigger                                |
+
+### Screen Reader [#screen-reader]
+
+* Each inline trigger is a real `<button>` with an accessible name (the person's name), so it is announced and operable independent of hover.
+* `aria-expanded` and `aria-controls` let assistive technology track which card is associated with which trigger and whether it is currently open.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects the `prefers-reduced-motion` media query via `useReducedMotion` from Motion. When reduced motion is preferred, the popover appears and disappears with an instant opacity change only — no scale and no slide.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/inline-testimonials/index.tsx" name="InlineTestimonialsProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/inline-testimonials/index.tsx" name="Testimonial" />
+"
+
+switchboard card for the developers icons,dev tech tools on new page system developers "# Card Swipe Deck (/docs/components/card-swipe-deck)
+
+
+
+## Features [#features]
+
+* **Low rotation pivot.** The card rotates around a point below its bottom edge (`transform-origin: 50% 165%`), which is what makes the tilt read like a real card held in a hand rather than a box spinning around its centre.
+* **Drag-driven stamps.** Rotated outlined `LIKE` / `NOPE` badges sit in the top corners. Their opacity *and* scale are mapped straight off the drag distance with `useTransform`, so they bloom continuously under the finger instead of snapping in once a threshold is crossed.
+* **Colour wash.** The card tints toward green or red as you pull, using an edge gradient that strengthens in the direction of travel.
+* **Velocity-aware commit and real throw.** A fast flick commits even under the distance `threshold`. On commit, the card is thrown off-screen along the trajectory the finger was describing — the release velocity is handed to the spring as its initial velocity, so there is no seam between dragging and animating.
+* **Elastic snap-back.** Below threshold the card springs home with a little bounce, because the gesture carried momentum.
+* **The stack shifts forward.** As the top card leaves, every card behind it promotes one slot and the next card scales up — an extra card is mounted so the stack never visibly loses depth.
+* **Vertical give.** Dragging is two-axis with soft vertical constraints, so the throw has a real arc.
+* Imperative `ref` API (`swipeLeft()`, `swipeRight()`, `reset()`) via `useImperativeHandle`, using React 19's `ref` as a prop — no `forwardRef`.
+* Keyboard equivalents for every gesture, plus `onSwipe` and `onEmpty` callbacks.
+
+## Composition [#composition]
+
+The deck exposes its gesture through a ref so you can drive it from anything. The demo wires `SmoothButton` pass / like / reset controls underneath the deck, which gives the gesture a click and keyboard equivalent for free:
+
+```tsx
+const deckRef = useRef<CardSwipeDeckHandle>(null);
+
+<CardSwipeDeck items={items} onSwipe={handleSwipe} ref={deckRef} />
+<SmoothButton color="destructive" onClick={() => deckRef.current?.swipeLeft()} variant="soft">
+  <X />
+</SmoothButton>
+<SmoothButton color="green" onClick={() => deckRef.current?.swipeRight()} variant="solid">
+  <Heart />
+</SmoothButton>
+```
+
+## Accessibility [#accessibility]
+
+### ARIA Attributes [#aria-attributes]
+
+| Attribute                          | Element                     | Purpose                                                                           |
+| ---------------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| `role="application"`               | Deck container              | Marks the deck as a custom interactive widget with its own keyboard/drag behavior |
+| `aria-label="Swipeable card deck"` | Deck container              | Gives the widget a descriptive name                                               |
+| `aria-hidden="true"`               | Stamps and colour wash      | Hides the decorative drag-progress layers from assistive technology               |
+| `aria-live="polite"`               | Visually-hidden status text | Announces how many cards remain after each swipe                                  |
+
+### Keyboard [#keyboard]
+
+| Key                    | Action                                                 |
+| ---------------------- | ------------------------------------------------------ |
+| <kbd>Arrow Left</kbd>  | Swipe the top card left                                |
+| <kbd>Arrow Right</kbd> | Swipe the top card right                               |
+| <kbd>Enter</kbd>       | Trigger the primary action (swipes the top card right) |
+| <kbd>Tab</kbd>         | Move focus to/from the deck container                  |
+
+### Screen Reader [#screen-reader]
+
+* The deck container is focusable (`tabIndex={0}`) and exposes `role="application"` with a descriptive `aria-label`.
+* A visually-hidden `aria-live="polite"` region announces the remaining card count after every swipe, so the outcome of a drag or keypress is never silent.
+* The stamps and the colour wash are purely decorative drag feedback and are marked `aria-hidden`.
+
+### Reduced Motion [#reduced-motion]
+
+This component respects `prefers-reduced-motion` via `useReducedMotion` from Motion. When reduced motion is preferred, swiped cards are removed immediately with no throw animation and no stack spring — they cut straight to the next state — while dragging, keyboard swiping, and the imperative `ref` API all continue to work.
+
+## Props [#props]
+
+<AutoTypeTable path="../../packages/smoothui/components/card-swipe-deck/index.tsx" name="CardSwipeDeckProps" />
+
+<AutoTypeTable path="../../packages/smoothui/components/card-swipe-deck/index.tsx" name="CardSwipeDeckItem" />
+
+<AutoTypeTable path="../../packages/smoothui/components/card-swipe-deck/index.tsx" name="CardSwipeDeckLabels" />
+
+<AutoTypeTable path="../../packages/smoothui/components/card-swipe-deck/index.tsx" name="CardSwipeDeckHandle" />
+"
+
+typography:
+Cormorant Garamond (Headings)
+Lato (Body)
+
+a dashboard screen
+Cinematic Dashboard Entrance Transition(, a Logo-to-Sidebar Morph Transition.)
+build common screens with the animation aurora ui design transminssion effects

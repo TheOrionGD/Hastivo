@@ -1,0 +1,471 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Hastivo design system — Spatial Material Design.
+ * Brand colors are immutable and identical in both themes.
+ * Themes change only neutrals: backgrounds, surfaces, text, borders.
+ */
+
+@theme inline {
+  --font-display: "Cormorant Garamond", "Bricolage Grotesque", Georgia, serif;
+  --font-sans: "Lato", "Geist", -apple-system, system-ui, sans-serif;
+  --font-heading: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Lato", sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-coral: var(--brand-coral);
+  --color-blue: var(--brand-blue);
+  --color-yellow: var(--brand-yellow);
+  --color-charcoal: var(--brand-charcoal);
+  --color-greylight: var(--brand-grey);
+  --color-oncharcoal: #ffffff;
+
+  --color-background: var(--background);
+  --color-background-2: var(--background-2);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-foreground: var(--foreground);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--brand-coral);
+  --color-primary-foreground: var(--brand-charcoal);
+  --color-secondary: var(--background-2);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--background-2);
+  --color-muted-foreground: var(--text-2);
+  --color-accent: var(--brand-blue);
+  --color-accent-foreground: var(--brand-charcoal);
+  --color-destructive: var(--brand-coral);
+  --color-destructive-foreground: var(--brand-charcoal);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--brand-blue);
+}
+
+:root {
+  --radius: 0.75rem;
+  --brand-coral: #ff6f61;
+  --brand-blue: #6fa3ef;
+  --brand-yellow: #ffc107;
+  --brand-charcoal: #2e2e2e;
+  --brand-grey: #d1cfcf;
+
+  --background: #ffffff;
+  --background-2: #f5f6f8;
+  --surface: #ffffff;
+  --elevated: #f5f6f8;
+  --foreground: #2e2e2e;
+  --text-2: #62666d;
+  --text-3: #858990;
+  --border: #d1cfcf;
+
+  --video-overlay: linear-gradient(90deg, color-mix(in oklab, #ffffff 82%, transparent), color-mix(in oklab, #ffffff 45%, transparent));
+  --glass: color-mix(in oklab, #ffffff 62%, transparent);
+  --glass-border: color-mix(in oklab, #2e2e2e 10%, transparent);
+  --shadow-ambient: 0 30px 80px -40px color-mix(in oklab, #2e2e2e 35%, transparent);
+  --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark {
+  --background: #17191e;
+  --background-2: #1e2229;
+  --surface: #242830;
+  --elevated: #2e333d;
+  --foreground: #ffffff;
+  --text-2: #c3c7ce;
+  --text-3: #969ca6;
+  --border: #41444b;
+
+  --video-overlay: color-mix(in oklab, #17191e 80%, transparent);
+  --glass: color-mix(in oklab, #1e2229 55%, transparent);
+  --glass-border: color-mix(in oklab, #ffffff 10%, transparent);
+  --shadow-ambient: 0 30px 80px -40px color-mix(in oklab, #000000 70%, transparent);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    transition: background-color 0.5s var(--ease-liquid), color 0.5s var(--ease-liquid);
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand-blue);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--brand-coral);
+    color: var(--brand-charcoal);
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+@utility font-body {
+  font-family: var(--font-sans);
+}
+
+/* Aurora visual background transmission effects */
+@utility aurora-transmission {
+  position: relative;
+  overflow: hidden;
+}
+
+@utility aurora-glow {
+  position: absolute;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(circle, var(--brand-coral) 0%, var(--brand-blue) 50%, var(--brand-yellow) 100%);
+  animation: aurora-shift 14s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-shift {
+  0% { transform: translate(-20%, -15%) rotate(0deg) scale(0.9); opacity: 0.25; }
+  50% { transform: translate(15%, 10%) rotate(180deg) scale(1.15); opacity: 0.45; }
+  100% { transform: translate(-10%, 20%) rotate(360deg) scale(1.0); opacity: 0.3; }
+}
+
+/* Oversized editorial display scale */
+@utility text-mega {
+  font-size: clamp(2.75rem, 8vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+@utility text-giant {
+  font-size: clamp(2.5rem, 7vw, 7.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+@utility text-lead {
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+@utility eyebrow {
+  font-size: 0.875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Selective frosted glass — utility controls only */
+@utility glass {
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-border);
+}
+
+@utility hairline {
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* Typography-led action: underline that flows in */
+@utility link-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-block: 0.5rem;
+  min-height: 44px;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.25rem;
+    height: 1px;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(0.25);
+    transition: transform 0.6s var(--ease-liquid);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+}
+
+@utility pill-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  background: var(--brand-coral);
+  color: var(--brand-charcoal);
+  font-weight: 500;
+  transition: transform 0.5s var(--ease-liquid), box-shadow 0.5s var(--ease-liquid);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -18px var(--brand-coral);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Telegram-style circular theme reveal */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Global footer — deep navy in both themes (reference identity) */
+:root {
+  --footer-bg: var(--background-2);
+  --footer-fg: var(--foreground);
+  --footer-muted: var(--text-2);
+  --footer-border: var(--border);
+  --footer-heart: var(--brand-coral);
+}
+@utility site-footer {
+  background: var(--footer-bg);
+  color: var(--footer-fg);
+  position: relative;
+}
+@utility footer-mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.65rem;
+  color: var(--brand-blue);
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 45%, transparent);
+  background: color-mix(in oklab, var(--brand-blue) 10%, transparent);
+}
+@utility footer-heading {
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--footer-fg);
+}
+@utility footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  color: var(--footer-muted);
+  transition: color 0.3s var(--ease-liquid), transform 0.3s var(--ease-liquid);
+  &:hover,
+  &:focus-visible {
+    color: var(--footer-fg);
+    transform: translateX(3px);
+  }
+}
+@utility footer-link--soon {
+  cursor: default;
+  &:hover {
+    transform: none;
+    color: var(--footer-muted);
+  }
+}
+@utility footer-heart {
+  color: var(--footer-heart);
+}
+
+/* User-paced editorial introduction, sharing the root video and theme. */
+.onboarding-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in oklab, var(--background) 86%, transparent);
+  overscroll-behavior: contain;
+}
+.onboarding-header,
+.onboarding-controls {
+  margin-inline: auto;
+  width: min(100%, 1600px);
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-shrink: 0;
+}
+.onboarding-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  width: min(100%, 1600px);
+  padding: 20px 40px;
+  margin: auto;
+  flex: 1;
+  min-height: 480px;
+  align-items: center;
+  gap: 24px;
+}
+.onboarding-copy { position: relative; z-index: 2; animation: onboarding-enter 550ms var(--ease-liquid) both; }
+.onboarding-heading { font-size: 72px; line-height: 1.04; letter-spacing: 0; }
+.onboarding-heading:focus { outline: none; }
+.onboarding-visual { position: relative; align-self: stretch; min-height: 460px; }
+.onboarding-avatar { position: absolute; inset: 0 0 66px; }
+.onboarding-folio {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  font-size: 190px;
+  line-height: 1;
+  opacity: 0.12;
+  letter-spacing: 0;
+}
+.onboarding-art { position: absolute; bottom: 45px; inset-inline: 0; text-align: center; }
+.onboarding-equation { font-family: var(--font-display); font-size: 26px; line-height: 1.3; letter-spacing: 0; }
+.onboarding-equation span { color: var(--text-2); }
+.onboarding-caption { position: absolute; bottom: 12px; inset-inline: 0; text-align: center; }
+.onboarding-controls { border-top: 1px solid var(--border); padding-block: 20px 24px; }
+.onboarding-progress { width: 280px; }
+@keyframes onboarding-enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 1440px) { .onboarding-heading { font-size: 88px; } }
+@media (max-width: 1100px) { .onboarding-heading { font-size: 56px; } }
+@media (max-width: 767px) {
+  .onboarding-header { padding: 16px 20px; gap: 8px; }
+  .onboarding-header > div:last-child { gap: 0; }
+  .onboarding-header button { padding-inline: 8px; font-size: 12px; }
+  .onboarding-body { grid-template-columns: minmax(0, 1fr); padding: 20px 24px 8px; gap: 16px; min-height: 0; }
+  .onboarding-heading { font-size: 40px; }
+  .onboarding-visual { min-height: 290px; }
+  .onboarding-folio { font-size: 130px; top: 0; }
+  .onboarding-equation { font-size: 22px; }
+  .onboarding-caption { font-size: 10px; }
+  .onboarding-controls { padding: 12px 24px 20px; flex-wrap: wrap; gap: 8px; }
+  .onboarding-progress { width: 100%; }
+  .onboarding-controls > div:last-child { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .onboarding-copy { animation: none; } }
+
+/* Auth inputs: fine bottom border, restrained coral focus */
+.auth-form-scroll {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 1024px) {
+  .auth-contained {
+    height: 100svh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .auth-contained > section {
+    min-height: 0;
+    height: 100%;
+  }
+  .auth-contained .auth-form-panel {
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+  .auth-contained .auth-form-scroll {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scroll-behavior: auto;
+    scroll-padding-block: 1.5rem;
+  }
+  .auth-contained .auth-form-content {
+    flex: none;
+    margin-block: auto;
+    padding-bottom: 2.5rem;
+  }
+}
+
+@utility auth-input {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 0.4rem;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  font-size: 1.0625rem;
+  transition: border-color 0.3s var(--ease-liquid), box-shadow 0.3s var(--ease-liquid);
+  &::placeholder {
+    color: var(--color-text-3);
+  }
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--brand-coral);
+    box-shadow: 0 1px 0 0 var(--brand-coral);
+  }
+  &:focus-visible {
+    outline: none;
+  }
+  &[aria-invalid="true"] {
+    border-bottom-color: var(--brand-coral);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+@utility auth-input--locked {
+  border-bottom-style: dashed;
+  border-bottom-color: var(--brand-blue);
+  color: var(--color-text-2);
+}
+@utility auth-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  font-weight: 500;
+  transition: border-color 0.3s var(--ease-liquid), background 0.3s var(--ease-liquid);
+  &:hover {
+    border-color: var(--brand-blue);
+    background: color-mix(in oklab, var(--brand-blue) 8%, transparent);
+  }
+  &:disabled {
+    opacity: 0.6;
+  }
+}

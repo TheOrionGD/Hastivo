@@ -1,0 +1,26 @@
+{
+  "name": "hastivo-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hastivo Assistive Indian Sign Language Platform — Root Monorepo Workspace",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "services",
+    "app",
+    "tests"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --prefix client run dev",
+    "dev:backend": "npm --prefix server run dev",
+    "dev:services": "npm --prefix services start",
+    "dev:app": "npm --prefix app run dev",
+    "build:frontend": "npm --prefix client run build",
+    "build:app": "npm --prefix app run build",
+    "build": "npm run build:frontend",
+    "test": "npm --prefix tests test",
+    "test:system": "npm --prefix tests run test:system",
+    "test:backend": "npm --prefix tests run test:backend",
+    "test:e2e": "npm --prefix tests run test:e2e"
+  }
+}
